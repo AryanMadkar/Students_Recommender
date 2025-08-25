@@ -95,3 +95,10 @@
 {"level":"info","message":"SIGINT received. Shutting down gracefully...","service":"pathpilot-api","timestamp":"2025-08-25 21:06:53"}
 {"level":"info","message":"MongoDB Connected: localhost","service":"pathpilot-api","timestamp":"2025-08-25 21:08:07"}
 {"level":"info","message":"Server running on port 5000 in development mode","service":"pathpilot-api","timestamp":"2025-08-25 21:08:07"}
+{"level":"info","message":"::1 - - [25/Aug/2025:15:42:50 +0000] \"POST /api/auth/register HTTP/1.1\" 201 375 \"-\" \"PostmanRuntime/7.39.1\"","service":"pathpilot-api","timestamp":"2025-08-25 21:12:50"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"pathpilot-api","timestamp":"2025-08-25 21:14:20"}
+{"level":"info","message":"Server running on port 5000 in development mode","service":"pathpilot-api","timestamp":"2025-08-25 21:14:20"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"pathpilot-api","timestamp":"2025-08-25 21:15:21"}
+{"level":"info","message":"Server running on port 5000 in development mode","service":"pathpilot-api","timestamp":"2025-08-25 21:15:21"}
+{"level":"info","message":"::1 - - [25/Aug/2025:15:47:00 +0000] \"POST /api/auth/login HTTP/1.1\" 500 66 \"-\" \"PostmanRuntime/7.39.1\"","service":"pathpilot-api","timestamp":"2025-08-25 21:17:00"}
+{"level":"info","message":"SIGINT received. Shutting down gracefully...","service":"pathpilot-api","timestamp":"2025-08-25 21:17:28"}
