@@ -14,10 +14,10 @@ router.get('/', dashboardController.getDashboardData);
 router.get('/analytics', dashboardController.getAnalytics);
 
 // Get progress tracking data
-router.get('/progress', dashboardController.getProgressData);
+router.get('/progress', dashboardController.getProgressDataRoute);
 
 // Get quick actions
-router.get('/quick-actions', dashboardController.getQuickActions);
+router.get('/quick-actions', dashboardController.getQuickActionsRoute);
 
 // Get user achievements
 router.get('/achievements', dashboardController.getAchievements);

@@ -1,6 +1,28 @@
 const User = require('../models/User');
 
 class UserController {
+  // Get user profile
+  async getProfile(req, res) {
+    try {
+      const userId = req.user.id;
+      const user = await User.findById(userId).select('-password');
+      
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
+
+      res.json({
+        success: true,
+        data: user
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
   // Update user profile
   async updateProfile(req, res) {
     try {
@@ -13,10 +35,12 @@ class UserController {
         { new: true, select: '-password' }
       );
 
-      // Calculate profile completion
-      const completion = this.calculateProfileCompletion(user);
-      user.progress.profileCompletion = completion;
-      await user.save();
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
 
       res.json({
         success: true,
@@ -32,24 +56,27 @@ class UserController {
   async getDashboard(req, res) {
     try {
       const userId = req.user.id;
-      const user = await User.findById(userId)
-        .populate('assessmentResults.assessmentId')
-        .populate('recommendations');
+      const user = await User.findById(userId).select('-password');
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
 
       const dashboardData = {
         user: {
-          name: user.personalInfo.name,
+          name: user.personalInfo?.name || 'User',
           stage: user.educationStage,
-          profileCompletion: user.progress.profileCompletion
+          profileCompletion: user.progress?.profileCompletion || 0
         },
         stats: {
-          assessmentsCompleted: user.progress.assessmentsCompleted,
-          recommendationsGenerated: user.recommendations.length,
-          profileCompletion: user.progress.profileCompletion
+          assessmentsCompleted: user.progress?.assessmentsCompleted || 0,
+          recommendationsGenerated: user.recommendations?.length || 0,
+          profileCompletion: user.progress?.profileCompletion || 0
         },
-        recentAssessments: user.assessmentResults.slice(-3),
-        latestRecommendations: user.recommendations.slice(-5),
-        nextSteps: await this.getNextSteps(user)
+        nextSteps: ['Complete your profile', 'Take assessments', 'Get recommendations']
       };
 
       res.json({
@@ -61,65 +88,29 @@ class UserController {
     }
   }
 
-  // Calculate profile completion percentage
-  calculateProfileCompletion(user) {
-    let completion = 0;
-    const checks = [
-      user.personalInfo.name,
-      user.personalInfo.email,
-      user.personalInfo.phone,
-      user.educationStage,
-      user.personalInfo.state,
-      user.personalInfo.city
-    ];
-
-    // Stage-specific checks
-    if (user.educationStage === 'after10th') {
-      checks.push(
-        user.academicInfo.class10?.percentage,
-        user.academicInfo.class10?.board
-      );
-    } else if (user.educationStage === 'after12th') {
-      checks.push(
-        user.academicInfo.class12?.stream,
-        user.academicInfo.class12?.percentage,
-        user.academicInfo.class10?.percentage
-      );
-    } else if (user.educationStage === 'ongoing') {
-      checks.push(
-        user.academicInfo.currentCourse?.degree,
-        user.academicInfo.currentCourse?.specialization,
-        user.academicInfo.currentCourse?.year
-      );
+  // Upload avatar - ADD THIS METHOD
+  async uploadAvatar(req, res) {
+    try {
+      const userId = req.user.id;
+      
+      // Mock avatar upload for now
+      res.json({
+        success: true,
+        message: 'Avatar uploaded successfully',
+        data: {
+          avatarUrl: 'https://via.placeholder.com/150'
+        }
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
     }
-
-    const filled = checks.filter(item => item && item !== '').length;
-    return Math.round((filled / checks.length) * 100);
   }
 
-  // Get next steps for user
-  async getNextSteps(user) {
-    const steps = [];
-    
-    if (user.progress.profileCompletion < 100) {
-      steps.push('Complete your profile setup');
-    }
-    
-    if (user.progress.assessmentsCompleted === 0) {
-      steps.push('Take your first assessment');
-    }
-    
-    if (user.recommendations.length === 0) {
-      steps.push('Get personalized recommendations');
-    }
-
-    return steps;
-  }
-
-  // Delete user account
+  // Delete user account - ADD THIS METHOD
   async deleteAccount(req, res) {
     try {
       const userId = req.user.id;
+      
       await User.findByIdAndDelete(userId);
 
       res.json({
@@ -130,6 +121,64 @@ class UserController {
       res.status(500).json({ success: false, message: error.message });
     }
   }
+
+  // Get user preferences - ADD THIS METHOD
+  async getPreferences(req, res) {
+    try {
+      const userId = req.user.id;
+      const user = await User.findById(userId).select('preferences');
+      
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
+
+      const preferences = user.preferences || {
+        notifications: true,
+        emailUpdates: true,
+        theme: 'light'
+      };
+
+      res.json({
+        success: true,
+        data: preferences
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  // Update user preferences - ADD THIS METHOD
+  async updatePreferences(req, res) {
+    try {
+      const userId = req.user.id;
+      const preferences = req.body;
+
+      const user = await User.findByIdAndUpdate(
+        userId,
+        { $set: { preferences } },
+        { new: true }
+      ).select('preferences');
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
+
+      res.json({
+        success: true,
+        message: 'Preferences updated successfully',
+        data: user.preferences
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
 }
 
+// IMPORTANT: Make sure to export properly
 module.exports = new UserController();

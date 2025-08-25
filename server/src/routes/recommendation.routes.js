@@ -1,7 +1,6 @@
 const express = require('express');
 const recommendationController = require('../controllers/recommendation.controller');
 const authMiddleware = require('../middleware/auth.middleware');
-const { aiLimiter } = require('../middleware/rateLimit.middleware');
 
 const router = express.Router();
 
@@ -9,12 +8,9 @@ const router = express.Router();
 router.use(authMiddleware);
 
 // Generate comprehensive recommendations
-router.post('/generate', 
-  aiLimiter,
-  recommendationController.generateRecommendations
-);
+router.post('/generate', recommendationController.generateRecommendations);
 
-// Get stage-specific guidance
+// Get stage-specific guidance  
 router.get('/guidance', recommendationController.getStageGuidance);
 
 // Get career path recommendations

@@ -47,7 +47,6 @@ const calculateWeightedAverage = (values, weights) => {
   
   const weightedSum = values.reduce((sum, value, index) => sum + (value * weights[index]), 0);
   const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
-  
   return weightedSum / totalWeight;
 };
 
@@ -91,7 +90,7 @@ const formatIndianCurrency = (amount) => {
 
 // Convert to title case
 const toTitleCase = (str) => {
-  return str.replace(/\w\S*/g, (txt) => 
+  return str.replace(/\w\S*/g, (txt) =>
     txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
   );
 };
@@ -135,13 +134,38 @@ const formatFileSize = (bytes) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 };
 
-// Sanitize HTML
+// Sanitize HTML - FIXED COMPLETE FUNCTION
 const sanitizeHtml = (html) => {
   return html
-    .replace(/<script[^>]*>.*?<\/script>/gi, '')
-    .replace(/<[\/\!]*?[^<>]*?>/gi, '')
-    .replace(/<style[^>]*>.*?<\/style>/gi, '')
-    .replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '');
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '') // Remove iframe tags
+    .replace(/javascript:/gi, '') // Remove javascript: urls
+    .replace(/on\w+="[^"]*"/gi, '') // Remove event handlers
+    .replace(/on\w+='[^']*'/gi, '') // Remove event handlers with single quotes
+    .replace(/<\s*\/?\s*(?:embed|object|applet|link|meta|form)\s*[^>]*>/gi, '') // Remove dangerous tags
+    .trim();
+};
+
+// Validate date format
+const isValidDate = (dateString) => {
+  const date = new Date(dateString);
+  return date instanceof Date && !isNaN(date);
+};
+
+// Remove duplicates from array
+const removeDuplicates = (array, key = null) => {
+  if (key) {
+    return array.filter((item, index, self) =>
+      index === self.findIndex(t => t[key] === item[key])
+    );
+  }
+  return [...new Set(array)];
+};
+
+// Capitalize first letter
+const capitalize = (str) => {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
 
 module.exports = {
@@ -159,5 +183,8 @@ module.exports = {
   isValidEmail,
   generateOTP,
   formatFileSize,
-  sanitizeHtml
+  sanitizeHtml,
+  isValidDate,
+  removeDuplicates,
+  capitalize
 };

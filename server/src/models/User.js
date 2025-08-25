@@ -11,6 +11,11 @@ const userSchema = new mongoose.Schema(
       state: String,
       city: String,
     },
+    favorites: {
+      colleges: [{ type: mongoose.Schema.Types.ObjectId, ref: "College" }],
+      courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+      careers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Career" }],
+    },
 
     educationStage: {
       type: String,

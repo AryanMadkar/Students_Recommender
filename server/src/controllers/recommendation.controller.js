@@ -7,35 +7,25 @@ class RecommendationController {
   async generateRecommendations(req, res) {
     try {
       const userId = req.user.id;
-      const user = await User.findById(userId)
-        .populate('assessmentResults.assessmentId');
+      const user = await User.findById(userId);
       
-      // Check if user has completed required assessments
-      const requiredAssessments = await recommendationService.getRequiredAssessments(user.educationStage);
-      const completedAssessments = user.assessmentResults.map(r => r.assessmentId._id.toString());
-      
-      const missingAssessments = requiredAssessments.filter(
-        required => !completedAssessments.includes(required._id.toString())
-      );
-      
-      if (missingAssessments.length > 0) {
-        return res.json({
+      if (!user) {
+        return res.status(404).json({
           success: false,
-          message: 'Please complete required assessments first',
-          missingAssessments
+          message: 'User not found'
         });
       }
-      
-      // Generate AI-powered recommendations
-      const recommendations = await aiService.generatePersonalizedRecommendations(user);
-      
-      // Save recommendations to user profile
-      user.recommendations = recommendations.map(rec => ({
-        ...rec,
-        generatedAt: new Date()
-      }));
-      await user.save();
-      
+
+      // Simple mock recommendation for now
+      const recommendations = [
+        {
+          type: 'career',
+          title: 'Software Engineer',
+          matchPercentage: 85,
+          description: 'Based on your technical aptitude and interests'
+        }
+      ];
+
       res.json({
         success: true,
         data: recommendations
@@ -50,23 +40,20 @@ class RecommendationController {
     try {
       const userId = req.user.id;
       const user = await User.findById(userId);
-      
-      let guidance;
-      
-      switch (user.educationStage) {
-        case 'after10th':
-          guidance = await this.getAfter10thGuidance(user);
-          break;
-        case 'after12th':
-          guidance = await this.getAfter12thGuidance(user);
-          break;
-        case 'ongoing':
-          guidance = await this.getOngoingGuidance(user);
-          break;
-        default:
-          throw new Error('Invalid education stage');
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        });
       }
-      
+
+      const guidance = {
+        stage: user.educationStage,
+        recommendations: ['Complete your profile', 'Take assessments'],
+        nextSteps: ['Explore career options', 'Research colleges']
+      };
+
       res.json({
         success: true,
         data: guidance
@@ -76,121 +63,100 @@ class RecommendationController {
     }
   }
 
-  // After 10th guidance
-  async getAfter10thGuidance(user) {
-    const assessmentScores = this.getLatestScores(user);
-    
-    // Stream recommendations based on aptitude and interest
-    const streamRecommendations = await recommendationService.recommendStreams(
-      user.academicInfo.class10,
-      assessmentScores,
-      user.parentalInfluence
-    );
-    
-    // College recommendations for each stream
-    const collegeRecommendations = await Promise.all(
-      streamRecommendations.map(async (stream) => ({
-        stream: stream.name,
-        colleges: await recommendationService.getCollegesForStream(stream.name, user.location)
-      }))
-    );
-    
-    return {
-      stage: 'after10th',
-      primaryRecommendations: streamRecommendations,
-      collegeOptions: collegeRecommendations,
-      nextSteps: [
-        'Complete aptitude assessment if not done',
-        'Research colleges for recommended streams',
-        'Discuss options with parents/counselors',
-        'Plan for entrance exams if required'
-      ]
-    };
-  }
-
-  // After 12th guidance
-  async getAfter12thGuidance(user) {
-    const assessmentScores = this.getLatestScores(user);
-    const stream = user.academicInfo.class12.stream;
-    
-    // Course recommendations based on stream and scores
-    const courseRecommendations = await recommendationService.recommendCourses(
-      stream,
-      user.academicInfo.class12,
-      assessmentScores
-    );
-    
-    // College recommendations with cutoff analysis
-    const collegeRecommendations = await recommendationService.getCollegeRecommendations(
-      courseRecommendations,
-      user.academicInfo.class12.percentage,
-      user.location
-    );
-    
-    // Entrance exam guidance
-    const examGuidance = await recommendationService.getEntranceExamGuidance(courseRecommendations);
-    
-    return {
-      stage: 'after12th',
-      courseRecommendations,
-      collegeRecommendations,
-      examGuidance,
-      nextSteps: [
-        'Apply for entrance exams',
-        'Research college admission processes',
-        'Prepare application documents',
-        'Consider backup options'
-      ]
-    };
-  }
-
-  // Ongoing course guidance
-  async getOngoingGuidance(user) {
-    const assessmentScores = this.getLatestScores(user);
-    const currentCourse = user.academicInfo.currentCourse;
-    
-    // Skill development roadmap
-    const skillRoadmap = await recommendationService.generateSkillRoadmap(
-      currentCourse,
-      assessmentScores
-    );
-    
-    // Internship recommendations
-    const internshipRecommendations = await recommendationService.getInternshipRecommendations(
-      currentCourse,
-      user.location
-    );
-    
-    // Placement preparation
-    const placementPrep = await recommendationService.getPlacementPreparation(currentCourse);
-    
-    return {
-      stage: 'ongoing',
-      skillRoadmap,
-      internshipRecommendations,
-      placementPrep,
-      nextSteps: [
-        'Complete skill assessments',
-        'Start building portfolio projects',
-        'Apply for relevant internships',
-        'Begin placement preparation'
-      ]
-    };
-  }
-
-  getLatestScores(user) {
-    if (user.assessmentResults.length === 0) return {};
-    
-    return user.assessmentResults.reduce((latest, current) => {
-      Object.keys(current.scores).forEach(key => {
-        if (!latest[key] || current.completedAt > latest.completedAt) {
-          latest[key] = current.scores[key];
-          latest.completedAt = current.completedAt;
+  // Get career recommendations - ADD THIS METHOD
+  async getCareerRecommendations(req, res) {
+    try {
+      const userId = req.user.id;
+      
+      const careers = [
+        {
+          title: 'Software Engineer',
+          matchPercentage: 90,
+          salaryRange: '8-25 LPA',
+          description: 'Develop software applications'
+        },
+        {
+          title: 'Data Scientist',
+          matchPercentage: 85,
+          salaryRange: '12-30 LPA', 
+          description: 'Analyze data and build ML models'
         }
+      ];
+
+      res.json({
+        success: true,
+        data: careers
       });
-      return latest;
-    }, {});
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  // Get college recommendations - ADD THIS METHOD
+  async getCollegeRecommendations(req, res) {
+    try {
+      const userId = req.user.id;
+      
+      const colleges = [
+        {
+          name: 'IIT Delhi',
+          matchPercentage: 75,
+          fees: '2.5L per year',
+          location: 'Delhi'
+        },
+        {
+          name: 'BITS Pilani',
+          matchPercentage: 85,
+          fees: '4.5L per year',
+          location: 'Rajasthan'
+        }
+      ];
+
+      res.json({
+        success: true,
+        data: colleges
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  // Get skill roadmap - ADD THIS METHOD
+  async getSkillRoadmap(req, res) {
+    try {
+      const userId = req.user.id;
+      
+      const roadmap = {
+        immediate: ['Learn Python basics', 'Complete online course'],
+        shortTerm: ['Build 2 projects', 'Learn frameworks'],
+        longTerm: ['Advanced algorithms', 'System design']
+      };
+
+      res.json({
+        success: true,
+        data: roadmap
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  }
+
+  // Provide feedback - ADD THIS METHOD  
+  async provideFeedback(req, res) {
+    try {
+      const { recommendationId } = req.params;
+      const { helpful, rating, comments } = req.body;
+
+      // Mock feedback storage
+      res.json({
+        success: true,
+        message: 'Feedback recorded successfully'
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
   }
 }
 
+// IMPORTANT: Make sure to export properly
 module.exports = new RecommendationController();

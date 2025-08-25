@@ -1,160 +1,128 @@
-const { Groq } = require('groq-sdk');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { groq, gemini, AI_CONFIG, PROMPT_TEMPLATES } = require('../config/ai');
+const logger = require('../utils/logger');
 
 class AIService {
-  constructor() {
-    this.groq = new Groq({
-      apiKey: process.env.GROQ_API_KEY
-    });
-    
-    this.gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  }
-
-  // Generate personalized recommendations using Groq
+  // Generate personalized recommendations using Groq with fallback
   async generatePersonalizedRecommendations(user) {
     const prompt = this.buildRecommendationPrompt(user);
     
-    try {
-      const response = await this.groq.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: "You are an expert career counselor specializing in Indian education system. Provide detailed, practical recommendations based on student data."
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        model: "deepseek-r1-distill-llama-70b", // or "llama2-70b-4096" based on your preference
-        temperature: 0.7,
-        max_tokens: 2000
-      });
-      
-      return this.parseAIRecommendations(response.choices[0].message.content);
-    } catch (error) {
-      console.error('Groq recommendation generation failed:', error);
-      return this.getFallbackRecommendations(user);
-    }
-  }
-
-  // Generate assessment insights using Groq (alternative implementation)
-  async generateAssessmentInsightsWithGroq(user, scores) {
-    const prompt = `
-      Analyze the following assessment scores and provide insights:
-      
-      User Stage: ${user.educationStage}
-      Academic Performance: ${JSON.stringify(user.academicInfo)}
-      Assessment Scores: ${JSON.stringify(scores)}
-      
-      Provide:
-      1. Key strengths and weaknesses
-      2. Learning style recommendations
-      3. Areas for improvement
-      4. Motivational insights
-    `;
-    
-    try {
-      const response = await this.groq.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: "You are an educational psychologist specialized in analyzing student assessment data and providing actionable insights."
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        model: "mixtral-8x7b-32768",
-        temperature: 0.5,
-        max_tokens: 1500
-      });
-      
-      return this.parseInsights(response.choices[0].message.content);
-    } catch (error) {
-      console.error('Groq insights generation failed:', error);
-      return this.getFallbackInsights(scores);
-    }
-  }
-
-  // Keep original Gemini implementation as backup
-  async generateAssessmentInsights(user, scores) {
-    const prompt = `
-      Analyze the following assessment scores and provide insights:
-      
-      User Stage: ${user.educationStage}
-      Academic Performance: ${JSON.stringify(user.academicInfo)}
-      Assessment Scores: ${JSON.stringify(scores)}
-      
-      Provide:
-      1. Key strengths and weaknesses
-      2. Learning style recommendations
-      3. Areas for improvement
-      4. Motivational insights
-    `;
-    
-    try {
-      const model = this.gemini.getGenerativeModel({ model: "gemini-pro" });
-      const result = await model.generateContent(prompt);
-      
-      return this.parseInsights(result.response.text());
-    } catch (error) {
-      console.error('AI insights generation failed:', error);
-      return this.getFallbackInsights(scores);
-    }
-  }
-
-  // Enhanced method to try multiple AI providers
-  async generateRecommendationsWithFallback(user) {
     // Try Groq first
     try {
-      return await this.generatePersonalizedRecommendations(user);
+      logger.info('Attempting Groq AI recommendation generation');
+      
+      const response = await Promise.race([
+        groq.chat.completions.create({
+          messages: [
+            {
+              role: "system",
+              content: "You are an expert career counselor specializing in Indian education system. Provide detailed, practical recommendations based on student data. Respond in JSON format."
+            },
+            {
+              role: "user",
+              content: prompt
+            }
+          ],
+          model: AI_CONFIG.GROQ.MODEL,
+          temperature: AI_CONFIG.GROQ.TEMPERATURE,
+          max_tokens: AI_CONFIG.GROQ.MAX_TOKENS
+        }),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Groq API timeout')), AI_CONFIG.GROQ.TIMEOUT)
+        )
+      ]);
+      
+      const result = this.parseAIRecommendations(response.choices[0].message.content);
+      logger.info('Groq AI recommendation generation successful');
+      return result;
+      
     } catch (groqError) {
-      console.error('Groq failed, trying Gemini fallback:', groqError);
+      logger.warn('Groq AI failed, trying Gemini fallback:', groqError.message);
       
       // Fallback to Gemini
       try {
-        const prompt = this.buildRecommendationPrompt(user);
-        const model = this.gemini.getGenerativeModel({ model: "gemini-pro" });
-        const result = await model.generateContent(prompt);
+        const model = gemini.getGenerativeModel({ model: AI_CONFIG.GEMINI.MODEL });
         
-        return this.parseAIRecommendations(result.response.text());
+        const result = await Promise.race([
+          model.generateContent(prompt),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Gemini API timeout')), AI_CONFIG.GEMINI.TIMEOUT)
+          )
+        ]);
+        
+        const recommendations = this.parseAIRecommendations(result.response.text());
+        logger.info('Gemini AI recommendation generation successful');
+        return recommendations;
+        
       } catch (geminiError) {
-        console.error('Both AI providers failed:', geminiError);
+        logger.error('Both AI providers failed:', { groqError: groqError.message, geminiError: geminiError.message });
         return this.getFallbackRecommendations(user);
       }
     }
   }
 
-  buildRecommendationPrompt(user) {
-    return `
-      Student Profile:
-      - Education Stage: ${user.educationStage}
-      - Academic Record: ${JSON.stringify(user.academicInfo)}
-      - Assessment Results: ${JSON.stringify(user.assessmentResults.slice(-3))}
-      - Parental Influence: ${JSON.stringify(user.parentalInfluence)}
-      - Location: ${user.personalInfo.state}, ${user.personalInfo.city}
-      
-      Generate personalized recommendations including:
-      1. Top 3 career paths with reasoning
-      2. Recommended colleges/courses with specific details
-      3. Skills to develop with timeline
-      4. Action steps for next 6 months
-      
-      Consider Indian education system, market trends, and student's financial background.
-      
-      Format your response in a structured manner with clear headings and bullet points.
-    `;
+  // Generate assessment insights with retry logic
+  async generateAssessmentInsights(user, scores) {
+    const prompt = PROMPT_TEMPLATES.SKILL_ROADMAP
+      .replace('{currentStatus}', JSON.stringify({ stage: user.educationStage, academic: user.academicInfo }))
+      .replace('{targetCareer}', 'Based on assessment scores: ' + JSON.stringify(scores));
+    
+    for (let attempt = 1; attempt <= AI_CONFIG.RETRY_ATTEMPTS; attempt++) {
+      try {
+        logger.info(`AI insight generation attempt ${attempt}`);
+        
+        const response = await groq.chat.completions.create({
+          messages: [
+            {
+              role: "system",
+              content: "You are an educational psychologist. Analyze assessment data and provide actionable insights in JSON format."
+            },
+            {
+              role: "user",
+              content: prompt
+            }
+          ],
+          model: AI_CONFIG.GROQ.MODEL,
+          temperature: 0.5,
+          max_tokens: 1500
+        });
+        
+        return this.parseInsights(response.choices[0].message.content);
+        
+      } catch (error) {
+        logger.warn(`AI insight generation attempt ${attempt} failed:`, error.message);
+        
+        if (attempt === AI_CONFIG.RETRY_ATTEMPTS) {
+          return this.getFallbackInsights(scores);
+        }
+        
+        // Wait before retry
+        await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+      }
+    }
   }
 
+  // Build comprehensive recommendation prompt
+  buildRecommendationPrompt(user) {
+    return PROMPT_TEMPLATES.CAREER_RECOMMENDATION
+      .replace('{profile}', JSON.stringify({
+        stage: user.educationStage,
+        academic: user.academicInfo,
+        location: user.personalInfo?.state || 'Not specified',
+        parentalInfluence: user.parentalInfluence
+      }))
+      .replace('{assessmentResults}', JSON.stringify(user.assessmentResults?.slice(-3) || []));
+  }
+
+  // Enhanced parsing with error handling
   parseAIRecommendations(aiResponse) {
-    // Enhanced parsing logic for better structure
     try {
-      // You can implement more sophisticated parsing here
-      // For now, returning a basic structure
-      const sections = aiResponse.split(/\d+\.\s/);
+      // Try to parse as JSON first
+      const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        return JSON.parse(jsonMatch[0]);
+      }
       
+      // Fallback to text parsing
       return {
         careerPaths: this.extractCareerPaths(aiResponse),
         colleges: this.extractColleges(aiResponse),
@@ -162,72 +130,153 @@ class AIService {
         actionSteps: this.extractActionSteps(aiResponse),
         rawResponse: aiResponse
       };
+      
     } catch (error) {
-      console.error('Failed to parse AI response:', error);
+      logger.error('Failed to parse AI response:', error);
       return {
-        careerPaths: [],
+        careerPaths: this.extractCareerPaths(aiResponse),
         colleges: [],
         skills: [],
         actionSteps: [],
-        rawResponse: aiResponse
+        rawResponse: aiResponse,
+        parseError: error.message
       };
     }
   }
 
+  // Enhanced text extraction methods
   extractCareerPaths(response) {
-    // Implementation to extract career paths from response
-    const careerSection = response.match(/career paths?:?\s*(.*?)(?=recommended|skills|action|$)/is);
-    return careerSection ? careerSection[1].split('\n').filter(line => line.trim()) : [];
+    const careerSection = response.match(/(?:career paths?|careers?):?\s*(.*?)(?=(?:college|skill|action|$))/is);
+    if (!careerSection) return [];
+    
+    return careerSection[1]
+      .split('\n')
+      .filter(line => line.trim())
+      .map(line => line.replace(/^[-•*]\s*/, '').trim())
+      .slice(0, 5); // Limit to top 5
   }
 
   extractColleges(response) {
-    // Implementation to extract colleges from response
-    const collegeSection = response.match(/colleges?.*?courses?:?\s*(.*?)(?=skills|action|$)/is);
-    return collegeSection ? collegeSection[1].split('\n').filter(line => line.trim()) : [];
+    const collegeSection = response.match(/(?:college|institution)s?:?\s*(.*?)(?=(?:skill|action|$))/is);
+    if (!collegeSection) return [];
+    
+    return collegeSection[1]
+      .split('\n')
+      .filter(line => line.trim())
+      .map(line => line.replace(/^[-•*]\s*/, '').trim())
+      .slice(0, 5);
   }
 
   extractSkills(response) {
-    // Implementation to extract skills from response
-    const skillsSection = response.match(/skills?.*?:?\s*(.*?)(?=action|$)/is);
-    return skillsSection ? skillsSection[1].split('\n').filter(line => line.trim()) : [];
+    const skillsSection = response.match(/skills?:?\s*(.*?)(?=(?:action|$))/is);
+    if (!skillsSection) return [];
+    
+    return skillsSection[1]
+      .split('\n')
+      .filter(line => line.trim())
+      .map(line => line.replace(/^[-•*]\s*/, '').trim())
+      .slice(0, 8);
   }
 
   extractActionSteps(response) {
-    // Implementation to extract action steps from response
-    const actionSection = response.match(/action steps?:?\s*(.*?)$/is);
-    return actionSection ? actionSection[1].split('\n').filter(line => line.trim()) : [];
+    const actionSection = response.match(/(?:action steps?|next steps?|recommendations?):?\s*(.*?)$/is);
+    if (!actionSection) return [];
+    
+    return actionSection[1]
+      .split('\n')
+      .filter(line => line.trim())
+      .map(line => line.replace(/^[-•*]\s*/, '').trim())
+      .slice(0, 6);
+  }
+
+  // Enhanced fallback recommendations
+  getFallbackRecommendations(user) {
+    const stageRecommendations = {
+      'after10th': {
+        careerPaths: ['Engineering', 'Medical', 'Commerce', 'Arts & Design'],
+        colleges: ['Local colleges in your area', 'State universities', 'Private institutions'],
+        skills: ['Communication', 'Critical thinking', 'Subject expertise', 'Time management'],
+        actionSteps: [
+          'Complete 12th grade with good marks',
+          'Explore different subjects and interests',
+          'Prepare for entrance exams',
+          'Research colleges and courses'
+        ]
+      },
+      'after12th': {
+        careerPaths: ['Software Engineering', 'Data Science', 'Business Management', 'Healthcare'],
+        colleges: ['IITs', 'NITs', 'State Engineering Colleges', 'Private Universities'],
+        skills: ['Technical skills', 'Problem solving', 'Leadership', 'Analytical thinking'],
+        actionSteps: [
+          'Prepare for entrance exams',
+          'Apply to multiple colleges',
+          'Develop relevant skills',
+          'Build a strong foundation'
+        ]
+      },
+      'ongoing': {
+        careerPaths: ['Software Developer', 'Product Manager', 'Consultant', 'Entrepreneur'],
+        colleges: [],
+        skills: ['Programming', 'Project management', 'Communication', 'Industry knowledge'],
+        actionSteps: [
+          'Complete internships',
+          'Build projects portfolio',
+          'Network with professionals',
+          'Prepare for placements'
+        ]
+      }
+    };
+    
+    return stageRecommendations[user.educationStage] || stageRecommendations['after12th'];
   }
 
   parseInsights(aiResponse) {
-    // Parse insights response
     return {
-      strengths: [],
-      weaknesses: [],
-      learningStyle: '',
-      improvements: [],
-      motivation: '',
+      strengths: this.extractStrengths(aiResponse),
+      weaknesses: this.extractWeaknesses(aiResponse),
+      learningStyle: this.extractLearningStyle(aiResponse),
+      improvements: this.extractImprovements(aiResponse),
+      motivation: this.extractMotivation(aiResponse),
       rawResponse: aiResponse
     };
   }
 
-  getFallbackRecommendations(user) {
-    // Rule-based fallback recommendations when AI fails
-    return {
-      careerPaths: ["Software Engineering", "Data Science", "Product Management"],
-      colleges: ["IIT", "BITS Pilani", "VIT"],
-      skills: ["Programming", "Problem Solving", "Communication"],
-      actionSteps: ["Focus on coding practice", "Build portfolio projects", "Prepare for competitive exams"]
-    };
+  extractStrengths(response) {
+    const strengthsMatch = response.match(/strengths?:?\s*(.*?)(?=weaknesses?|learning|$)/is);
+    return strengthsMatch ? strengthsMatch[1].split('\n').filter(s => s.trim()).slice(0, 5) : ['Analytical thinking'];
+  }
+
+  extractWeaknesses(response) {
+    const weaknessMatch = response.match(/weaknesses?:?\s*(.*?)(?=learning|improvement|$)/is);
+    return weaknessMatch ? weaknessMatch[1].split('\n').filter(s => s.trim()).slice(0, 5) : ['Time management'];
+  }
+
+  extractLearningStyle(response) {
+    const styleMatch = response.match(/learning style:?\s*(.*?)(?=improvement|motivation|$)/is);
+    return styleMatch ? styleMatch[1].trim() : 'Balanced learner';
+  }
+
+  extractImprovements(response) {
+    const improvementMatch = response.match(/improvements?:?\s*(.*?)(?=motivation|$)/is);
+    return improvementMatch ? improvementMatch[1].split('\n').filter(s => s.trim()).slice(0, 5) : ['Practice regularly'];
+  }
+
+  extractMotivation(response) {
+    const motivationMatch = response.match(/motivation:?\s*(.*?)$/is);
+    return motivationMatch ? motivationMatch[1].trim() : 'Set clear goals and celebrate small wins';
   }
 
   getFallbackInsights(scores) {
-    // Basic insights when AI fails
+    const topSkill = Object.entries(scores)
+      .filter(([key]) => key !== 'overall')
+      .sort(([,a], [,b]) => b - a)[0];
+    
     return {
-      strengths: ["Analytical thinking"],
-      weaknesses: ["Time management"],
-      learningStyle: "Visual learner",
-      improvements: ["Practice more problems"],
-      motivation: "Set smaller, achievable goals"
+      strengths: [topSkill ? `Strong ${topSkill[0]} abilities` : 'Well-rounded capabilities'],
+      weaknesses: ['Areas identified for improvement based on assessment'],
+      learningStyle: 'Mixed learning approach recommended',
+      improvements: ['Regular practice', 'Skill development', 'Consistent effort'],
+      motivation: 'Focus on continuous learning and growth'
     };
   }
 }

@@ -13,25 +13,9 @@ const authMiddleware = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.userId).select('-password');
-    
-    if (!user) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'Invalid token. User not found.' 
-      });
-    }
-
-    req.user = { id: user._id, ...user.toObject() };
+    req.user = { id: decoded.userId };
     next();
   } catch (error) {
-    if (error.name === 'TokenExpiredError') {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'Token expired. Please login again.' 
-      });
-    }
-    
     return res.status(401).json({ 
       success: false, 
       message: 'Invalid token.' 

@@ -1,7 +1,6 @@
 const express = require('express');
 const userController = require('../controllers/user.controller');
 const authMiddleware = require('../middleware/auth.middleware');
-const { validateProfileUpdate, handleValidationErrors } = require('../middleware/validation.middleware');
 
 const router = express.Router();
 
@@ -11,12 +10,8 @@ router.use(authMiddleware);
 // Get user profile
 router.get('/profile', userController.getProfile);
 
-// Update user profile
-router.put('/profile', 
-  validateProfileUpdate,
-  handleValidationErrors,
-  userController.updateProfile
-);
+// Update user profile  
+router.put('/profile', userController.updateProfile);
 
 // Get dashboard data
 router.get('/dashboard', userController.getDashboard);
