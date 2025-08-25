@@ -102,3 +102,7 @@ info: MongoDB Connected: localhost {"service":"pathpilot-api","timestamp":"2025-
 info: Server running on port 5000 in development mode {"service":"pathpilot-api","timestamp":"2025-08-25 21:15:21"}
 info: ::1 - - [25/Aug/2025:15:47:00 +0000] "POST /api/auth/login HTTP/1.1" 500 66 "-" "PostmanRuntime/7.39.1" {"service":"pathpilot-api","timestamp":"2025-08-25 21:17:00"}
 info: SIGINT received. Shutting down gracefully... {"service":"pathpilot-api","timestamp":"2025-08-25 21:17:28"}
+info: MongoDB Connected: localhost {"service":"pathpilot-api","timestamp":"2025-08-25 21:17:33"}
+info: Server running on port 5000 in development mode {"service":"pathpilot-api","timestamp":"2025-08-25 21:17:33"}
+info: ::1 - - [25/Aug/2025:15:47:55 +0000] "POST /api/auth/login HTTP/1.1" 500 66 "-" "PostmanRuntime/7.39.1" {"service":"pathpilot-api","timestamp":"2025-08-25 21:17:55"}
+info: ::ffff:127.0.0.1 - - [25/Aug/2025:15:48:33 +0000] "POST /api/auth/login HTTP/1.1" 500 66 "-" "Thunder Client (https://www.thunderclient.com)" {"service":"pathpilot-api","timestamp":"2025-08-25 21:18:33"}
