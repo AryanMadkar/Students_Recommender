@@ -1,0 +1,154 @@
+[
+  {
+    "question": "What is your current academic performance level?",
+    "type": "multiple_choice",
+    "category": "technical",
+    "subcategory": "academic_performance",
+    "options": [
+      { "text": "Excellent (9+ CGPA)", "value": "excellent", "weight": 95 },
+      { "text": "Very Good (8-9 CGPA)", "value": "very_good", "weight": 85 },
+      { "text": "Good (7-8 CGPA)", "value": "good", "weight": 75 },
+      { "text": "Average (6-7 CGPA)", "value": "average", "weight": 65 },
+      { "text": "Below Average (<6 CGPA)", "value": "below_average", "weight": 50 }
+    ],
+    "difficulty": "easy",
+    "stage": ["ongoing"],
+    "tags": ["academic", "performance", "cgpa"]
+  },
+  {
+    "question": "Which programming languages are you most comfortable with?",
+    "type": "multiple_choice",
+    "category": "technical",
+    "subcategory": "programming_skills",
+    "options": [
+      { "text": "Python", "value": "python", "weight": 90 },
+      { "text": "Java", "value": "java", "weight": 85 },
+      { "text": "C/C++", "value": "cpp", "weight": 80 },
+      { "text": "JavaScript", "value": "javascript", "weight": 88 },
+      { "text": "None yet, but willing to learn", "value": "none", "weight": 60 },
+      { "text": "Multiple languages", "value": "multiple", "weight": 95 }
+    ],
+    "difficulty": "medium",
+    "stage": ["ongoing"],
+    "tags": ["programming", "languages", "skills"]
+  },
+  {
+    "question": "How many internships have you completed so far?",
+    "type": "multiple_choice",
+    "category": "technical",
+    "subcategory": "experience",
+    "options": [
+      { "text": "None", "value": "none", "weight": 50 },
+      { "text": "1 internship", "value": "one", "weight": 70 },
+      { "text": "2-3 internships", "value": "multiple", "weight": 85 },
+      { "text": "More than 3", "value": "many", "weight": 95 }
+    ],
+    "difficulty": "easy",
+    "stage": ["ongoing"],
+    "tags": ["internship", "experience", "practical"]
+  },
+  {
+    "question": "What type of projects have you worked on?",
+    "type": "multiple_choice",
+    "category": "creative",
+    "subcategory": "project_experience",
+    "options": [
+      { "text": "Web development projects", "value": "web", "weight": 85 },
+      { "text": "Mobile app development", "value": "mobile", "weight": 90 },
+      { "text": "Data science/Machine learning", "value": "data_science", "weight": 95 },
+      { "text": "Research projects", "value": "research", "weight": 88 },
+      { "text": "Hardware/IoT projects", "value": "hardware", "weight": 82 },
+      { "text": "Haven't done major projects", "value": "none", "weight": 40 }
+    ],
+    "difficulty": "medium",
+    "stage": ["ongoing"],
+    "tags": ["projects", "experience", "technical"]
+  },
+  {
+    "question": "How confident are you in your communication skills?",
+    "type": "rating",
+    "category": "communication",
+    "subcategory": "self_assessment",
+    "difficulty": "medium",
+    "stage": ["ongoing"],
+    "tags": ["communication", "confidence", "soft_skills"]
+  },
+  {
+    "question": "What is your preferred career path after graduation?",
+    "type": "multiple_choice",
+    "category": "interest",
+    "subcategory": "career_aspiration",
+    "options": [
+      { "text": "Software Engineer at top tech company", "value": "tech_engineer", "weight": 90 },
+      { "text": "Data Scientist/ML Engineer", "value": "data_scientist", "weight": 92 },
+      { "text": "Product Manager", "value": "product_manager", "weight": 85 },
+      { "text": "Startup founder/Entrepreneur", "value": "entrepreneur", "weight": 88 },
+      { "text": "Research and Development", "value": "research", "weight": 86 },
+      { "text": "Consulting", "value": "consulting", "weight": 80 },
+      { "text": "Government job", "value": "government", "weight": 75 }
+    ],
+    "difficulty": "medium",
+    "stage": ["ongoing"],
+    "tags": ["career", "aspiration", "future"]
+  },
+  {
+    "question": "How do you stay updated with industry trends?",
+    "type": "multiple_choice",
+    "category": "analytical",
+    "subcategory": "learning_approach",
+    "options": [
+      { "text": "Technical blogs and articles", "value": "blogs", "weight": 80 },
+      { "text": "Online courses and tutorials", "value": "courses", "weight": 85 },
+      { "text": "YouTube and podcasts", "value": "multimedia", "weight": 75 },
+      { "text": "Professional networks (LinkedIn)", "value": "networking", "weight": 82 },
+      { "text": "Tech conferences and webinars", "value": "events", "weight": 90 },
+      { "text": "I don't actively follow trends", "value": "passive", "weight": 50 }
+    ],
+    "difficulty": "medium",
+    "stage": ["ongoing"],
+    "tags": ["learning", "trends", "industry"]
+  },
+  {
+    "question": "What is your biggest skill gap currently?",
+    "type": "multiple_choice",
+    "category": "analytical",
+    "subcategory": "self_awareness",
+    "options": [
+      { "text": "Technical programming skills", "value": "technical", "weight": 80 },
+      { "text": "System design knowledge", "value": "system_design", "weight": 85 },
+      { "text": "Communication and presentation", "value": "communication", "weight": 75 },
+      { "text": "Leadership and teamwork", "value": "leadership", "weight": 70 },
+      { "text": "Industry domain knowledge", "value": "domain", "weight": 78 },
+      { "text": "Problem-solving approach", "value": "problem_solving", "weight": 82 }
+    ],
+    "difficulty": "hard",
+    "stage": ["ongoing"],
+    "tags": ["skills", "gap", "improvement"]
+  },
+  {
+    "question": "How important is work-life balance in your career choice?",
+    "type": "rating",
+    "category": "personality",
+    "subcategory": "life_priorities",
+    "difficulty": "medium",
+    "stage": ["ongoing"],
+    "tags": ["work_life_balance", "priorities", "career"]
+  },
+  {
+    "question": "Which companies would you most like to work for?",
+    "type": "multiple_choice",
+    "category": "interest",
+    "subcategory": "company_preference",
+    "options": [
+      { "text": "FAANG companies (Google, Meta, Amazon)", "value": "faang", "weight": 95 },
+      { "text": "Indian IT giants (TCS, Infosys, Wipro)", "value": "indian_it", "weight": 70 },
+      { "text": "Product companies (Flipkart, Swiggy, Zomato)", "value": "product", "weight": 85 },
+      { "text": "Startups with growth potential", "value": "startups", "weight": 88 },
+      { "text": "Consulting firms (Deloitte, McKinsey)", "value": "consulting", "weight": 80 },
+      { "text": "Government/PSU companies", "value": "government", "weight": 65 }
+    ],
+    "difficulty": "easy",
+    "stage": ["ongoing"],
+    "tags": ["companies", "preference", "career"]
+  }
+]

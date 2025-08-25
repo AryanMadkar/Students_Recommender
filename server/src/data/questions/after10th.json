@@ -1,0 +1,42 @@
+[
+  {
+    "question": "Which subject do you find most interesting?",
+    "type": "multiple_choice",
+    "category": "interest",
+    "subcategory": "academic_preference",
+    "options": [
+      { "text": "Mathematics", "value": "math", "weight": 80 },
+      { "text": "Science", "value": "science", "weight": 85 },
+      { "text": "English", "value": "english", "weight": 70 },
+      { "text": "Social Studies", "value": "social", "weight": 60 }
+    ],
+    "difficulty": "easy",
+    "stage": ["after10th"],
+    "tags": ["subjects", "interest", "academic"]
+  },
+  {
+    "question": "How much do you enjoy solving mathematical problems?",
+    "type": "rating",
+    "category": "analytical",
+    "subcategory": "mathematical_aptitude",
+    "difficulty": "medium",
+    "stage": ["after10th"],
+    "tags": ["math", "problem-solving", "analytical"]
+  },
+  {
+    "question": "What type of activities do you prefer in your free time?",
+    "type": "multiple_choice",
+    "category": "creative",
+    "subcategory": "leisure_preferences",
+    "options": [
+      { "text": "Reading books", "value": "reading", "weight": 75 },
+      { "text": "Playing sports", "value": "sports", "weight": 70 },
+      { "text": "Drawing/Painting", "value": "art", "weight": 90 },
+      { "text": "Building things", "value": "building", "weight": 80 },
+      { "text": "Playing games", "value": "gaming", "weight": 60 }
+    ],
+    "difficulty": "easy",
+    "stage": ["after10th"],
+    "tags": ["hobbies", "creative", "personality"]
+  }
+]

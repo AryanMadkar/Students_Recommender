@@ -1,0 +1,222 @@
+[
+  {
+    "name": "Computer Science and Engineering",
+    "shortName": "CSE",
+    "type": "Bachelor",
+    "category": "Engineering",
+    "specializations": ["Software Engineering", "Data Science", "Cybersecurity", "AI/ML", "Web Development"],
+    "duration": "4 years",
+    "eligibility": {
+      "academicRequirement": "12th with PCM",
+      "minimumMarks": 75,
+      "requiredSubjects": ["Mathematics", "Physics", "Chemistry"],
+      "entranceExams": ["JEE Main", "JEE Advanced", "BITSAT", "VITEEE"],
+      "ageLimit": { "min": 17, "max": 25 }
+    },
+    "curriculum": [
+      {
+        "semester": 1,
+        "subjects": ["Mathematics-I", "Physics", "Chemistry", "Engineering Graphics"],
+        "practicals": ["Physics Lab", "Chemistry Lab", "Programming Lab"],
+        "projects": ["Basic Programming Project"]
+      },
+      {
+        "semester": 2,
+        "subjects": ["Mathematics-II", "Data Structures", "Computer Organization", "Digital Logic"],
+        "practicals": ["Data Structures Lab", "Digital Logic Lab"],
+        "projects": ["Data Structure Implementation"]
+      },
+      {
+        "semester": 3,
+        "subjects": ["Algorithms", "Database Systems", "Operating Systems", "Computer Networks"],
+        "practicals": ["Database Lab", "OS Lab"],
+        "projects": ["Database Project"]
+      },
+      {
+        "semester": 4,
+        "subjects": ["Software Engineering", "Web Technologies", "Machine Learning", "Compiler Design"],
+        "practicals": ["Web Development Lab", "ML Lab"],
+        "projects": ["Web Application Development"]
+      }
+    ],
+    "careerProspects": [
+      { "jobRole": "Software Engineer", "averageSalary": 800000, "industries": ["IT", "Finance", "E-commerce"] },
+      { "jobRole": "Data Scientist", "averageSalary": 1200000, "industries": ["Tech", "Healthcare", "Finance"] },
+      { "jobRole": "Product Manager", "averageSalary": 1500000, "industries": ["Tech", "Startups"] }
+    ],
+    "skills": {
+      "technical": ["Programming", "Algorithms", "Database Design", "System Design", "Web Development"],
+      "soft": ["Problem Solving", "Teamwork", "Communication", "Project Management"],
+      "tools": ["Git", "Docker", "AWS", "MongoDB", "React", "Node.js"]
+    },
+    "statistics": {
+      "averagePlacement": 85,
+      "averagePackage": 800000,
+      "topRecruiters": ["Google", "Microsoft", "Amazon", "TCS", "Infosys"]
+    }
+  },
+  {
+    "name": "Bachelor of Medicine, Bachelor of Surgery",
+    "shortName": "MBBS",
+    "type": "Bachelor",
+    "category": "Medical",
+    "specializations": ["General Medicine", "Surgery", "Pediatrics", "Gynecology", "Psychiatry"],
+    "duration": "5.5 years",
+    "eligibility": {
+      "academicRequirement": "12th with PCB",
+      "minimumMarks": 50,
+      "requiredSubjects": ["Physics", "Chemistry", "Biology"],
+      "entranceExams": ["NEET"],
+      "ageLimit": { "min": 17, "max": 25 }
+    },
+    "curriculum": [
+      {
+        "semester": 1,
+        "subjects": ["Anatomy", "Physiology", "Biochemistry"],
+        "practicals": ["Anatomy Dissection", "Physiology Lab", "Biochemistry Lab"],
+        "projects": ["Human Body System Study"]
+      },
+      {
+        "semester": 2,
+        "subjects": ["Pathology", "Pharmacology", "Microbiology"],
+        "practicals": ["Pathology Lab", "Pharmacology Lab", "Microbiology Lab"],
+        "projects": ["Disease Study Project"]
+      }
+    ],
+    "careerProspects": [
+      { "jobRole": "General Physician", "averageSalary": 1000000, "industries": ["Healthcare", "Hospitals"] },
+      { "jobRole": "Specialist Doctor", "averageSalary": 2500000, "industries": ["Private Practice", "Hospitals"] },
+      { "jobRole": "Medical Researcher", "averageSalary": 800000, "industries": ["Research", "Pharmaceuticals"] }
+    ],
+    "skills": {
+      "technical": ["Medical Diagnosis", "Patient Care", "Surgical Skills", "Medical Research"],
+      "soft": ["Empathy", "Communication", "Decision Making", "Stress Management"],
+      "tools": ["Medical Equipment", "EMR Systems", "Diagnostic Tools"]
+    },
+    "statistics": {
+      "averagePlacement": 95,
+      "averagePackage": 1200000,
+      "topRecruiters": ["Government Hospitals", "Private Hospitals", "Medical Colleges"]
+    }
+  },
+  {
+    "name": "Master of Business Administration",
+    "shortName": "MBA",
+    "type": "Master",
+    "category": "Business",
+    "specializations": ["Finance", "Marketing", "Operations", "HR", "Strategy", "Entrepreneurship"],
+    "duration": "2 years",
+    "eligibility": {
+      "academicRequirement": "Bachelor's degree in any field",
+      "minimumMarks": 50,
+      "requiredSubjects": [],
+      "entranceExams": ["CAT", "XAT", "GMAT", "MAT"],
+      "ageLimit": { "min": 21, "max": 30 }
+    },
+    "curriculum": [
+      {
+        "semester": 1,
+        "subjects": ["Management Fundamentals", "Economics", "Statistics", "Accounting"],
+        "practicals": ["Case Study Analysis", "Business Simulation"],
+        "projects": ["Business Plan Development"]
+      },
+      {
+        "semester": 2,
+        "subjects": ["Marketing Management", "Financial Management", "Operations Management", "HR Management"],
+        "practicals": ["Market Research", "Financial Analysis"],
+        "projects": ["Marketing Campaign Project"]
+      }
+    ],
+    "careerProspects": [
+      { "jobRole": "Management Consultant", "averageSalary": 2000000, "industries": ["Consulting", "Finance"] },
+      { "jobRole": "Investment Banker", "averageSalary": 2500000, "industries": ["Banking", "Finance"] },
+      { "jobRole": "Product Manager", "averageSalary": 1800000, "industries": ["Technology", "E-commerce"] }
+    ],
+    "skills": {
+      "technical": ["Business Analysis", "Financial Modeling", "Strategic Planning", "Market Research"],
+      "soft": ["Leadership", "Communication", "Negotiation", "Team Management"],
+      "tools": ["Excel", "PowerBI", "SAP", "CRM Systems"]
+    },
+    "statistics": {
+      "averagePlacement": 90,
+      "averagePackage": 2000000,
+      "topRecruiters": ["McKinsey", "BCG", "Goldman Sachs", "Amazon", "Google"]
+    }
+  },
+  {
+    "name": "Bachelor of Commerce",
+    "shortName": "B.Com",
+    "type": "Bachelor",
+    "category": "Commerce",
+    "specializations": ["Accounting", "Finance", "Banking", "Taxation", "E-commerce"],
+    "duration": "3 years",
+    "eligibility": {
+      "academicRequirement": "12th with Commerce",
+      "minimumMarks": 45,
+      "requiredSubjects": ["Mathematics", "Accountancy", "Economics"],
+      "entranceExams": ["DU Entrance", "State Level Exams"],
+      "ageLimit": { "min": 17, "max": 22 }
+    },
+    "curriculum": [
+      {
+        "semester": 1,
+        "subjects": ["Financial Accounting", "Business Mathematics", "Business Environment", "English"],
+        "practicals": ["Accounting Software", "Tally Practice"],
+        "projects": ["Small Business Analysis"]
+      }
+    ],
+    "careerProspects": [
+      { "jobRole": "Chartered Accountant", "averageSalary": 800000, "industries": ["Accounting", "Consulting"] },
+      { "jobRole": "Financial Analyst", "averageSalary": 600000, "industries": ["Banking", "Finance"] },
+      { "jobRole": "Tax Consultant", "averageSalary": 500000, "industries": ["Taxation", "Consulting"] }
+    ],
+    "skills": {
+      "technical": ["Accounting", "Financial Analysis", "Taxation", "Auditing"],
+      "soft": ["Analytical Thinking", "Attention to Detail", "Communication"],
+      "tools": ["Tally", "SAP", "Excel", "QuickBooks"]
+    },
+    "statistics": {
+      "averagePlacement": 75,
+      "averagePackage": 400000,
+      "topRecruiters": ["Big 4 Firms", "Banks", "NBFCs", "Corporates"]
+    }
+  },
+  {
+    "name": "Bachelor of Arts",
+    "shortName": "B.A.",
+    "type": "Bachelor",
+    "category": "Arts",
+    "specializations": ["Literature", "History", "Political Science", "Psychology", "Sociology", "Philosophy"],
+    "duration": "3 years",
+    "eligibility": {
+      "academicRequirement": "12th in any stream",
+      "minimumMarks": 45,
+      "requiredSubjects": [],
+      "entranceExams": ["University Specific", "State Level"],
+      "ageLimit": { "min": 17, "max": 22 }
+    },
+    "curriculum": [
+      {
+        "semester": 1,
+        "subjects": ["English Literature", "History", "Political Science", "Philosophy"],
+        "practicals": ["Research Methodology", "Field Work"],
+        "projects": ["Historical Research Project"]
+      }
+    ],
+    "careerProspects": [
+      { "jobRole": "Civil Servant", "averageSalary": 700000, "industries": ["Government", "Public Service"] },
+      { "jobRole": "Journalist", "averageSalary": 400000, "industries": ["Media", "Publishing"] },
+      { "jobRole": "Teacher", "averageSalary": 350000, "industries": ["Education", "Schools"] }
+    ],
+    "skills": {
+      "technical": ["Research", "Writing", "Critical Analysis", "Public Speaking"],
+      "soft": ["Communication", "Empathy", "Cultural Awareness"],
+      "tools": ["MS Office", "Research Databases", "Content Management Systems"]
+    },
+    "statistics": {
+      "averagePlacement": 60,
+      "averagePackage": 300000,
+      "topRecruiters": ["Government", "NGOs", "Media Houses", "Educational Institutions"]
+    }
+  }
+]
