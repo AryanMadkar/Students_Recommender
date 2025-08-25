@@ -16,7 +16,6 @@ const dashboardRoutes = require('./routes/dashboard.routes');
 
 // Import middleware
 const { errorHandler, notFound } = require('./middleware/error.middleware');
-const { apiLimiter } = require('./middleware/rateLimit.middleware');
 const logger = require('./utils/logger');
 
 const app = express();
@@ -27,9 +26,6 @@ app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true
 }));
-
-// Rate limiting
-app.use('/api/', apiLimiter);
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
@@ -55,7 +51,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API routes
+// API routes - REMOVED GLOBAL RATE LIMITING HERE
 app.use('/api/auth', authRoutes);
 app.use('/api/assessments', assessmentRoutes);
 app.use('/api/recommendations', recommendationRoutes);
