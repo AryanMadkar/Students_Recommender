@@ -2,45 +2,22 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      require: true,
+    personalInfo: {
+      name: { type: String, required: true },
+      email: { type: String, required: true, unique: true },
+      phone: { type: String, required: true },
+      dateOfBirth: Date,
+      gender: { type: String, enum: ["Male", "Female", "Other"] },
+      state: String,
+      city: String,
     },
-    email: {
-      type: String,
-      unique: true,
-      require: true,
-    },
-    phone: {
-      type: String,
-      unique: true,
-      require: true,
-    },
-    country: {
-      type: String,
-      require: true,
-    },
-    state: {
-      type: String,
-      require: true,
-    },
-    city: {
-      type: String,
-      require: true,
-    },
-    dateofBirth: {
-      type: Date,
-      require: true,
-    },
-    gender: {
-      type: String,
-      enum: ["Male", "Female", "Other"],
-    },
-    EducationStage: {
+
+    educationStage: {
       type: String,
       enum: ["after10th", "after12th", "ongoing"],
-      require: true,
+      required: true,
     },
+
     academicInfo: {
       // For After 10th students
       class10: {
@@ -69,41 +46,6 @@ const userSchema = new mongoose.Schema(
         year: Number,
       },
 
-      assessmentResults: [
-        {
-          assessmentId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Assessment",
-          },
-          responses: Map,
-          scores: {
-            aptitude: Number,
-            interest: Number,
-            iq: Number,
-            personality: Number,
-          },
-          completedAt: { type: Date, default: Date.now },
-        },
-      ],
-
-      parentalInfluence: {
-        preferredFields: [String],
-        supportLevel: { type: Number, min: 1, max: 5 },
-        expectations: String,
-      },
-
-      recommendations: [
-        {
-          type: {
-            type: String,
-            enum: ["college", "course", "career", "skill"],
-          },
-          data: mongoose.Schema.Types.Mixed,
-          confidence: Number,
-          generatedAt: { type: Date, default: Date.now },
-        },
-      ],
-
       // For Ongoing course students
       currentCourse: {
         degree: String,
@@ -114,6 +56,39 @@ const userSchema = new mongoose.Schema(
         semester: Number,
       },
     },
+
+    assessmentResults: [
+      {
+        assessmentId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Assessment",
+        },
+        responses: Map,
+        scores: {
+          aptitude: Number,
+          interest: Number,
+          iq: Number,
+          personality: Number,
+        },
+        completedAt: { type: Date, default: Date.now },
+      },
+    ],
+
+    parentalInfluence: {
+      preferredFields: [String],
+      supportLevel: { type: Number, min: 1, max: 5 },
+      expectations: String,
+    },
+
+    recommendations: [
+      {
+        type: { type: String, enum: ["college", "course", "career", "skill"] },
+        data: mongoose.Schema.Types.Mixed,
+        confidence: Number,
+        generatedAt: { type: Date, default: Date.now },
+      },
+    ],
+
     progress: {
       profileCompletion: { type: Number, default: 0 },
       assessmentsCompleted: { type: Number, default: 0 },
@@ -125,5 +100,4 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-
-module.exports = mongoose.model("User",userSchema)
+module.exports = mongoose.model("User", userSchema);
