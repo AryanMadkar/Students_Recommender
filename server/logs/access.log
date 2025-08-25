@@ -93,3 +93,5 @@ warn: Redis client connection closed {"service":"pathpilot-api","timestamp":"202
 error: Redis client error: connect ECONNREFUSED 127.0.0.1:6379 {"address":"127.0.0.1","code":"ECONNREFUSED","errno":-4078,"port":6379,"service":"pathpilot-api","stack":"Error: connect ECONNREFUSED 127.0.0.1:6379\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)","syscall":"connect","timestamp":"2025-08-25 21:06:53"}
 warn: Redis client connection closed {"service":"pathpilot-api","timestamp":"2025-08-25 21:06:53"}
 info: SIGINT received. Shutting down gracefully... {"service":"pathpilot-api","timestamp":"2025-08-25 21:06:53"}
+info: MongoDB Connected: localhost {"service":"pathpilot-api","timestamp":"2025-08-25 21:08:07"}
+info: Server running on port 5000 in development mode {"service":"pathpilot-api","timestamp":"2025-08-25 21:08:07"}
