@@ -12,7 +12,7 @@ const gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 // AI service configuration
 const AI_CONFIG = {
   GROQ: {
-    MODEL: 'llama2-70b-4096', // or 'mixtral-8x7b-32768', 'gemma-7b-it'
+    MODEL: 'llama-3.1-8b-instant', // or 'mixtral-8x7b-32768', 'gemma-7b-it'
     MAX_TOKENS: 2000,
     TEMPERATURE: 0.7,
     TIMEOUT: 30000
