@@ -1,42 +1,41 @@
 [
   {
-    "question": "Which subject do you find most interesting?",
+    "question": "Which subject area do you feel most confident in?",
     "type": "multiple_choice",
     "category": "interest",
     "subcategory": "academic_preference",
     "options": [
-      { "text": "Mathematics", "value": "math", "weight": 80 },
-      { "text": "Science", "value": "science", "weight": 85 },
-      { "text": "English", "value": "english", "weight": 70 },
-      { "text": "Social Studies", "value": "social", "weight": 60 }
+      { "text": "Mathematics & Logical Problems", "value": "math_logic", "weight": 90 },
+      { "text": "Science & How Things Work", "value": "science_concepts", "weight": 85 },
+      { "text": "History, Civics & Geography", "value": "social_studies", "weight": 75 },
+      { "text": "Languages & Literature", "value": "languages", "weight": 70 }
     ],
     "difficulty": "easy",
     "stage": ["after10th"],
-    "tags": ["subjects", "interest", "academic"]
+    "tags": ["subjects", "interest", "stream"]
   },
   {
-    "question": "How much do you enjoy solving mathematical problems?",
+    "question": "How do you prefer to learn new things?",
+    "type": "multiple_choice",
+    "category": "personality",
+    "subcategory": "learning_style",
+    "options": [
+      { "text": "By doing hands-on experiments", "value": "kinesthetic", "weight": 85 },
+      { "text": "By reading and understanding theories", "value": "theoretical", "weight": 80 },
+      { "text": "By discussing with others and debating", "value": "auditory", "weight": 75 },
+      { "text": "By creating something new like art or music", "value": "creative", "weight": 90 }
+    ],
+    "difficulty": "easy",
+    "stage": ["after10th"],
+    "tags": ["learning", "style", "personality"]
+  },
+  {
+    "question": "On a scale of 1 to 5, how much do you enjoy working with numbers and data?",
     "type": "rating",
     "category": "analytical",
     "subcategory": "mathematical_aptitude",
     "difficulty": "medium",
     "stage": ["after10th"],
-    "tags": ["math", "problem-solving", "analytical"]
-  },
-  {
-    "question": "What type of activities do you prefer in your free time?",
-    "type": "multiple_choice",
-    "category": "creative",
-    "subcategory": "leisure_preferences",
-    "options": [
-      { "text": "Reading books", "value": "reading", "weight": 75 },
-      { "text": "Playing sports", "value": "sports", "weight": 70 },
-      { "text": "Drawing/Painting", "value": "art", "weight": 90 },
-      { "text": "Building things", "value": "building", "weight": 80 },
-      { "text": "Playing games", "value": "gaming", "weight": 60 }
-    ],
-    "difficulty": "easy",
-    "stage": ["after10th"],
-    "tags": ["hobbies", "creative", "personality"]
+    "tags": ["math", "analytical", "commerce"]
   }
 ]

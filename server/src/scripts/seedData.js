@@ -1,125 +1,139 @@
-const mongoose = require('mongoose');
-const fs = require('fs');
-const path = require('path');
-require('dotenv').config();
+const mongoose = require("mongoose");
+const fs = require("fs");
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, "../../.env") });
 
-// Import models
-const Career = require('../models/Career');
-const College = require('../models/College');
-const Course = require('../models/Course');
-const Question = require('../models/Question');
-const Assessment = require('../models/Assessment');
+const Assessment = require("../models/Assessment");
+const Question = require("../models/Question");
+const College = require("../models/College");
+const Career = require("../models/Career");
+const Course = require("../models/Course");
+const connectDB = require("../config/database");
 
-// Import database connection
-const connectDB = require('../config/database');
-
-const seedData = async () => {
+const seedAllData = async () => {
   try {
-    console.log('🌱 Starting data seeding...');
-    
-    // Connect to database
+    console.log("🌱 Starting database seeding...");
     await connectDB();
-    
-    // Clear existing data
-    console.log('🧹 Clearing existing data...');
-    await Promise.all([
-      Career.deleteMany({}),
-      College.deleteMany({}),
-      Course.deleteMany({}),
-      Question.deleteMany({}),
-      Assessment.deleteMany({})
-    ]);
-    
-    // Read JSON files
-    const careersData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/careers.json'), 'utf8'));
-    const collegesData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/colleges.json'), 'utf8'));
-    const coursesData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/courses.json'), 'utf8'));
-    
-    // Read question files
-    const after10thQuestions = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/after10th.json'), 'utf8'));
-    const after12thQuestions = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/after12th.json'), 'utf8'));
-    const ongoingQuestions = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/ongoing.json'), 'utf8'));
-    
-    // Seed careers
-    console.log('📈 Seeding careers...');
-    await Career.insertMany(careersData);
-    console.log(`✅ Inserted ${careersData.length} careers`);
-    
-    // Seed colleges
-    console.log('🏫 Seeding colleges...');
-    await College.insertMany(collegesData);
-    console.log(`✅ Inserted ${collegesData.length} colleges`);
-    
-    // Seed courses
-    console.log('📚 Seeding courses...');
-    await Course.insertMany(coursesData);
-    console.log(`✅ Inserted ${coursesData.length} courses`);
-    
-    // Seed questions
-    console.log('❓ Seeding questions...');
-    const allQuestions = [...after10thQuestions, ...after12thQuestions, ...ongoingQuestions];
-    const insertedQuestions = await Question.insertMany(allQuestions);
-    console.log(`✅ Inserted ${allQuestions.length} questions`);
-    
-    // Create sample assessments
-    console.log('📋 Creating sample assessments...');
+
+    // --- Clear existing data ---
+    console.log("🧹 Clearing existing data...");
+    await Assessment.deleteMany({});
+    await Question.deleteMany({});
+    await College.deleteMany({});
+    await Career.deleteMany({});
+    await Course.deleteMany({});
+
+    // --- Seed Questions ---
+    console.log("❓ Seeding questions...");
+    const after10thQuestionsData = JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, "../data/questions/after10th.json"),
+        "utf8"
+      )
+    );
+    const after12thQuestionsData = JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, "../data/questions/after12th.json"),
+        "utf8"
+      )
+    );
+    const ongoingQuestionsData = JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, "../data/questions/ongoing.json"),
+        "utf8"
+      )
+    );
+
+    const allQuestionsData = [
+      ...after10thQuestionsData,
+      ...after12thQuestionsData,
+      ...ongoingQuestionsData,
+    ];
+    const insertedQuestions = await Question.insertMany(allQuestionsData);
+    console.log(`✅ Inserted ${insertedQuestions.length} questions.`);
+
+    // Helper to get question IDs by stage
+    const getQuestionIdsByStage = (stage) => {
+      return insertedQuestions
+        .filter((q) => q.stage.includes(stage))
+        .map((q) => ({ questionId: q._id, weight: 1 }));
+    };
+
+    // --- Create Assessments ---
+    console.log("📝 Creating assessments...");
     const assessments = [
       {
-        title: 'After 10th Stream Selection Assessment',
-        description: 'Helps students choose the right stream after 10th grade',
-        stage: 'after10th',
-        type: 'aptitude',
-        questions: after10thQuestions.map((_, index) => ({
-          questionId: insertedQuestions[index]._id,
-          weight: 1
-        })),
+        title: "Stream Selection Assessment (After 10th)",
+        description:
+          "Comprehensive assessment to help you choose the right stream after 10th grade.",
+        stage: "after10th",
+        type: "aptitude",
+        questions: getQuestionIdsByStage("after10th"),
         duration: 30,
         passingScore: 60,
-        isActive: true
+        isActive: true,
       },
       {
-        title: 'After 12th Career Guidance Assessment',
-        description: 'Comprehensive assessment for career planning after 12th',
-        stage: 'after12th',
-        type: 'aptitude',
-        questions: after12thQuestions.map((_, index) => ({
-          questionId: insertedQuestions[after10thQuestions.length + index]._id,
-          weight: 1
-        })),
+        title: "Career Guidance Assessment (After 12th)",
+        description:
+          "Detailed assessment for career planning and college selection after 12th.",
+        stage: "after12th",
+        type: "aptitude",
+        questions: getQuestionIdsByStage("after12th"),
         duration: 45,
-        passingScore: 60,
-        isActive: true
+        passingScore: 65,
+        isActive: true,
       },
       {
-        title: 'Current Student Skill Assessment',
-        description: 'Assessment for ongoing students to identify skills and career paths',
-        stage: 'ongoing',
-        type: 'aptitude',
-        questions: ongoingQuestions.map((_, index) => ({
-          questionId: insertedQuestions[after10thQuestions.length + after12thQuestions.length + index]._id,
-          weight: 1
-        })),
+        title: "Skill & Career Assessment (Current Students)",
+        description:
+          "Assessment for ongoing students to identify skills and optimize career paths.",
+        stage: "ongoing",
+        type: "aptitude",
+        questions: getQuestionIdsByStage("ongoing"),
         duration: 40,
-        passingScore: 60,
-        isActive: true
-      }
+        passingScore: 70,
+        isActive: true,
+      },
     ];
-    
-    await Assessment.insertMany(assessments);
-    console.log(`✅ Created ${assessments.length} assessments`);
-    
-    console.log('🎉 Data seeding completed successfully!');
+    const insertedAssessments = await Assessment.insertMany(assessments);
+    console.log(`✅ Created ${insertedAssessments.length} assessments.`);
+
+    // --- Seed Colleges ---
+    console.log("🏫 Seeding colleges...");
+    const collegesData = JSON.parse(
+      fs.readFileSync(path.join(__dirname, "../data/colleges.json"), "utf8")
+    );
+    await College.insertMany(collegesData);
+    console.log(`✅ Inserted ${collegesData.length} colleges.`);
+
+    // --- Seed Careers ---
+    console.log("🚀 Seeding careers...");
+    const careersData = JSON.parse(
+      fs.readFileSync(path.join(__dirname, "../data/careers.json"), "utf8")
+    );
+    await Career.insertMany(careersData);
+    console.log(`✅ Inserted ${careersData.length} careers.`);
+
+    // --- Seed Courses ---
+    console.log("📚 Seeding courses...");
+    const coursesData = JSON.parse(
+      fs.readFileSync(path.join(__dirname, "../data/courses.json"), "utf8")
+    );
+    await Course.insertMany(coursesData);
+    console.log(`✅ Inserted ${coursesData.length} courses.`);
+
+    console.log("\n🎉 All data seeding completed successfully!");
     process.exit(0);
-    
   } catch (error) {
-    console.error('❌ Error seeding data:', error);
+    console.error("❌ Error seeding data:", error);
     process.exit(1);
   }
 };
 
-// Run seeder
+// Run the seeder
 if (require.main === module) {
-  seedData();
+  seedAllData();
 }
 
-module.exports = seedData;
+module.exports = seedAllData;

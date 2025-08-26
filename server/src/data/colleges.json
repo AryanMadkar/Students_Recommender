@@ -1,202 +1,50 @@
 [
   {
-    "name": "Indian Institute of Technology Delhi",
-    "shortName": "IIT Delhi",
-    "location": {
-      "state": "Delhi",
-      "city": "New Delhi",
-      "address": "Hauz Khas, New Delhi - 110016",
-      "coordinates": { "lat": 28.5455, "lng": 77.1928 }
-    },
-    "type": "Central",
-    "courses": [
-      {
-        "name": "Computer Science and Engineering",
-        "duration": "4 years",
-        "fees": { "annual": 250000, "total": 1000000 },
-        "eligibility": {
-          "stream": ["Science"],
-          "minimumPercentage": 75,
-          "entranceExam": "JEE Advanced"
-        },
-        "cutoffs": [
-          { "year": 2024, "category": "General", "cutoff": 63 },
-          { "year": 2024, "category": "OBC", "cutoff": 124 },
-          { "year": 2024, "category": "SC", "cutoff": 289 },
-          { "year": 2024, "category": "ST", "cutoff": 441 }
-        ]
-      },
-      {
-        "name": "Mechanical Engineering",
-        "duration": "4 years",
-        "fees": { "annual": 250000, "total": 1000000 },
-        "eligibility": {
-          "stream": ["Science"],
-          "minimumPercentage": 75,
-          "entranceExam": "JEE Advanced"
-        },
-        "cutoffs": [
-          { "year": 2024, "category": "General", "cutoff": 890 },
-          { "year": 2024, "category": "OBC", "cutoff": 1456 }
-        ]
-      }
-    ],
-    "ratings": { "overall": 4.8, "placement": 4.9, "infrastructure": 4.7, "faculty": 4.8 },
-    "placementStats": {
-      "averagePackage": 1800000,
-      "highestPackage": 5500000,
-      "placementPercentage": 95,
-      "topRecruiters": ["Google", "Microsoft", "Amazon", "Goldman Sachs", "Samsung"]
-    },
-    "facilities": ["Library", "Hostel", "Sports Complex", "Research Labs", "Medical Center"],
-    "website": "https://home.iitd.ac.in/",
-    "isActive": true
-  },
-  {
     "name": "Indian Institute of Technology Bombay",
     "shortName": "IIT Bombay",
-    "location": {
-      "state": "Maharashtra",
-      "city": "Mumbai",
-      "address": "Powai, Mumbai - 400076",
-      "coordinates": { "lat": 19.1334, "lng": 72.9133 }
-    },
+    "location": { "state": "Maharashtra", "city": "Mumbai" },
     "type": "Central",
     "courses": [
-      {
-        "name": "Computer Science and Engineering",
-        "duration": "4 years",
-        "fees": { "annual": 250000, "total": 1000000 },
-        "eligibility": {
-          "stream": ["Science"],
-          "minimumPercentage": 75,
-          "entranceExam": "JEE Advanced"
-        },
-        "cutoffs": [
-          { "year": 2024, "category": "General", "cutoff": 67 },
-          { "year": 2024, "category": "OBC", "cutoff": 145 }
-        ]
-      }
+      { "name": "Computer Science and Engineering", "duration": "4 years", "fees": { "annual": 220000 }, "eligibility": { "stream": ["Science"], "entranceExam": "JEE Advanced" }, "cutoffs": [{ "year": 2024, "category": "General", "cutoff": 67 }] }
     ],
-    "ratings": { "overall": 4.9, "placement": 5.0, "infrastructure": 4.8, "faculty": 4.9 },
-    "placementStats": {
-      "averagePackage": 2100000,
-      "highestPackage": 6000000,
-      "placementPercentage": 96,
-      "topRecruiters": ["Google", "Microsoft", "Facebook", "Apple", "Netflix"]
-    },
-    "facilities": ["Library", "Hostel", "Sports Complex", "Research Labs", "Medical Center"],
-    "website": "https://www.iitb.ac.in/",
+    "ratings": { "overall": 4.9, "placement": 5.0 },
+    "placementStats": { "averagePackage": 2500000, "topRecruiters": ["Google", "Microsoft", "Apple", "Jane Street"] },
     "isActive": true
   },
   {
-    "name": "All India Institute of Medical Sciences",
+    "name": "Indian Institute of Technology Delhi",
+    "shortName": "IIT Delhi",
+    "location": { "state": "Delhi", "city": "New Delhi" },
+    "type": "Central",
+    "courses": [
+      { "name": "Computer Science and Engineering", "duration": "4 years", "fees": { "annual": 220000 }, "eligibility": { "stream": ["Science"], "entranceExam": "JEE Advanced" }, "cutoffs": [{ "year": 2024, "category": "General", "cutoff": 115 }] }
+    ],
+    "ratings": { "overall": 4.8, "placement": 4.9 },
+    "placementStats": { "averagePackage": 2400000, "topRecruiters": ["Microsoft", "Amazon", "Goldman Sachs"] },
+    "isActive": true
+  },
+  {
+    "name": "All India Institute of Medical Sciences, Delhi",
     "shortName": "AIIMS Delhi",
-    "location": {
-      "state": "Delhi",
-      "city": "New Delhi",
-      "address": "Ansari Nagar, New Delhi - 110029",
-      "coordinates": { "lat": 28.5672, "lng": 77.2100 }
-    },
+    "location": { "state": "Delhi", "city": "New Delhi" },
     "type": "Central",
     "courses": [
-      {
-        "name": "MBBS",
-        "duration": "5.5 years",
-        "fees": { "annual": 5000, "total": 27500 },
-        "eligibility": {
-          "stream": ["Science"],
-          "minimumPercentage": 60,
-          "entranceExam": "NEET"
-        },
-        "cutoffs": [
-          { "year": 2024, "category": "General", "cutoff": 720 },
-          { "year": 2024, "category": "OBC", "cutoff": 701 }
-        ]
-      }
+      { "name": "MBBS", "duration": "5.5 years", "fees": { "annual": 6500 }, "eligibility": { "stream": ["Science"], "entranceExam": "NEET" }, "cutoffs": [{ "year": 2024, "category": "General", "cutoff": 710 }] }
     ],
-    "ratings": { "overall": 4.9, "placement": 4.8, "infrastructure": 4.9, "faculty": 5.0 },
-    "placementStats": {
-      "averagePackage": 1500000,
-      "highestPackage": 3000000,
-      "placementPercentage": 100,
-      "topRecruiters": ["Government Hospitals", "Private Hospitals", "Research Institutes"]
-    },
-    "facilities": ["Hospital", "Library", "Hostel", "Research Labs", "Medical Center"],
-    "website": "https://www.aiims.edu/",
+    "ratings": { "overall": 4.9, "placement": 4.9 },
+    "placementStats": { "averagePackage": 1800000, "topRecruiters": ["Top Government & Private Hospitals"] },
     "isActive": true
   },
   {
-    "name": "Indian Institute of Management Ahmedabad",
-    "shortName": "IIM Ahmedabad",
-    "location": {
-      "state": "Gujarat",
-      "city": "Ahmedabad",
-      "address": "Vastrapur, Ahmedabad - 380015",
-      "coordinates": { "lat": 23.0315, "lng": 72.5024 }
-    },
+    "name": "Shri Ram College of Commerce",
+    "shortName": "SRCC",
+    "location": { "state": "Delhi", "city": "New Delhi" },
     "type": "Central",
     "courses": [
-      {
-        "name": "Master of Business Administration",
-        "duration": "2 years",
-        "fees": { "annual": 2500000, "total": 5000000 },
-        "eligibility": {
-          "stream": ["Any"],
-          "minimumPercentage": 50,
-          "entranceExam": "CAT"
-        },
-        "cutoffs": [
-          { "year": 2024, "category": "General", "cutoff": 99.5 },
-          { "year": 2024, "category": "OBC", "cutoff": 98.5 }
-        ]
-      }
+      { "name": "Bachelor of Commerce (Hons)", "duration": "3 years", "fees": { "annual": 30000 }, "eligibility": { "stream": ["Commerce"], "entranceExam": "CUET" }, "cutoffs": [{ "year": 2024, "category": "General", "cutoff": 99 }] }
     ],
-    "ratings": { "overall": 4.8, "placement": 5.0, "infrastructure": 4.7, "faculty": 4.9 },
-    "placementStats": {
-      "averagePackage": 3400000,
-      "highestPackage": 7000000,
-      "placementPercentage": 100,
-      "topRecruiters": ["McKinsey", "BCG", "Bain", "Goldman Sachs", "JPMorgan"]
-    },
-    "facilities": ["Library", "Hostel", "Sports Complex", "Auditorium", "Conference Halls"],
-    "website": "https://www.iima.ac.in/",
-    "isActive": true
-  },
-  {
-    "name": "Birla Institute of Technology and Science Pilani",
-    "shortName": "BITS Pilani",
-    "location": {
-      "state": "Rajasthan",
-      "city": "Pilani",
-      "address": "Pilani - 333031, Rajasthan",
-      "coordinates": { "lat": 28.3670, "lng": 75.5883 }
-    },
-    "type": "Private",
-    "courses": [
-      {
-        "name": "Computer Science and Engineering",
-        "duration": "4 years",
-        "fees": { "annual": 450000, "total": 1800000 },
-        "eligibility": {
-          "stream": ["Science"],
-          "minimumPercentage": 75,
-          "entranceExam": "BITSAT"
-        },
-        "cutoffs": [
-          { "year": 2024, "category": "General", "cutoff": 380 }
-        ]
-      }
-    ],
-    "ratings": { "overall": 4.6, "placement": 4.7, "infrastructure": 4.5, "faculty": 4.6 },
-    "placementStats": {
-      "averagePackage": 1800000,
-      "highestPackage": 4500000,
-      "placementPercentage": 92,
-      "topRecruiters": ["Microsoft", "Google", "Amazon", "Adobe", "Flipkart"]
-    },
-    "facilities": ["Library", "Hostel", "Sports Complex", "Labs", "Auditorium"],
-    "website": "https://www.bits-pilani.ac.in/",
+    "ratings": { "overall": 4.7, "placement": 4.8 },
+    "placementStats": { "averagePackage": 1000000, "topRecruiters": ["McKinsey", "BCG", "Big 4 Accounting Firms"] },
     "isActive": true
   }
 ]

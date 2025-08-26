@@ -2,271 +2,73 @@
   {
     "title": "Software Engineer",
     "category": "Engineering",
-    "description": "Design, develop, and maintain software applications and systems using various programming languages and technologies.",
+    "description": "Design, develop, and maintain software applications and systems. A highly sought-after role in India's booming IT sector.",
     "requiredSkills": [
-      { "skill": "Programming Languages", "proficiency": "Advanced", "importance": 5 },
-      { "skill": "Problem Solving", "proficiency": "Advanced", "importance": 5 },
-      { "skill": "Data Structures & Algorithms", "proficiency": "Advanced", "importance": 4 },
+      { "skill": "Data Structures & Algorithms", "proficiency": "Advanced", "importance": 5 },
+      { "skill": "Programming (Python/Java/C++)", "proficiency": "Advanced", "importance": 5 },
       { "skill": "System Design", "proficiency": "Intermediate", "importance": 4 },
-      { "skill": "Version Control", "proficiency": "Intermediate", "importance": 3 }
+      { "skill": "Databases (SQL/NoSQL)", "proficiency": "Intermediate", "importance": 3 },
+      { "skill": "Version Control (Git)", "proficiency": "Intermediate", "importance": 3 }
     ],
     "educationPath": [
-      {
-        "level": "Bachelor",
-        "fields": ["Computer Science", "Information Technology", "Software Engineering"],
-        "duration": "4 years",
-        "mandatory": true
-      },
-      {
-        "level": "Master",
-        "fields": ["Computer Science", "Software Engineering"],
-        "duration": "2 years",
-        "mandatory": false
-      }
-    ],
-    "salaryRange": {
-      "entry": { "min": 400000, "max": 1200000 },
-      "mid": { "min": 1200000, "max": 2500000 },
-      "senior": { "min": 2500000, "max": 6000000 }
-    },
-    "jobRoles": ["Software Developer", "Full Stack Developer", "Backend Developer", "Frontend Developer"],
-    "industries": ["Technology", "Finance", "E-commerce", "Healthcare", "Gaming"],
-    "growth": {
-      "demand": "High",
-      "futureScope": "Excellent growth prospects with emerging technologies like AI, IoT, and cloud computing",
-      "automationRisk": "Low"
-    },
-    "aptitudeMapping": {
-      "analytical": 90,
-      "creative": 70,
-      "technical": 95,
-      "communication": 70,
-      "leadership": 60
-    }
-  },
-  {
-    "title": "Data Scientist",
-    "category": "Science",
-    "description": "Analyze complex data sets to extract insights and build predictive models for business decision-making.",
-    "requiredSkills": [
-      { "skill": "Python/R Programming", "proficiency": "Advanced", "importance": 5 },
-      { "skill": "Statistics & Mathematics", "proficiency": "Advanced", "importance": 5 },
-      { "skill": "Machine Learning", "proficiency": "Advanced", "importance": 5 },
-      { "skill": "Data Visualization", "proficiency": "Intermediate", "importance": 4 },
-      { "skill": "SQL", "proficiency": "Advanced", "importance": 4 }
-    ],
-    "educationPath": [
-      {
-        "level": "Bachelor",
-        "fields": ["Computer Science", "Statistics", "Mathematics", "Engineering"],
-        "duration": "4 years",
-        "mandatory": true
-      },
-      {
-        "level": "Master",
-        "fields": ["Data Science", "Computer Science", "Statistics"],
-        "duration": "2 years",
-        "mandatory": false
-      }
-    ],
-    "salaryRange": {
-      "entry": { "min": 600000, "max": 1500000 },
-      "mid": { "min": 1500000, "max": 3000000 },
-      "senior": { "min": 3000000, "max": 8000000 }
-    },
-    "jobRoles": ["Data Scientist", "ML Engineer", "Data Analyst", "Research Scientist"],
-    "industries": ["Technology", "Finance", "Healthcare", "Retail", "Consulting"],
-    "growth": {
-      "demand": "High",
-      "futureScope": "Excellent prospects with increasing data generation and AI adoption",
-      "automationRisk": "Low"
-    },
-    "aptitudeMapping": {
-      "analytical": 95,
-      "creative": 75,
-      "technical": 90,
-      "communication": 80,
-      "leadership": 70
-    }
-  },
-  {
-    "title": "Medical Doctor",
-    "category": "Medical",
-    "description": "Diagnose, treat, and prevent illnesses and injuries in patients across various medical specialties.",
-    "requiredSkills": [
-      { "skill": "Medical Knowledge", "proficiency": "Expert", "importance": 5 },
-      { "skill": "Patient Communication", "proficiency": "Advanced", "importance": 5 },
-      { "skill": "Critical Thinking", "proficiency": "Advanced", "importance": 5 },
-      { "skill": "Empathy", "proficiency": "Advanced", "importance": 4 },
-      { "skill": "Decision Making", "proficiency": "Advanced", "importance": 5 }
-    ],
-    "educationPath": [
-      {
-        "level": "Bachelor",
-        "fields": ["MBBS"],
-        "duration": "5.5 years",
-        "mandatory": true
-      },
-      {
-        "level": "Master",
-        "fields": ["MD", "MS", "Diploma"],
-        "duration": "3 years",
-        "mandatory": false
-      }
+      { "level": "Bachelor", "fields": ["Computer Science", "Information Technology"], "duration": "4 years", "mandatory": true }
     ],
     "salaryRange": {
       "entry": { "min": 600000, "max": 1500000 },
       "mid": { "min": 1500000, "max": 3500000 },
-      "senior": { "min": 3500000, "max": 10000000 }
+      "senior": { "min": 3500000, "max": 8000000 }
     },
-    "jobRoles": ["General Practitioner", "Specialist Doctor", "Surgeon", "Consultant"],
-    "industries": ["Healthcare", "Hospitals", "Private Practice", "Research"],
-    "growth": {
-      "demand": "High",
-      "futureScope": "Stable with growing healthcare needs and medical advancements",
-      "automationRisk": "Low"
-    },
-    "aptitudeMapping": {
-      "analytical": 85,
-      "creative": 60,
-      "technical": 75,
-      "communication": 90,
-      "leadership": 80
-    }
+    "jobRoles": ["SDE-1/2/3", "Full Stack Developer", "Backend Developer", "ML Engineer"],
+    "industries": ["IT Services", "Product Companies", "E-commerce", "FinTech", "Startups"],
+    "growth": { "demand": "High", "futureScope": "Excellent growth with AI and cloud adoption.", "automationRisk": "Low" },
+    "aptitudeMapping": { "analytical": 95, "creative": 60, "technical": 95, "communication": 70, "leadership": 65 }
   },
   {
-    "title": "Management Consultant",
+    "title": "Data Scientist",
+    "category": "Science",
+    "description": "Analyze complex data to extract insights and build predictive models for business decision-making.",
+    "requiredSkills": [
+      { "skill": "Python/R", "proficiency": "Advanced", "importance": 5 },
+      { "skill": "Machine Learning", "proficiency": "Advanced", "importance": 5 },
+      { "skill": "Statistics & Probability", "proficiency": "Advanced", "importance": 4 },
+      { "skill": "SQL", "proficiency": "Advanced", "importance": 4 }
+    ],
+    "educationPath": [
+      { "level": "Bachelor", "fields": ["Computer Science", "Statistics", "Mathematics"], "duration": "4 years", "mandatory": true },
+      { "level": "Master", "fields": ["Data Science", "AI/ML"], "duration": "2 years", "mandatory": false }
+    ],
+    "salaryRange": {
+      "entry": { "min": 800000, "max": 2000000 },
+      "mid": { "min": 2000000, "max": 4500000 },
+      "senior": { "min": 4500000, "max": 10000000 }
+    },
+    "jobRoles": ["Data Scientist", "ML Engineer", "Data Analyst", "AI Researcher"],
+    "industries": ["Technology", "Finance", "Healthcare", "E-commerce", "Consulting"],
+    "growth": { "demand": "High", "futureScope": "Extremely high demand across all sectors.", "automationRisk": "Low" },
+    "aptitudeMapping": { "analytical": 95, "creative": 75, "technical": 90, "communication": 80, "leadership": 70 }
+  },
+  {
+    "title": "Chartered Accountant",
     "category": "Business",
-    "description": "Advise organizations on business strategy, operations, and organizational improvements to enhance performance.",
+    "description": "Manages finances, auditing, and taxation for businesses and individuals. A prestigious and stable career in India.",
     "requiredSkills": [
-      { "skill": "Strategic Thinking", "proficiency": "Advanced", "importance": 5 },
-      { "skill": "Business Analysis", "proficiency": "Advanced", "importance": 5 },
-      { "skill": "Communication", "proficiency": "Advanced", "importance": 5 },
-      { "skill": "Project Management", "proficiency": "Advanced", "importance": 4 },
-      { "skill": "Data Analysis", "proficiency": "Intermediate", "importance": 4 }
+        { "skill": "Accounting Standards", "proficiency": "Advanced", "importance": 5 },
+        { "skill": "Taxation Laws (Direct/Indirect)", "proficiency": "Advanced", "importance": 5 },
+        { "skill": "Auditing", "proficiency": "Advanced", "importance": 4 },
+        { "skill": "Financial Management", "proficiency": "Intermediate", "importance": 4 }
     ],
     "educationPath": [
-      {
-        "level": "Bachelor",
-        "fields": ["Business", "Engineering", "Economics", "Any"],
-        "duration": "4 years",
-        "mandatory": true
-      },
-      {
-        "level": "Master",
-        "fields": ["MBA", "Management"],
-        "duration": "2 years",
-        "mandatory": false
-      }
+        { "level": "10+2", "fields": ["Commerce"], "duration": "2 years", "mandatory": true },
+        { "level": "Certificate", "fields": ["CA (Foundation, Inter, Final)"], "duration": "4-5 years", "mandatory": true }
     ],
     "salaryRange": {
-      "entry": { "min": 1500000, "max": 2500000 },
-      "mid": { "min": 2500000, "max": 5000000 },
-      "senior": { "min": 5000000, "max": 15000000 }
+        "entry": { "min": 700000, "max": 1200000 },
+        "mid": { "min": 1200000, "max": 2500000 },
+        "senior": { "min": 2500000, "max": 6000000 }
     },
-    "jobRoles": ["Business Analyst", "Strategy Consultant", "Operations Consultant", "Partner"],
-    "industries": ["Consulting", "Finance", "Technology", "Healthcare", "Manufacturing"],
-    "growth": {
-      "demand": "Medium",
-      "futureScope": "Good prospects with digital transformation and business evolution",
-      "automationRisk": "Medium"
-    },
-    "aptitudeMapping": {
-      "analytical": 90,
-      "creative": 80,
-      "technical": 60,
-      "communication": 95,
-      "leadership": 90
-    }
-  },
-  {
-    "title": "Civil Engineer",
-    "category": "Engineering",
-    "description": "Design, build, and maintain infrastructure projects including roads, bridges, buildings, and water systems.",
-    "requiredSkills": [
-      { "skill": "Engineering Design", "proficiency": "Advanced", "importance": 5 },
-      { "skill": "CAD Software", "proficiency": "Advanced", "importance": 4 },
-      { "skill": "Project Management", "proficiency": "Intermediate", "importance": 4 },
-      { "skill": "Mathematics", "proficiency": "Advanced", "importance": 4 },
-      { "skill": "Site Supervision", "proficiency": "Intermediate", "importance": 3 }
-    ],
-    "educationPath": [
-      {
-        "level": "Bachelor",
-        "fields": ["Civil Engineering"],
-        "duration": "4 years",
-        "mandatory": true
-      },
-      {
-        "level": "Master",
-        "fields": ["Civil Engineering", "Structural Engineering"],
-        "duration": "2 years",
-        "mandatory": false
-      }
-    ],
-    "salaryRange": {
-      "entry": { "min": 300000, "max": 800000 },
-      "mid": { "min": 800000, "max": 1800000 },
-      "senior": { "min": 1800000, "max": 4000000 }
-    },
-    "jobRoles": ["Site Engineer", "Design Engineer", "Project Manager", "Consultant"],
-    "industries": ["Construction", "Infrastructure", "Government", "Consulting"],
-    "growth": {
-      "demand": "Medium",
-      "futureScope": "Stable with infrastructure development and smart city projects",
-      "automationRisk": "Medium"
-    },
-    "aptitudeMapping": {
-      "analytical": 85,
-      "creative": 70,
-      "technical": 90,
-      "communication": 70,
-      "leadership": 75
-    }
-  },
-  {
-    "title": "Digital Marketing Manager",
-    "category": "Business",
-    "description": "Develop and execute digital marketing strategies across various online platforms to promote products and services.",
-    "requiredSkills": [
-      { "skill": "Digital Marketing", "proficiency": "Advanced", "importance": 5 },
-      { "skill": "Content Creation", "proficiency": "Advanced", "importance": 4 },
-      { "skill": "Analytics", "proficiency": "Advanced", "importance": 4 },
-      { "skill": "Social Media", "proficiency": "Advanced", "importance": 4 },
-      { "skill": "SEO/SEM", "proficiency": "Advanced", "importance": 4 }
-    ],
-    "educationPath": [
-      {
-        "level": "Bachelor",
-        "fields": ["Marketing", "Business", "Communications", "Any"],
-        "duration": "3-4 years",
-        "mandatory": true
-      },
-      {
-        "level": "Certificate",
-        "fields": ["Digital Marketing", "Google Ads", "Facebook Marketing"],
-        "duration": "6 months",
-        "mandatory": false
-      }
-    ],
-    "salaryRange": {
-      "entry": { "min": 300000, "max": 800000 },
-      "mid": { "min": 800000, "max": 2000000 },
-      "senior": { "min": 2000000, "max": 5000000 }
-    },
-    "jobRoles": ["Digital Marketing Executive", "Social Media Manager", "SEO Specialist", "Marketing Manager"],
-    "industries": ["E-commerce", "Technology", "Media", "Retail", "Advertising"],
-    "growth": {
-      "demand": "High",
-      "futureScope": "Excellent with increasing digital adoption and online business growth",
-      "automationRisk": "Medium"
-    },
-    "aptitudeMapping": {
-      "analytical": 75,
-      "creative": 90,
-      "technical": 70,
-      "communication": 90,
-      "leadership": 80
-    }
+    "jobRoles": ["Auditor", "Finance Manager", "Tax Consultant", "CFO"],
+    "industries": ["Consulting (Big 4)", "Banking", "Manufacturing", "Corporate Finance"],
+    "growth": { "demand": "High", "futureScope": "Consistently high demand due to complex financial regulations.", "automationRisk": "Medium" },
+    "aptitudeMapping": { "analytical": 90, "creative": 50, "technical": 80, "communication": 75, "leadership": 80 }
   }
 ]

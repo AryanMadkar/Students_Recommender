@@ -1,144 +1,61 @@
 [
   {
-    "question": "Which field interests you the most after completing 12th grade?",
+    "question": "Which entrance exam have you prepared for or are planning to take?",
     "type": "multiple_choice",
-    "category": "interest",
-    "subcategory": "career_preference",
-    "options": [
-      { "text": "Engineering & Technology", "value": "engineering", "weight": 90 },
-      { "text": "Medical & Healthcare", "value": "medical", "weight": 85 },
-      { "text": "Business & Management", "value": "business", "weight": 80 },
-      { "text": "Arts & Humanities", "value": "arts", "weight": 75 },
-      { "text": "Science & Research", "value": "science", "weight": 88 },
-      { "text": "Law & Legal Studies", "value": "law", "weight": 82 }
-    ],
-    "difficulty": "medium",
-    "stage": ["after12th"],
-    "tags": ["career", "interest", "field"]
-  },
-  {
-    "question": "How confident are you about solving complex mathematical problems?",
-    "type": "rating",
-    "category": "analytical",
-    "subcategory": "mathematical_confidence",
-    "difficulty": "medium",
-    "stage": ["after12th"],
-    "tags": ["math", "confidence", "analytical"]
-  },
-  {
-    "question": "Which entrance exam are you most likely to appear for?",
-    "type": "multiple_choice",
-    "category": "technical",
+    "category": "academic",
     "subcategory": "exam_preference",
     "options": [
-      { "text": "JEE Main/Advanced", "value": "jee", "weight": 90 },
-      { "text": "NEET", "value": "neet", "weight": 85 },
-      { "text": "CAT/XAT/MAT", "value": "management", "weight": 75 },
-      { "text": "CLAT", "value": "clat", "weight": 70 },
-      { "text": "Design Entrance (NIFT/NID)", "value": "design", "weight": 80 },
-      { "text": "Not sure yet", "value": "unsure", "weight": 50 }
+      { "text": "JEE (Main/Advanced) for Engineering", "value": "jee", "weight": 90 },
+      { "text": "NEET for Medical (MBBS/BDS)", "value": "neet", "weight": 90 },
+      { "text": "CLAT/AILET for Law", "value": "law_entrance", "weight": 85 },
+      { "text": "NID/NIFT/UCEED for Design", "value": "design_entrance", "weight": 85 },
+      { "text": "University specific exams (CUET, etc.)", "value": "university_exam", "weight": 80 },
+      { "text": "None, seeking direct admission", "value": "direct", "weight": 60 }
     ],
     "difficulty": "easy",
     "stage": ["after12th"],
-    "tags": ["entrance", "exam", "preference"]
+    "tags": ["entrance", "exam", "career"]
   },
   {
-    "question": "What is your preferred learning style?",
-    "type": "multiple_choice",
-    "category": "personality",
-    "subcategory": "learning_style",
-    "options": [
-      { "text": "Visual (diagrams, charts, images)", "value": "visual", "weight": 80 },
-      { "text": "Auditory (listening, discussions)", "value": "auditory", "weight": 75 },
-      { "text": "Kinesthetic (hands-on, practical)", "value": "kinesthetic", "weight": 85 },
-      { "text": "Reading/Writing (text-based)", "value": "textual", "weight": 70 }
-    ],
-    "difficulty": "easy",
-    "stage": ["after12th"],
-    "tags": ["learning", "style", "personality"]
-  },
-  {
-    "question": "How important is salary potential in your career choice?",
-    "type": "rating",
-    "category": "personality",
-    "subcategory": "career_motivation",
-    "difficulty": "medium",
-    "stage": ["after12th"],
-    "tags": ["salary", "motivation", "career"]
-  },
-  {
-    "question": "Which type of work environment appeals to you most?",
+    "question": "What kind of work environment do you see yourself thriving in?",
     "type": "multiple_choice",
     "category": "personality",
     "subcategory": "work_environment",
     "options": [
-      { "text": "Corporate office", "value": "corporate", "weight": 70 },
-      { "text": "Research laboratory", "value": "research", "weight": 85 },
-      { "text": "Hospital/Clinical setting", "value": "healthcare", "weight": 80 },
-      { "text": "Creative studio", "value": "creative", "weight": 90 },
-      { "text": "Outdoor/Field work", "value": "outdoor", "weight": 75 },
-      { "text": "Entrepreneurial/Startup", "value": "startup", "weight": 85 }
+      { "text": "A fast-paced corporate office", "value": "corporate", "weight": 80 },
+      { "text": "A hospital or healthcare setting", "value": "hospital", "weight": 85 },
+      { "text": "A research lab or academic institution", "value": "research", "weight": 85 },
+      { "text": "A creative studio or media house", "value": "creative", "weight": 90 },
+      { "text": "Working independently or as a freelancer", "value": "freelance", "weight": 75 }
     ],
     "difficulty": "medium",
     "stage": ["after12th"],
-    "tags": ["work", "environment", "preference"]
+    "tags": ["work", "environment", "personality"]
   },
   {
-    "question": "How do you typically approach group projects?",
-    "type": "multiple_choice",
-    "category": "leadership",
-    "subcategory": "teamwork_style",
-    "options": [
-      { "text": "Take the lead and coordinate", "value": "leader", "weight": 95 },
-      { "text": "Contribute ideas and support", "value": "contributor", "weight": 80 },
-      { "text": "Focus on specific tasks", "value": "specialist", "weight": 70 },
-      { "text": "Prefer working alone", "value": "individual", "weight": 60 }
-    ],
-    "difficulty": "medium",
+    "question": "How important is a high starting salary to you?",
+    "type": "rating",
+    "category": "personality",
+    "subcategory": "career_motivation",
+    "difficulty": "easy",
     "stage": ["after12th"],
-    "tags": ["leadership", "teamwork", "personality"]
+    "tags": ["salary", "motivation", "career"]
   },
   {
-    "question": "Which subject combination did you choose in 12th grade?",
+    "question": "Which subject from your 12th grade did you enjoy the most?",
     "type": "multiple_choice",
-    "category": "technical",
-    "subcategory": "academic_background",
+    "category": "interest",
+    "subcategory": "subject_interest",
     "options": [
-      { "text": "PCM (Physics, Chemistry, Math)", "value": "pcm", "weight": 90 },
-      { "text": "PCB (Physics, Chemistry, Biology)", "value": "pcb", "weight": 85 },
-      { "text": "PCMB (All four subjects)", "value": "pcmb", "weight": 95 },
-      { "text": "Commerce with Math", "value": "commerce_math", "weight": 80 },
-      { "text": "Commerce without Math", "value": "commerce", "weight": 70 },
-      { "text": "Arts/Humanities", "value": "arts", "weight": 75 }
+      { "text": "Physics", "value": "physics", "weight": 85 },
+      { "text": "Chemistry", "value": "chemistry", "weight": 80 },
+      { "text": "Mathematics", "value": "math", "weight": 90 },
+      { "text": "Biology", "value": "biology", "weight": 85 },
+      { "text": "Accounts/Economics", "value": "commerce_subjects", "weight": 88 },
+      { "text": "History/Political Science", "value": "arts_subjects", "weight": 75 }
     ],
     "difficulty": "easy",
     "stage": ["after12th"],
-    "tags": ["subjects", "academic", "background"]
-  },
-  {
-    "question": "How comfortable are you with technology and programming?",
-    "type": "rating",
-    "category": "technical",
-    "subcategory": "tech_comfort",
-    "difficulty": "medium",
-    "stage": ["after12th"],
-    "tags": ["technology", "programming", "comfort"]
-  },
-  {
-    "question": "What motivates you most in your studies?",
-    "type": "multiple_choice",
-    "category": "personality",
-    "subcategory": "motivation",
-    "options": [
-      { "text": "Understanding concepts deeply", "value": "conceptual", "weight": 85 },
-      { "text": "Getting good grades", "value": "grades", "weight": 70 },
-      { "text": "Practical applications", "value": "practical", "weight": 90 },
-      { "text": "Helping others", "value": "service", "weight": 80 },
-      { "text": "Innovation and creativity", "value": "innovation", "weight": 95 },
-      { "text": "Financial security", "value": "financial", "weight": 75 }
-    ],
-    "difficulty": "medium",
-    "stage": ["after12th"],
-    "tags": ["motivation", "studies", "personality"]
+    "tags": ["subjects", "interest", "academic"]
   }
 ]

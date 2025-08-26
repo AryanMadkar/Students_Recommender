@@ -11,9 +11,20 @@ const questionSchema = new mongoose.Schema(
       enum: ["multiple_choice", "rating", "ranking", "text", "boolean"],
       required: true,
     },
+    // CORRECTED: Expanded the enum to include all categories from your data files.
     category: {
       type: String,
-      enum: ["aptitude", "interest", "iq", "personality", "academic"],
+      enum: [
+        "interest",
+        "analytical",
+        "creative",
+        "technical",
+        "communication",
+        "leadership",
+        "personality",
+        "academic",
+        "iq",
+      ],
       required: true,
     },
     subcategory: String,
