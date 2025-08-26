@@ -86,7 +86,7 @@ const AchievementCard = ({ icon, title, description, date, color }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col p-5 text-center items-center">
+    <div className="bg-white rounded-xl mb-[6rem] shadow-md overflow-hidden flex flex-col p-5 text-center items-center">
       <div
         className={`w-20 h-20 rounded-lg flex items-center justify-center ${bgColor[color]}`}
       >
