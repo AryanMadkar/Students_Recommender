@@ -1,144 +1,381 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FiChevronLeft, FiRefreshCw, FiArrowRight } from "react-icons/fi";
-import {
-  PieChart, Pie, Cell, Legend, ResponsiveContainer
-} from "recharts";
+import { FiChevronLeft, FiRefreshCw, FiArrowRight, FiDownload, FiShare2 } from "react-icons/fi";
+import { PieChart, Pie, Cell, Legend, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from "recharts";
+import axios from "axios";
 
-const score = 85;                          // ­­­dummy overall %
-const skills = [                           // ­­­dummy skill split
-  { name: "Critical Thinking", value: 40, color: "#facc15" },
-  { name: "Communication",   value: 35, color: "#34d399" },
-  { name: "Analytical Skill", value: 25, color: "#3b82f6" }
-];
+const AssessmentResultPage = () => {
+  const { assessmentId, resultId } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [result, setResult] = useState(location.state?.result || null);
+  const [loading, setLoading] = useState(!result);
+  const [error, setError] = useState('');
 
-export default function AssessmentResultPage() {
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Top bar */}
-      <motion.header
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between"
-      >
-        <button className="p-2 hover:bg-gray-100 rounded-lg">
-          <FiChevronLeft className="w-5 h-5 text-gray-600" />
-        </button>
-        <h1 className="text-sm font-semibold text-gray-900">
-          Assessment Results
-        </h1>
-        <div className="w-5" /> {/* spacer */}
-      </motion.header>
+  useEffect(() => {
+    if (!result && (assessmentId || resultId)) {
+      fetchResult();
+    }
+  }, [assessmentId, resultId]);
 
-      <div className="flex-1 overflow-y-auto px-4 pb-28 space-y-8">
-        {/* Overall card */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 space-y-4"
-        >
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-xs uppercase font-medium text-gray-500">
-                Overall Score
-              </p>
-              <p className="text-3xl font-bold text-gray-900">{score}%</p>
-            </div>
-            <button className="p-2 hover:bg-gray-100 rounded-lg">
-              <FiRefreshCw className="w-4 h-4 text-gray-500" />
-            </button>
-          </div>
+  const fetchResult = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate('/login');
+        return;
+      }
 
-          {/* mini-progress bar */}
-          <div>
-            <div className="w-full bg-gray-200 h-2 rounded-full">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${score}%` }}
-                transition={{ duration: 0.6 }}
-                className="h-2 bg-blue-600 rounded-full"
-              />
-            </div>
-            <p className="mt-2 text-xs text-gray-500">
-              Your performance is above 75 % of test-takers.
-            </p>
-          </div>
-        </motion.section>
+      let endpoint;
+      if (resultId) {
+        endpoint = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/assessments/results/${resultId}`;
+      } else {
+        // Fetch latest result for this assessment
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/assessments/results`,
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        );
+        
+        const assessmentResult = response.data.data.find(r => r.assessmentId._id === assessmentId);
+        if (assessmentResult) {
+          endpoint = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/assessments/results/${assessmentResult._id}`;
+        }
+      }
 
-        {/* Skill doughnut */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-xl shadow-sm border border-gray-100 p-5"
-        >
-          <h2 className="text-sm font-semibold text-gray-900 mb-4">
-            Skill Breakdown
-          </h2>
-          <div className="h-60">
-            <ResponsiveContainer>
-              <PieChart>
-                <Pie
-                  data={skills}
-                  dataKey="value"
-                  innerRadius="60%"
-                  outerRadius="90%"
-                  paddingAngle={3}
-                >
-                  {skills.map((s) => (
-                    <Cell key={s.name} fill={s.color} />
-                  ))}
-                </Pie>
-                <Legend verticalAlign="bottom" height={36} iconType="circle" />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </motion.section>
+      if (endpoint) {
+        const response = await axios.get(endpoint, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
 
-        {/* AI analysis */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 space-y-2"
-        >
-          <h2 className="text-sm font-semibold text-gray-900">
-            AI-Powered Analysis
-          </h2>
-          <p className="text-sm text-gray-700 leading-relaxed">
-            • You excel at breaking down complex problems into logical steps.<br />
-            • Your written answers were clear and concise, showing strong communication.<br />
-            • Time-management lagged on analytical questions – consider pacing drills.<br />
-            • Focus practice on interpreting data charts to raise analytical speed.
-          </p>
-        </motion.section>
+        if (response.data.success) {
+          setResult(response.data.data);
+        }
+      }
+    } catch (err) {
+      setError('Failed to load results');
+      console.error('Results fetch error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        {/* Next steps */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-blue-50 rounded-xl border border-blue-100 p-5 text-center space-y-4"
-        >
-          <div className="mx-auto w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-            <FiArrowRight className="w-5 h-5 text-blue-600" />
-          </div>
-          <h3 className="font-semibold text-gray-900">
-            Next Steps & Recommendations
-          </h3>
-          <p className="text-sm text-gray-700">
-            Based on your scores, we’ve prepared a personalized learning plan
-            to help you reach 90 %+ on your next attempt.
-          </p>
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
-          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg flex items-center justify-center space-x-2">
-            <span>View Personalized Recommendations</span>
-            <FiArrowRight className="w-4 h-4" />
+  if (error || !result) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error || 'Results not found'}</p>
+          <button
+            onClick={() => navigate('/assessments')}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          >
+            Back to Assessments
           </button>
-        </motion.section>
+        </div>
+      </div>
+    );
+  }
+
+  const scores = result.scores || {};
+  const analysis = result.analysis || {};
+  const overallScore = scores.overall || 0;
+
+  // Prepare data for charts
+  const skillsData = Object.entries(scores)
+    .filter(([key]) => key !== 'overall')
+    .map(([key, value]) => ({
+      name: key.charAt(0).toUpperCase() + key.slice(1),
+      value: value || 0,
+      color: getSkillColor(key)
+    }));
+
+  const radarData = skillsData.map(skill => ({
+    skill: skill.name,
+    score: skill.value,
+    fullMark: 100
+  }));
+
+  function getSkillColor(skill) {
+    const colors = {
+      analytical: "#3b82f6",
+      creative: "#10b981",
+      technical: "#8b5cf6", 
+      communication: "#f59e0b",
+      leadership: "#ef4444"
+    };
+    return colors[skill] || "#6b7280";
+  }
+
+  const getPerformanceMessage = (score) => {
+    if (score >= 90) return "Outstanding performance! You're in the top 5%.";
+    if (score >= 80) return "Excellent work! You're in the top 15%.";
+    if (score >= 70) return "Good job! You're above average.";
+    if (score >= 60) return "Fair performance. Room for improvement.";
+    return "Keep practicing! You can do better.";
+  };
+
+  const getScoreColor = (score) => {
+    if (score >= 80) return "text-green-600";
+    if (score >= 60) return "text-yellow-600";
+    return "text-red-600";
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between py-4">
+            <button
+              onClick={() => navigate('/assessments')}
+              className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
+            >
+              <FiChevronLeft className="w-5 h-5" />
+              <span>Back to Assessments</span>
+            </button>
+            
+            <div className="flex items-center space-x-4">
+              <button className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
+                <FiDownload className="w-4 h-4" />
+                <span>Download Report</span>
+              </button>
+              
+              <button className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                <FiShare2 className="w-4 h-4" />
+                <span>Share Results</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* bottom nav placeholder */}
-      <nav className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 flex justify-around py-2">
-        <div className="w-16 h-1.5 rounded-full bg-gray-300" />
-      </nav>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-8"
+        >
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Assessment Results</h1>
+          <p className="text-gray-600">
+            {result.assessmentId?.title || 'Assessment'} completed on{' '}
+            {new Date(result.completedAt).toLocaleDateString()}
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Overall Score */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="lg:col-span-2"
+          >
+            <div className="bg-white rounded-2xl p-8 shadow-sm mb-8">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Overall Score</h2>
+                <div className={`text-6xl font-bold mb-4 ${getScoreColor(overallScore)}`}>
+                  {overallScore}%
+                </div>
+                <p className="text-gray-600 text-lg">
+                  {getPerformanceMessage(overallScore)}
+                </p>
+              </div>
+
+              {/* Skills Breakdown Chart */}
+              <div className="mb-8">
+                <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Skills Breakdown</h3>
+                <div className="h-80">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={skillsData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={120}
+                        paddingAngle={5}
+                        dataKey="value"
+                      >
+                        {skillsData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Radar Chart */}
+              <div className="mb-8">
+                <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Skill Profile</h3>
+                <div className="h-80">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RadarChart data={radarData}>
+                      <PolarGrid />
+                      <PolarAngleAxis dataKey="skill" />
+                      <PolarRadiusAxis domain={[0, 100]} />
+                      <Radar
+                        name="Score"
+                        dataKey="score"
+                        stroke="#3b82f6"
+                        fill="#3b82f6"
+                        fillOpacity={0.3}
+                      />
+                    </RadarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Sidebar */}
+          <div className="space-y-8">
+            {/* Strengths */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-white rounded-2xl p-6 shadow-sm"
+            >
+              <h3 className="text-xl font-bold text-gray-900 mb-4 text-green-600">
+                💪 Strengths
+              </h3>
+              <div className="space-y-3">
+                {analysis.strengths?.length > 0 ? (
+                  analysis.strengths.map((strength, index) => (
+                    <div key={index} className="p-3 bg-green-50 rounded-lg">
+                      <div className="font-medium text-green-800">{strength.category}</div>
+                      <div className="text-sm text-green-600">{strength.description}</div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500 text-sm">
+                    • You excel at breaking down complex problems into logical steps.
+                  </p>
+                )}
+              </div>
+            </motion.div>
+
+            {/* Areas for Improvement */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-white rounded-2xl p-6 shadow-sm"
+            >
+              <h3 className="text-xl font-bold text-gray-900 mb-4 text-orange-600">
+                📈 Areas for Improvement
+              </h3>
+              <div className="space-y-3">
+                {analysis.weaknesses?.length > 0 ? (
+                  analysis.weaknesses.map((weakness, index) => (
+                    <div key={index} className="p-3 bg-orange-50 rounded-lg">
+                      <div className="font-medium text-orange-800">{weakness.category}</div>
+                      <div className="text-sm text-orange-600">{weakness.description}</div>
+                      {weakness.improvement && (
+                        <div className="mt-2 space-y-1">
+                          {weakness.improvement.slice(0, 2).map((tip, tipIndex) => (
+                            <div key={tipIndex} className="text-xs text-orange-500">
+                              • {tip}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500 text-sm">
+                    • Focus practice on interpreting data charts to raise analytical speed.
+                  </p>
+                )}
+              </div>
+            </motion.div>
+
+            {/* Learning Style */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="bg-white rounded-2xl p-6 shadow-sm"
+            >
+              <h3 className="text-xl font-bold text-gray-900 mb-4 text-purple-600">
+                🎯 Learning Style
+              </h3>
+              <div className="p-4 bg-purple-50 rounded-lg">
+                <p className="text-purple-800 font-medium mb-2">
+                  {analysis.learningStyle || 'Balanced Learner'}
+                </p>
+                <p className="text-sm text-purple-600">
+                  Based on your responses, this learning approach will help you maximize your potential.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Recommendations */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="bg-white rounded-2xl p-6 shadow-sm"
+            >
+              <h3 className="text-xl font-bold text-gray-900 mb-4 text-blue-600">
+                🎓 Recommendations
+              </h3>
+              <div className="space-y-3">
+                {analysis.recommendations?.length > 0 ? (
+                  analysis.recommendations.map((rec, index) => (
+                    <div key={index} className="p-3 bg-blue-50 rounded-lg text-sm text-blue-700">
+                      • {rec}
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-3 bg-blue-50 rounded-lg text-sm text-blue-700">
+                    • Based on your scores, we've prepared a personalized learning plan to help you improve.
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-12 flex flex-col sm:flex-row gap-4 justify-center"
+        >
+          <button
+            onClick={() => navigate('/assessments')}
+            className="flex items-center justify-center space-x-2 px-8 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 font-medium"
+          >
+            <FiRefreshCw className="w-4 h-4" />
+            <span>Take Another Assessment</span>
+          </button>
+          
+          <button
+            onClick={() => navigate('/recommendations')}
+            className="flex items-center justify-center space-x-2 px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+          >
+            <span>Get Personalized Recommendations</span>
+            <FiArrowRight className="w-4 h-4" />
+          </button>
+        </motion.div>
+      </div>
     </div>
   );
-}
+};
+
+export default AssessmentResultPage;
