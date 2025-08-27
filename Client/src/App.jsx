@@ -1,8 +1,13 @@
-import { useState } from "react";
+import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// Layout Components
+// Context Providers
+import { AuthProvider } from "./context/AuthContext";
+import { AppProvider } from "./context/AppContext";
+
+// Components
+import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 
 // User Pages
@@ -27,7 +32,7 @@ import ResultsPage from "./pages/Assessments/Results";
 import CareerDetails from "./pages/Career/Career_Details";
 import TopPath from "./pages/Recommendation/TopPath";
 
-// College Pages;
+// College Pages
 import CollegeDetails from "./pages/college/CollegeDetails";
 import CollegeSearch from "./pages/college/CollegeSearch";
 import RecommendedColleges from "./pages/Recommendation/Recomended_colleges";
@@ -39,175 +44,72 @@ import SuggestedCourses from "./pages/Recommendation/Suggested_Cources";
 import { Toaster } from "react-hot-toast";
 
 function App() {
-  const [user, setUser] = useState(null);
-
   return (
-    <Router>
-      <div className="App">
-        <Toaster 
-          position="top-center" 
-          reverseOrder={false}
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: '#363636',
-              color: '#fff',
-            },
-            success: {
-              duration: 3000,
-              theme: {
-                primary: 'green',
-                secondary: 'black',
-              },
-            },
-          }}
-        />
-        
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+    <AuthProvider>
+      <AppProvider>
+        <Router>
+          <div className="min-h-screen bg-gray-50">
+            <Toaster position="top-right" />
+            
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-          {/* Protected Routes - Include Navbar */}
-          <Route path="/dashboard" element={
-            <>
-              <Navbar />
-              <DashboardPage />
-            </>
-          } />
+              {/* Protected Routes with Navbar */}
+              <Route path="/*" element={
+                <ProtectedRoute>
+                  <div className="flex flex-col min-h-screen">
+                    <Navbar />
+                    <main className="flex-1">
+                      <Routes>
+                        {/* Dashboard */}
+                        <Route path="/" element={<DashboardPage />} />
+                        <Route path="/dashboard" element={<DashboardPage />} />
 
-          {/* Assessment Routes */}
-          <Route path="/assessments" element={
-            <>
-              <Navbar />
-              <AssessmentPage />
-            </>
-          } />
-          <Route path="/assessments/:assessmentId/start" element={
-            <>
-              <QuizQuestion />
-            </>
-          } />
-          <Route path="/assessments/:assessmentId/results" element={
-            <>
-              <Navbar />
-              <ResultsPage />
-            </>
-          } />
-          <Route path="/assessments/results/:resultId" element={
-            <>
-              <Navbar />
-              <ResultsPage />
-            </>
-          } />
+                        {/* Assessment Routes */}
+                        <Route path="/assessments" element={<AssessmentPage />} />
+                        <Route path="/assessments/:assessmentId/start" element={<QuizQuestion />} />
+                        <Route path="/assessments/:assessmentId/results" element={<ResultsPage />} />
+                        <Route path="/assessments/results/:resultId" element={<ResultsPage />} />
 
-          {/* Career Routes */}
-          <Route path="/careers/:careerId" element={
-            <>
-              <Navbar />
-              <CareerDetails />
-            </>
-          } />
-          <Route path="/careers" element={
-            <>
-              <Navbar />
-              <TopPath />
-            </>
-          } />
-          <Route path="/top-paths" element={
-            <>
-              <Navbar />
-              <TopPath />
-            </>
-          } />
+                        {/* Career Routes */}
+                        <Route path="/careers/:careerId" element={<CareerDetails />} />
+                        <Route path="/recommendations/careers" element={<TopPath />} />
+                        <Route path="/top-paths" element={<TopPath />} />
 
-          {/* College Routes */}
-          <Route path="/colleges" element={
-            <>
-              <Navbar />
-              <CollegeSearch />
-            </>
-          } />
-          <Route path="/colleges/:collegeId" element={
-            <>
-              <Navbar />
-              <CollegeDetails />
-            </>
-          } />
-          <Route path="/recommended-colleges" element={
-            <>
-              <Navbar />
-              <RecommendedColleges />
-            </>
-          } />
+                        {/* College Routes */}
+                        <Route path="/colleges" element={<CollegeSearch />} />
+                        <Route path="/colleges/:collegeId" element={<CollegeDetails />} />
+                        <Route path="/recommendations/colleges" element={<RecommendedColleges />} />
 
-          {/* Course Routes */}
-          <Route path="/suggested-courses" element={
-            <>
-              <Navbar />
-              <SuggestedCourses />
-            </>
-          } />
-          <Route path="/courses" element={
-            <>
-              <Navbar />
-              <SuggestedCourses />
-            </>
-          } />
+                        {/* Course Routes */}
+                        <Route path="/courses" element={<SuggestedCourses />} />
+                        <Route path="/recommendations/courses" element={<SuggestedCourses />} />
 
-          {/* User Profile Routes */}
-          <Route path="/profile" element={
-            <>
-              <Navbar />
-              <ProfilePage />
-            </>
-          } />
-          <Route path="/settings" element={
-            <>
-              <Navbar />
-              <Settings />
-            </>
-          } />
-          <Route path="/achievements" element={
-            <>
-              <Navbar />
-              <AchievementsPage />
-            </>
-          } />
+                        {/* User Profile Routes */}
+                        <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/settings" element={<Settings />} />
+                        <Route path="/achievements" element={<AchievementsPage />} />
 
-          {/* Recommendations Routes */}
-          <Route path="/recommendations" element={
-            <>
-              <Navbar />
-              <DashboardPage />
-            </>
-          } />
-          <Route path="/recommendations/careers" element={
-            <>
-              <Navbar />
-              <TopPath />
-            </>
-          } />
-          <Route path="/recommendations/colleges" element={
-            <>
-              <Navbar />
-              <RecommendedColleges />
-            </>
-          } />
-          <Route path="/recommendations/courses" element={
-            <>
-              <Navbar />
-              <SuggestedCourses />
-            </>
-          } />
+                        {/* Recommendation Routes */}
+                        <Route path="/recommendations" element={<TopPath />} />
+                        <Route path="/recommended-colleges" element={<RecommendedColleges />} />
+                        <Route path="/suggested-courses" element={<SuggestedCourses />} />
 
-          {/* Fallback Routes */}
-          <Route path="*" element={<LoginPage />} />
-        </Routes>
-      </div>
-    </Router>
+                        {/* Fallback Route */}
+                        <Route path="*" element={<DashboardPage />} />
+                      </Routes>
+                    </main>
+                  </div>
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </div>
+        </Router>
+      </AppProvider>
+    </AuthProvider>
   );
 }
 

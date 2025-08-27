@@ -13,7 +13,8 @@ import {
   FiAlertCircle,
   FiCheckCircle,
 } from "react-icons/fi";
-import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 
 const RegistrationPage = () => {
   const [step, setStep] = useState(1);
@@ -21,6 +22,7 @@ const RegistrationPage = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { register } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -36,7 +38,6 @@ const RegistrationPage = () => {
       ...prevData,
       [name]: value,
     }));
-    // Clear error when user starts typing
     if (error) setError("");
   };
 
@@ -52,7 +53,6 @@ const RegistrationPage = () => {
           return false;
         }
         break;
-
       case 2:
         if (!formData.email) {
           setError("Email is required");
@@ -71,7 +71,6 @@ const RegistrationPage = () => {
           return false;
         }
         break;
-
       case 3:
         if (!formData.password) {
           setError("Password is required");
@@ -92,7 +91,6 @@ const RegistrationPage = () => {
           return false;
         }
         break;
-
       default:
         return true;
     }
@@ -113,47 +111,27 @@ const RegistrationPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateStep(3)) return;
 
     setLoading(true);
     setError("");
 
     try {
-      const response = await axios.post(
-        `${
-          process.env.REACT_APP_API_URL || "http://localhost:5000"
-        }/api/auth/register`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.data.success) {
-        // Store token and user data
-        localStorage.setItem("token", response.data.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.data.user));
-
-        // Show success message briefly then redirect
+      const result = await register(formData);
+      if (result.success) {
         setStep(4); // Success step
+        toast.success("Registration successful!");
         setTimeout(() => {
           navigate("/dashboard");
         }, 2000);
+      } else {
+        setError(result.message);
+        toast.error(result.message);
       }
     } catch (error) {
       console.error("Registration failed:", error);
-      if (error.response?.data?.message) {
-        setError(error.response.data.message);
-      } else if (error.response?.data?.errors) {
-        setError(error.response.data.errors[0].msg);
-      } else if (error.request) {
-        setError("Network error. Please check your connection and try again.");
-      } else {
-        setError("An unexpected error occurred. Please try again.");
-      }
+      setError("An unexpected error occurred. Please try again.");
+      toast.error("Registration failed");
     } finally {
       setLoading(false);
     }
@@ -177,77 +155,71 @@ const RegistrationPage = () => {
   // Success Step
   if (step === 4) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center p-4">
+      <div className="auth-container registration-bg">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md text-center"
+          className="auth-form-wrapper"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <FiCheckCircle className="w-8 h-8 text-green-600" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Welcome to PathPilot!
-          </h2>
-          <p className="text-gray-600 mb-4">
-            Your account has been created successfully. Redirecting to your
-            dashboard...
-          </p>
-          <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <motion.div
+            className="text-center"
+            variants={stepVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.div
+              className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+            >
+              <FiCheckCircle className="w-8 h-8 text-green-600" />
+            </motion.div>
+            <h1 className="auth-title text-green-600">Welcome Aboard!</h1>
+            <p className="text-gray-600 mb-6">
+              Your account has been created successfully. Redirecting to your
+              dashboard...
+            </p>
+          </motion.div>
         </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="auth-container registration-bg">
       <motion.div
+        className="auth-form-wrapper"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md"
       >
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Join PathPilot
-          </h1>
-          <p className="text-gray-600">Start your career journey today</p>
+        <div className="logo-container">
+          <h2 className="logo-text gradient-text">PathPilot</h2>
         </div>
+
+        <div className="step-indicator">Step {step} of 3</div>
+        <h1 className="auth-title">Create Your Account</h1>
+        <p className="text-gray-600 mb-6">Start your career journey today</p>
 
         {/* Progress Bar */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Step {step} of 3</span>
-            <span className="text-sm text-gray-600">
-              {Math.round((step / 3) * 100)}%
-            </span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <motion.div
-              className="bg-blue-600 h-2 rounded-full"
-              initial={{ width: "33%" }}
-              animate={{ width: `${(step / 3) * 100}%` }}
-              transition={{ duration: 0.3 }}
-            />
-          </div>
+        <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
+          <div
+            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+            style={{ width: `${(step / 3) * 100}%` }}
+          ></div>
         </div>
 
-        {/* Error Message */}
         {error && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-3"
-          >
-            <FiAlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
-            <span className="text-red-700 text-sm">{error}</span>
-          </motion.div>
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center text-red-700">
+            <FiAlertCircle className="mr-2" />
+            {error}
+          </div>
         )}
 
-        <form onSubmit={step === 3 ? handleSubmit : (e) => e.preventDefault()}>
+        <form onSubmit={handleSubmit} className="auth-form">
           <AnimatePresence mode="wait">
-            {/* Step 1: Basic Info */}
             {step === 1 && (
               <motion.div
                 key="step1"
@@ -255,32 +227,33 @@ const RegistrationPage = () => {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="space-y-6"
               >
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
+                <div className="input-group">
+                  <label htmlFor="name">
+                    <FiUser className="inline mr-2" />
                     Full Name
                   </label>
-                  <div className="relative">
-                    <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      value={formData.name}
-                      onChange={handleChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                      placeholder="Enter your full name"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Enter your full name"
+                    disabled={loading}
+                  />
                 </div>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="btn btn-primary w-full"
+                  disabled={loading}
+                >
+                  Next <FiArrowRight className="ml-2" />
+                </button>
               </motion.div>
             )}
 
-            {/* Step 2: Contact Info */}
             {step === 2 && (
               <motion.div
                 key="step2"
@@ -288,53 +261,58 @@ const RegistrationPage = () => {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="space-y-6"
               >
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
+                <div className="input-group">
+                  <label htmlFor="email">
+                    <FiMail className="inline mr-2" />
                     Email Address
                   </label>
-                  <div className="relative">
-                    <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                      placeholder="Enter your email"
-                    />
-                  </div>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Enter your email"
+                    disabled={loading}
+                  />
                 </div>
-
-                <div>
-                  <label
-                    htmlFor="phone"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
+                <div className="input-group">
+                  <label htmlFor="phone">
+                    <FiPhone className="inline mr-2" />
                     Phone Number
                   </label>
-                  <div className="relative">
-                    <FiPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                      placeholder="Enter 10-digit phone number"
-                    />
-                  </div>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="Enter your phone number"
+                    disabled={loading}
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={handlePrevious}
+                    className="btn bg-gray-200 text-gray-700 hover:bg-gray-300 flex-1"
+                    disabled={loading}
+                  >
+                    <FiArrowLeft className="mr-2" /> Back
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    className="btn btn-primary flex-1"
+                    disabled={loading}
+                  >
+                    Next <FiArrowRight className="ml-2" />
+                  </button>
                 </div>
               </motion.div>
             )}
 
-            {/* Step 3: Security & Preferences */}
             {step === 3 && (
               <motion.div
                 key="step3"
@@ -342,115 +320,78 @@ const RegistrationPage = () => {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="space-y-6"
               >
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
+                <div className="input-group">
+                  <label htmlFor="password">
+                    <FiLock className="inline mr-2" />
                     Password
                   </label>
                   <div className="relative">
-                    <FiLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                     <input
+                      type={showPassword ? "text" : "password"}
                       id="password"
                       name="password"
-                      type={showPassword ? "text" : "password"}
                       value={formData.password}
                       onChange={handleChange}
-                      className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                       placeholder="Create a strong password"
+                      disabled={loading}
+                      className="pr-10"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                      disabled={loading}
                     >
-                      {showPassword ? (
-                        <FiEyeOff className="w-5 h-5" />
-                      ) : (
-                        <FiEye className="w-5 h-5" />
-                      )}
+                      {showPassword ? <FiEyeOff /> : <FiEye />}
                     </button>
                   </div>
                 </div>
-
-                <div>
-                  <label
-                    htmlFor="educationStage"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    Education Stage
-                  </label>
+                <div className="input-group">
+                  <label htmlFor="educationStage">Education Stage</label>
                   <select
                     id="educationStage"
                     name="educationStage"
                     value={formData.educationStage}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                    disabled={loading}
                   >
-                    <option value="">Select your current stage</option>
-                    <option value="after10th">After 10th Grade</option>
-                    <option value="after12th">After 12th Grade</option>
-                    <option value="ongoing">Currently in College</option>
+                    <option value="">Select your education stage</option>
+                    <option value="high_school">High School</option>
+                    <option value="undergraduate">Undergraduate</option>
+                    <option value="graduate">Graduate</option>
+                    <option value="postgraduate">Postgraduate</option>
+                    <option value="working_professional">
+                      Working Professional
+                    </option>
                   </select>
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={handlePrevious}
+                    className="btn bg-gray-200 text-gray-700 hover:bg-gray-300 flex-1"
+                    disabled={loading}
+                  >
+                    <FiArrowLeft className="mr-2" /> Back
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary flex-1"
+                    disabled={loading}
+                  >
+                    {loading ? "Creating Account..." : "Create Account"}
+                  </button>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
-
-          {/* Navigation Buttons */}
-          <div className="flex items-center justify-between mt-8">
-            {step > 1 ? (
-              <button
-                type="button"
-                onClick={handlePrevious}
-                className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                <FiArrowLeft className="w-4 h-4" />
-                <span>Previous</span>
-              </button>
-            ) : (
-              <div></div>
-            )}
-
-            {step < 3 ? (
-              <button
-                type="button"
-                onClick={handleNext}
-                className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-              >
-                <span>Next</span>
-                <FiArrowRight className="w-4 h-4" />
-              </button>
-            ) : (
-              <button
-                type="submit"
-                disabled={loading}
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? (
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Creating Account...</span>
-                  </div>
-                ) : (
-                  "Create Account"
-                )}
-              </button>
-            )}
-          </div>
         </form>
 
-        {/* Login Link */}
-        <div className="mt-8 text-center">
-          <p className="text-gray-600">
+        <div className="auth-links">
+          <p>
             Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
-            >
+            <Link to="/login" className="text-blue-600 hover:underline">
               Sign In
             </Link>
           </p>

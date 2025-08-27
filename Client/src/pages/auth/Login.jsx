@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FiMail, FiLock, FiEye, FiEyeOff, FiAlertCircle } from "react-icons/fi";
-import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +13,12 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/dashboard";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,7 +26,6 @@ const LoginPage = () => {
       ...prev,
       [name]: value,
     }));
-    // Clear error when user starts typing
     if (error) setError("");
   };
 
@@ -42,42 +47,23 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     setIsLoading(true);
     setError("");
 
     try {
-      const response = await axios.post(
-        `${
-          process.env.REACT_APP_API_URL || "http://localhost:5000"
-        }/api/auth/login`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.data.success) {
-        // Store token in localStorage
-        localStorage.setItem("token", response.data.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.data.user));
-
-        // Redirect to dashboard
-        navigate("/dashboard");
+      const result = await login(formData);
+      if (result.success) {
+        toast.success("Login successful!");
+        navigate(from, { replace: true });
+      } else {
+        setError(result.message);
+        toast.error(result.message);
       }
     } catch (err) {
-      console.error("Login error:", err);
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
-      } else if (err.request) {
-        setError("Network error. Please check your connection and try again.");
-      } else {
-        setError("An unexpected error occurred. Please try again.");
-      }
+      setError("An unexpected error occurred. Please try again.");
+      toast.error("Login failed");
     } finally {
       setIsLoading(false);
     }
@@ -93,130 +79,89 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="auth-container registration-bg">
       <motion.div
+        className="auth-form-wrapper"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md"
       >
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome Back
-          </h1>
-          <p className="text-gray-600">
-            Sign in to continue your career journey
-          </p>
+        <div className="logo-container">
+          <h2 className="logo-text gradient-text">PathPilot</h2>
         </div>
 
-        {/* Error Message */}
+        <h1 className="auth-title">Welcome Back</h1>
+        <p className="text-gray-600 mb-6">
+          Sign in to continue your career journey
+        </p>
+
         {error && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-3"
-          >
-            <FiAlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
-            <span className="text-red-700 text-sm">{error}</span>
-          </motion.div>
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center text-red-700">
+            <FiAlertCircle className="mr-2" />
+            {error}
+          </div>
         )}
 
-        {/* Login Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Email Field */}
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="input-group">
+            <label htmlFor="email">
+              <FiMail className="inline mr-2" />
               Email Address
             </label>
-            <div className="relative">
-              <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                placeholder="Enter your email"
-                disabled={isLoading}
-              />
-            </div>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+              disabled={isLoading}
+            />
           </div>
 
-          {/* Password Field */}
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
+          <div className="input-group">
+            <label htmlFor="password">
+              <FiLock className="inline mr-2" />
               Password
             </label>
             <div className="relative">
-              <FiLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
-                type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 placeholder="Enter your password"
                 disabled={isLoading}
+                className="pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
                 disabled={isLoading}
               >
-                {showPassword ? (
-                  <FiEyeOff className="w-5 h-5" />
-                ) : (
-                  <FiEye className="w-5 h-5" />
-                )}
+                {showPassword ? <FiEyeOff /> : <FiEye />}
               </button>
             </div>
           </div>
 
-          {/* Forgot Password Link */}
-          <div className="text-right">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
-            >
-              Forgot your password?
-            </Link>
-          </div>
-
-          {/* Submit Button */}
           <button
             type="submit"
+            className="btn btn-primary w-full"
             disabled={isLoading}
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? (
-              <div className="flex items-center justify-center space-x-2">
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>Signing In...</span>
-              </div>
-            ) : (
-              "Sign In"
-            )}
+            {isLoading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
-        {/* Register Link */}
-        <div className="mt-8 text-center">
-          <p className="text-gray-600">
+        <div className="auth-links">
+          <Link to="/forgot-password" className="text-blue-600 hover:underline">
+            Forgot your password?
+          </Link>
+          <p>
             Don't have an account?{" "}
-            <Link
-              to="/register"
-              className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
-            >
+            <Link to="/register" className="text-blue-600 hover:underline">
               Create Account
             </Link>
           </p>

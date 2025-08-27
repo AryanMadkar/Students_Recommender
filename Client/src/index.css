@@ -28,6 +28,18 @@ body {
   background-size: 15px 15px;
 }
 
+/* Rest of your existing CSS... */
+/* (Keep all your existing CSS styles) */
+
+/* General Body & App Layout */
+
+/* Background for registration page */
+.registration-bg {
+  background-color: #f0f2f5;
+  background-image: radial-gradient(#d0d0d0 1px, transparent 1px);
+  background-size: 15px 15px;
+}
+
 /* Form Wrapper Styling */
 .auth-form-wrapper {
   background-color: #ffffff;
