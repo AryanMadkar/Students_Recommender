@@ -9,6 +9,7 @@ import RegistrationPage from "./pages/auth/Register";
 import { Routes, Route } from "react-router-dom";
 import ForgotPasswordPage from "./pages/auth/ForgetPassword";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
+import AssessmentCard from "./pages/Assessments/Assissment";
 
 function App() {
   return (
@@ -23,18 +24,21 @@ function App() {
             element={
               <div className="flex flex-col min-h-screen">
                 <Navbar />
-                <main className="flex-1">
+                {/* <main className="flex-1">
                   <Routes>
                     <Route path="/" element={<DashboardPage />} />
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/assessment" element={<AssessmentCard />} />
+
                     <Route
                       path="/achievements"
                       element={<AchievementsPage />}
                     />
                     <Route path="/settings" element={<Settings />} />
                   </Routes>
-                </main>
+                </main> */}
+                <AssessmentCard/>
               </div>
             }
           />
