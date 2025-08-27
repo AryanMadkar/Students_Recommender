@@ -16,6 +16,7 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
       <div className="relative">
         <Routes>
+          <Route path="/" element={<DashboardPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegistrationPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -24,10 +25,8 @@ function App() {
             element={
               <div className="flex flex-col min-h-screen">
                 <Navbar />
-                {/* <main className="flex-1">
+                <main className="flex-1">
                   <Routes>
-                    <Route path="/" element={<DashboardPage />} />
-                    <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/assessment" element={<AssessmentCard />} />
 
@@ -37,7 +36,7 @@ function App() {
                     />
                     <Route path="/settings" element={<Settings />} />
                   </Routes>
-                </main> */}
+                </main>
                 {/* <AssessmentCard/> */}
               </div>
             }

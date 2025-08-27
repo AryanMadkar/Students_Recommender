@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Assuming you use react-router for navigation
+import { Link } from "react-router-dom";
+import axios from "axios"; // Add axios import
 
 const RegistrationPage = () => {
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false); // Add loading state
+  const [error, setError] = useState(""); // Add error state
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -20,11 +23,41 @@ const RegistrationPage = () => {
     setStep((prevStep) => prevStep + 1);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Your registration logic here, e.g., calling the API
-    // This will have all the form data required by your backend
-    console.log("Final registration data:", formData);
+    setLoading(true);
+    setError("");
+
+    try {
+      // Make POST request to your backend API
+      const response = await axios.post("http://localhost:5000/api/auth/register", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Registration successful:", response.data);
+
+      // Handle successful registration
+      // You might want to redirect user or show success message
+      // Example: navigate to login page or dashboard
+    } catch (error) {
+      console.error("Registration failed:", error);
+
+      // Handle different types of errors
+      if (error.response) {
+        // Server responded with error status
+        setError(error.response.data.message || "Registration failed");
+      } else if (error.request) {
+        // Request was made but no response received
+        setError("Network error. Please try again.");
+      } else {
+        // Something else happened
+        setError("An unexpected error occurred");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -35,6 +68,16 @@ const RegistrationPage = () => {
         </div>
 
         <p className="step-indicator">Step {step} of 3</p>
+
+        {/* Show error message if any */}
+        {error && (
+          <div
+            className="error-message"
+            style={{ color: "red", marginBottom: "1rem" }}
+          >
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="auth-form">
           {step === 1 && (
@@ -122,14 +165,17 @@ const RegistrationPage = () => {
                   required
                 >
                   <option value="">Select Stage</option>
-                  <option value="high-school">High School</option>
-                  <option value="undergraduate">Undergraduate</option>
-                  <option value="graduate">Graduate</option>
-                  <option value="professional">Professional</option>
+                  <option value="after10th">After 10th</option>
+                  <option value="after12th">After 12th</option>
+                  <option value="ongoing">Ongoing</option>
                 </select>
               </div>
-              <button type="submit" className="btn btn-primary">
-                Register
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={loading}
+              >
+                {loading ? "Registering..." : "Register"}
               </button>
             </>
           )}
