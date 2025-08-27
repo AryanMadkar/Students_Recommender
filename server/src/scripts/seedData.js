@@ -25,21 +25,27 @@ const seedAllData = async () => {
 
     // --- Seed Questions ---
     console.log("❓ Seeding questions...");
+    
+    // FIXED: Proper file path resolution
+    const dataPath = path.join(__dirname, "../data");
+    
     const after10thQuestionsData = JSON.parse(
       fs.readFileSync(
-        path.join(__dirname, "../data/questions/after10th.json"),
+        path.join(dataPath, "questions/after10th.json"),
         "utf8"
       )
     );
+    
     const after12thQuestionsData = JSON.parse(
       fs.readFileSync(
-        path.join(__dirname, "../data/questions/after12th.json"),
+        path.join(dataPath, "questions/after12th.json"),
         "utf8"
       )
     );
+    
     const ongoingQuestionsData = JSON.parse(
       fs.readFileSync(
-        path.join(__dirname, "../data/questions/ongoing.json"),
+        path.join(dataPath, "questions/ongoing.json"),
         "utf8"
       )
     );
@@ -49,6 +55,7 @@ const seedAllData = async () => {
       ...after12thQuestionsData,
       ...ongoingQuestionsData,
     ];
+
     const insertedQuestions = await Question.insertMany(allQuestionsData);
     console.log(`✅ Inserted ${insertedQuestions.length} questions.`);
 
@@ -96,13 +103,14 @@ const seedAllData = async () => {
         isActive: true,
       },
     ];
+
     const insertedAssessments = await Assessment.insertMany(assessments);
     console.log(`✅ Created ${insertedAssessments.length} assessments.`);
 
     // --- Seed Colleges ---
     console.log("🏫 Seeding colleges...");
     const collegesData = JSON.parse(
-      fs.readFileSync(path.join(__dirname, "../data/colleges.json"), "utf8")
+      fs.readFileSync(path.join(dataPath, "colleges.json"), "utf8")
     );
     await College.insertMany(collegesData);
     console.log(`✅ Inserted ${collegesData.length} colleges.`);
@@ -110,7 +118,7 @@ const seedAllData = async () => {
     // --- Seed Careers ---
     console.log("🚀 Seeding careers...");
     const careersData = JSON.parse(
-      fs.readFileSync(path.join(__dirname, "../data/careers.json"), "utf8")
+      fs.readFileSync(path.join(dataPath, "careers.json"), "utf8")
     );
     await Career.insertMany(careersData);
     console.log(`✅ Inserted ${careersData.length} careers.`);
@@ -118,7 +126,7 @@ const seedAllData = async () => {
     // --- Seed Courses ---
     console.log("📚 Seeding courses...");
     const coursesData = JSON.parse(
-      fs.readFileSync(path.join(__dirname, "../data/courses.json"), "utf8")
+      fs.readFileSync(path.join(dataPath, "courses.json"), "utf8")
     );
     await Course.insertMany(coursesData);
     console.log(`✅ Inserted ${coursesData.length} courses.`);

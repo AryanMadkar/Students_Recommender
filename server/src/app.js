@@ -1,3 +1,4 @@
+// app.js - FIXED CORS configuration
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -22,9 +23,15 @@ const app = express();
 
 // Security middleware
 app.use(helmet());
+
+// FIXED: Single CORS configuration with proper origin list
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
+  origin: process.env.NODE_ENV === 'production' 
+    ? [process.env.FRONTEND_URL]  // In production, use specific URL
+    : ['http://localhost:3000', 'http://localhost:3001'], // In development, allow localhost
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Body parsing middleware
@@ -51,7 +58,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API routes - REMOVED GLOBAL RATE LIMITING HERE
+// API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/assessments', assessmentRoutes);
 app.use('/api/recommendations', recommendationRoutes);

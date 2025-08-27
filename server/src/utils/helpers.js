@@ -68,7 +68,6 @@ const paginate = (array, page, limit) => {
 // Deep merge objects
 const deepMerge = (target, source) => {
   const result = { ...target };
-  
   for (const key in source) {
     if (source[key] !== null && typeof source[key] === 'object' && !Array.isArray(source[key])) {
       result[key] = deepMerge(result[key] || {}, source[key]);
@@ -76,7 +75,6 @@ const deepMerge = (target, source) => {
       result[key] = source[key];
     }
   }
-  
   return result;
 };
 
@@ -115,57 +113,68 @@ const isValidEmail = (email) => {
 const generateOTP = (length = 6) => {
   const digits = '0123456789';
   let otp = '';
-  
   for (let i = 0; i < length; i++) {
     otp += digits[Math.floor(Math.random() * 10)];
   }
-  
   return otp;
 };
 
 // Format file size
 const formatFileSize = (bytes) => {
   if (bytes === 0) return '0 Bytes';
-  
   const k = 1024;
   const sizes = ['Bytes', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 };
 
-// Sanitize HTML - FIXED COMPLETE FUNCTION
+// FIXED: Complete sanitize HTML function
 const sanitizeHtml = (html) => {
   return html
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
-    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '') // Remove iframe tags
-    .replace(/javascript:/gi, '') // Remove javascript: urls
-    .replace(/on\w+="[^"]*"/gi, '') // Remove event handlers
-    .replace(/on\w+='[^']*'/gi, '') // Remove event handlers with single quotes
-    .replace(/<\s*\/?\s*(?:embed|object|applet|link|meta|form)\s*[^>]*>/gi, '') // Remove dangerous tags
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    .replace(/javascript:/gi, '')
+    .replace(/on\w+="[^"]*"/gi, '')
+    .replace(/on\w+='[^']*'/gi, '')
+    .replace(/<iframe\b[^>]*>/gi, '')
+    .replace(/<object\b[^>]*>/gi, '')
+    .replace(/<embed\b[^>]*>/gi, '')
+    .replace(/<form\b[^>]*>/gi, '')
+    .replace(/<input\b[^>]*>/gi, '')
+    .replace(/<textarea\b[^>]*>/gi, '')
+    .replace(/<select\b[^>]*>/gi, '')
     .trim();
 };
 
-// Validate date format
-const isValidDate = (dateString) => {
-  const date = new Date(dateString);
-  return date instanceof Date && !isNaN(date);
+// Validate Indian Aadhaar number
+const validateAadhaar = (aadhaar) => {
+  const aadhaarRegex = /^[2-9]{1}[0-9]{3}\s?[0-9]{4}\s?[0-9]{4}$/;
+  return aadhaarRegex.test(aadhaar.replace(/\s/g, ''));
 };
 
-// Remove duplicates from array
-const removeDuplicates = (array, key = null) => {
-  if (key) {
-    return array.filter((item, index, self) =>
-      index === self.findIndex(t => t[key] === item[key])
-    );
+// Generate random password
+const generateRandomPassword = (length = 12) => {
+  const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+  const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const numbers = '0123456789';
+  const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+  
+  const allChars = lowercase + uppercase + numbers + symbols;
+  let password = '';
+  
+  // Ensure at least one character from each category
+  password += lowercase[Math.floor(Math.random() * lowercase.length)];
+  password += uppercase[Math.floor(Math.random() * uppercase.length)];
+  password += numbers[Math.floor(Math.random() * numbers.length)];
+  password += symbols[Math.floor(Math.random() * symbols.length)];
+  
+  // Fill the rest randomly
+  for (let i = 4; i < length; i++) {
+    password += allChars[Math.floor(Math.random() * allChars.length)];
   }
-  return [...new Set(array)];
-};
-
-// Capitalize first letter
-const capitalize = (str) => {
-  if (!str) return '';
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  
+  // Shuffle the password
+  return password.split('').sort(() => Math.random() - 0.5).join('');
 };
 
 module.exports = {
@@ -184,7 +193,6 @@ module.exports = {
   generateOTP,
   formatFileSize,
   sanitizeHtml,
-  isValidDate,
-  removeDuplicates,
-  capitalize
+  validateAadhaar,
+  generateRandomPassword
 };

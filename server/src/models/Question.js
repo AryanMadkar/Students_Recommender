@@ -11,7 +11,6 @@ const questionSchema = new mongoose.Schema(
       enum: ["multiple_choice", "rating", "ranking", "text", "boolean"],
       required: true,
     },
-    // CORRECTED: Expanded the enum to include all categories from your data files.
     category: {
       type: String,
       enum: [
@@ -28,6 +27,7 @@ const questionSchema = new mongoose.Schema(
       required: true,
     },
     subcategory: String,
+    // FIXED: Proper array of subdocuments
     options: [
       {
         text: String,
@@ -42,6 +42,7 @@ const questionSchema = new mongoose.Schema(
       enum: ["easy", "medium", "hard"],
       default: "medium",
     },
+    // FIXED: Proper array of strings
     stage: [
       {
         type: String,

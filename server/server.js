@@ -1,22 +1,13 @@
 require("dotenv").config();
+
 const app = require("./src/app");
 const connectDB = require("./src/config/database");
 const { connectRedis } = require("./src/config/redis");
 const logger = require("./src/utils/logger");
-const cors = require("cors");
 
 const PORT = process.env.PORT || 5000;
 
-// Configure CORS options
-const corsOptions = {
-  origin: ["*"],
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
-
-// Apply CORS middleware BEFORE starting server
-app.use(cors(corsOptions));
+// REMOVED: Duplicate CORS configuration - now handled in app.js
 
 // Handle uncaught exceptions
 process.on("uncaughtException", (err) => {
