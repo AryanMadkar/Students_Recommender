@@ -13,7 +13,6 @@ import {
   FiAlertCircle,
   FiCheckCircle,
 } from "react-icons/fi";
-import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 
 const RegistrationPage = () => {
@@ -22,7 +21,6 @@ const RegistrationPage = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { register } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -117,16 +115,24 @@ const RegistrationPage = () => {
     setError("");
 
     try {
-      const result = await register(formData);
-      if (result.success) {
+      const response = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
         setStep(4); // Success step
         toast.success("Registration successful!");
         setTimeout(() => {
           navigate("/dashboard");
         }, 2000);
       } else {
-        setError(result.message);
-        toast.error(result.message);
+        setError(data.message || "Registration failed");
+        toast.error(data.message || "Registration failed");
       }
     } catch (error) {
       console.error("Registration failed:", error);
@@ -152,7 +158,6 @@ const RegistrationPage = () => {
     exit: { opacity: 0, x: -20 },
   };
 
-  // Success Step
   if (step === 4) {
     return (
       <div className="auth-container registration-bg">
@@ -203,7 +208,6 @@ const RegistrationPage = () => {
         <h1 className="auth-title">Create Your Account</h1>
         <p className="text-gray-600 mb-6">Start your career journey today</p>
 
-        {/* Progress Bar */}
         <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
           <div
             className="bg-blue-600 h-2 rounded-full transition-all duration-300"
@@ -357,13 +361,9 @@ const RegistrationPage = () => {
                     disabled={loading}
                   >
                     <option value="">Select your education stage</option>
-                    <option value="high_school">High School</option>
-                    <option value="undergraduate">Undergraduate</option>
-                    <option value="graduate">Graduate</option>
-                    <option value="postgraduate">Postgraduate</option>
-                    <option value="working_professional">
-                      Working Professional
-                    </option>
+                    <option value="after10th">High School</option>
+                    <option value="after12th">Undergraduate</option>
+                    <option value="ongoing">Graduate</option>
                   </select>
                 </div>
                 <div className="flex gap-3">

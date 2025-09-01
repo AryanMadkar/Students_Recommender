@@ -1,0 +1,60 @@
+const Recommendations = [
+  {
+    _id: "rec01",
+    userId: "u01",
+    type: "career",
+    stage: "ongoing",
+    recommendations: [
+      {
+        title: "Software Engineer",
+        description: "Design and build tech products at scale.",
+        matchPercentage: 93,
+        reasoning: "Excellent DSA and coding skills.",
+        priority: 1,
+        career: "ca01",
+      },
+      {
+        title: "Data Scientist",
+        description: "Use data and machine learning to build AI systems.",
+        matchPercentage: 80,
+        reasoning: "Strong analytical and technical skills.",
+        priority: 2,
+        career: "ca02",
+      },
+    ],
+    aiGeneratedInsights: {
+      summary: "Best fit for tech paths.",
+      keyPoints: ["DSA achievements", "Interest in AI/ML"],
+      actionSteps: ["Apply for SDE, ML internships", "Compete in hackathons"],
+      timeline: "6 months",
+    },
+    confidence: 91,
+    expiresAt: "2025-12-31T23:59:59Z",
+    feedback: { helpful: true, rating: 5, comments: "Very useful!" },
+  },
+  {
+    _id: "rec02",
+    userId: "u02",
+    type: "career",
+    stage: "after12th",
+    recommendations: [
+      {
+        title: "Chartered Accountant",
+        description: "Manage audits and financial compliance.",
+        matchPercentage: 89,
+        reasoning: "Excellent marks in Accounts, strong analytical skills.",
+        priority: 1,
+        career: "ca03",
+      },
+    ],
+    aiGeneratedInsights: {
+      summary: "Commerce and finance recommended.",
+      keyPoints: ["High analytical ability", "Commerce background"],
+      actionSteps: ["Enroll in CA coaching", "Build consulting skills"],
+      timeline: "8 months",
+    },
+    confidence: 87,
+    expiresAt: "2025-12-31T23:59:59Z",
+    feedback: { helpful: true, rating: 4, comments: "Helpful guidance!" },
+  },
+];

@@ -26,12 +26,14 @@ app.use(helmet());
 
 // FIXED: Single CORS configuration with proper origin list
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? [process.env.FRONTEND_URL]  // In production, use specific URL
-    : ['http://localhost:3000', 'http://localhost:3001'], // In development, allow localhost
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: [
+    "http://localhost:5173", // Vite React
+    "http://localhost:3000", // optional extra if you test on CRA
+    "http://localhost:3001"
+  ],
+  credentials: true,  // allow cookies / auth headers
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 // Body parsing middleware
