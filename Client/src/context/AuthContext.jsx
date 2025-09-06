@@ -22,6 +22,27 @@ export const AuthProvider = ({ children }) => {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
 
+  // Add request interceptor to handle token updates
+  api.interceptors.request.use((config) => {
+    const currentToken = localStorage.getItem("token");
+    if (currentToken) {
+      config.headers.Authorization = `Bearer ${currentToken}`;
+    }
+    return config;
+  });
+
+  // Add response interceptor to handle auth errors
+  api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response?.status === 401) {
+        console.log("401 Unauthorized - logging out");
+        logout();
+      }
+      return Promise.reject(error);
+    }
+  );
+
   useEffect(() => {
     if (token) {
       api.defaults.headers.Authorization = `Bearer ${token}`;
@@ -36,7 +57,7 @@ export const AuthProvider = ({ children }) => {
     } else {
       setLoading(false);
     }
-  }, [token]);
+  }, []);
 
   const validateToken = async () => {
     try {
@@ -71,16 +92,15 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const response = await axios.post(
-        `${apiUrl}/api/auth/login`,
-        credentials
-      );
+      const response = await axios.post(`${apiUrl}/api/auth/login`, credentials);
       if (response.data.success) {
         const { token: newToken, user: newUser } = response.data.data;
         localStorage.setItem("token", newToken);
         setToken(newToken);
         setUser(newUser);
-        await fetchUserProfile(); // Fetch full profile
+        // Set the token in api instance immediately
+        api.defaults.headers.Authorization = `Bearer ${newToken}`;
+        await fetchUserProfile();
         return { success: true };
       } else {
         return {
@@ -99,16 +119,15 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post(
-        `${apiUrl}/api/auth/register`,
-        userData
-      );
+      const response = await axios.post(`${apiUrl}/api/auth/register`, userData);
       if (response.data.success) {
         const { token: newToken, user: newUser } = response.data.data;
         localStorage.setItem("token", newToken);
         setToken(newToken);
         setUser(newUser);
-        await fetchUserProfile(); // Fetch full profile
+        // Set the token in api instance immediately
+        api.defaults.headers.Authorization = `Bearer ${newToken}`;
+        await fetchUserProfile();
         return { success: true };
       } else {
         return {
@@ -130,6 +149,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
     setToken(null);
     setUser(null);
+    delete api.defaults.headers.Authorization;
   };
 
   const updateUser = (userData) => {

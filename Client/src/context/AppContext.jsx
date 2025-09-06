@@ -41,7 +41,7 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const fetchAssessments = async (stage = "ongoing") => { // Default to 'ongoing' based on your profile (AI/ML/web dev)
+  const fetchAssessments = async (stage = "ongoing") => {
     if (!isAuthenticated) return;
     try {
       setLoading(true);
@@ -103,12 +103,21 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // FIXED: Only send non-empty parameters
   const searchColleges = async (searchParams = {}) => {
     try {
       setLoading(true);
-      const response = await api.get("/api/colleges/search", {
-        params: { state: "Delhi", course: "Computer", ...searchParams },
+      // Only add non-empty params to avoid 400 Bad Request
+      const params = {};
+      Object.entries(searchParams).forEach(([key, value]) => {
+        if (value && value.trim() !== "") {
+          params[key] = value;
+        }
       });
+      
+      console.log("Searching colleges with params:", params); // Debug log
+      
+      const response = await api.get("/api/colleges/search", { params });
       if (response.data.success) {
         setColleges(response.data.data.colleges);
         return response.data.data;
