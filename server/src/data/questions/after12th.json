@@ -70,7 +70,7 @@
   {
     "question": "Do you prefer theoretical or practical learning?",
     "type": "multiple_choice",
-    "category": "learning",
+    "category": "personality",
     "subcategory": "style",
     "options": [
       { "text": "Theoretical", "value": "theory", "weight": 80 },

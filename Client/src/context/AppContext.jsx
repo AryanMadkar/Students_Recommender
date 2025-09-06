@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
 import { useAuth } from "./AuthContext";
 
 const AppContext = createContext();
@@ -21,36 +20,18 @@ export const AppProvider = ({ children }) => {
   const [userPreferences, setUserPreferences] = useState({
     notifications: true,
     emailUpdates: false,
-    theme: "light"
+    theme: "light",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
-
-  // Create axios instance
-  const appApi = axios.create({
-    baseURL: apiUrl,
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-  });
-
-  // Update headers when token changes
-  useEffect(() => {
-    if (token) {
-      appApi.defaults.headers.Authorization = `Bearer ${token}`;
-    } else {
-      delete appApi.defaults.headers.Authorization;
-    }
-  }, [token]);
 
   const fetchDashboardData = async () => {
     if (!isAuthenticated) return;
     try {
       setLoading(true);
-      const response = await appApi.get("/api/users/dashboard");
+      const response = await api.get("/api/users/dashboard");
       if (response.data.success) {
         setDashboardData(response.data.data);
-        console.log("dashboard data", response.data.data);
       }
     } catch (err) {
       setError("Failed to load dashboard data");
@@ -60,14 +41,13 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const fetchAssessments = async (stage = "after12th") => {
+  const fetchAssessments = async (stage = "ongoing") => { // Default to 'ongoing' based on your profile (AI/ML/web dev)
     if (!isAuthenticated) return;
     try {
       setLoading(true);
-      const response = await appApi.get(`/api/assessments?stage=${stage}`);
+      const response = await api.get(`/api/assessments?stage=${stage}`);
       if (response.data.success) {
         setAssessments(response.data.data);
-        console.log("assessments", response.data.data);
       }
     } catch (err) {
       setError("Failed to load assessments");
@@ -81,10 +61,9 @@ export const AppProvider = ({ children }) => {
     if (!isAuthenticated) return;
     try {
       setLoading(true);
-      const response = await appApi.get("/api/recommendations/careers");
+      const response = await api.get("/api/recommendations/careers");
       if (response.data.success) {
         setRecommendations(response.data.data);
-        console.log("recommendations", response.data.data);
       }
     } catch (err) {
       setError("Failed to load recommendations");
@@ -97,10 +76,9 @@ export const AppProvider = ({ children }) => {
   const fetchUserPreferences = async () => {
     if (!isAuthenticated) return;
     try {
-      const response = await appApi.get("/api/users/preferences");
+      const response = await api.get("/api/users/preferences");
       if (response.data.success) {
         setUserPreferences(response.data.data);
-        console.log("user preferences", response.data.data);
       }
     } catch (err) {
       console.error("Preferences fetch error:", err);
@@ -111,10 +89,9 @@ export const AppProvider = ({ children }) => {
     if (!isAuthenticated) return;
     try {
       setLoading(true);
-      const response = await appApi.put("/api/users/preferences", preferences);
+      const response = await api.put("/api/users/preferences", preferences);
       if (response.data.success) {
         setUserPreferences(response.data.data);
-        console.log("preferences updated", response.data.data);
         return { success: true };
       }
     } catch (err) {
@@ -129,12 +106,11 @@ export const AppProvider = ({ children }) => {
   const searchColleges = async (searchParams = {}) => {
     try {
       setLoading(true);
-      const response = await appApi.get("/api/colleges/search", {
+      const response = await api.get("/api/colleges/search", {
         params: { state: "Delhi", course: "Computer", ...searchParams },
       });
       if (response.data.success) {
         setColleges(response.data.data.colleges);
-        console.log("colleges search", response.data.data);
         return response.data.data;
       }
     } catch (err) {
@@ -149,12 +125,11 @@ export const AppProvider = ({ children }) => {
     if (!isAuthenticated) return;
     try {
       setLoading(true);
-      const response = await appApi.post(
+      const response = await api.post(
         `/api/assessments/${assessmentId}/submit`,
         submissionData
       );
       if (response.data.success) {
-        console.log("assessment submitted", response.data.data);
         await fetchAssessments();
         await fetchRecommendations();
         return response.data.data;
@@ -169,7 +144,6 @@ export const AppProvider = ({ children }) => {
 
   const clearError = () => setError("");
 
-  // Load data when authenticated
   useEffect(() => {
     if (isAuthenticated) {
       fetchDashboardData();
@@ -195,7 +169,6 @@ export const AppProvider = ({ children }) => {
     updateUserPreferences,
     searchColleges,
     submitAssessment,
-    api: appApi,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

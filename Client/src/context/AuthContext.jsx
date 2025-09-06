@@ -15,16 +15,13 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem("token"));
-
   const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-  // Create axios instance with token
   const api = axios.create({
     baseURL: apiUrl,
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
 
-  // Update axios headers when token changes
   useEffect(() => {
     if (token) {
       api.defaults.headers.Authorization = `Bearer ${token}`;
@@ -43,12 +40,9 @@ export const AuthProvider = ({ children }) => {
 
   const validateToken = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/auth/validate`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await api.get("/api/auth/validate");
       if (response.data.success) {
         setUser(response.data.data.user);
-        // Also fetch complete profile data
         await fetchUserProfile();
       } else {
         logout();
@@ -66,7 +60,6 @@ export const AuthProvider = ({ children }) => {
       const response = await api.get("/api/auth/me");
       if (response.data.success) {
         const userData = response.data.data;
-        console.log("user profile", userData);
         setUser(userData);
         localStorage.setItem("user", JSON.stringify(userData));
         return userData;
@@ -87,12 +80,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", newToken);
         setToken(newToken);
         setUser(newUser);
-
-        // Fetch complete user profile data
-        setTimeout(async () => {
-          await fetchUserProfile();
-        }, 100);
-
+        await fetchUserProfile(); // Fetch full profile
         return { success: true };
       } else {
         return {
@@ -120,13 +108,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", newToken);
         setToken(newToken);
         setUser(newUser);
-
-        // Fetch complete user profile data
-        setTimeout(async () => {
-          await fetchUserProfile();
-        }, 100);
-
-        console.log(newUser);
+        await fetchUserProfile(); // Fetch full profile
         return { success: true };
       } else {
         return {

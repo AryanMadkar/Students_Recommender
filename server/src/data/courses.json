@@ -18,7 +18,7 @@
       "technical": [
         "Data Structures",
         "Algorithms",
-        "System Design",
+        "System Arts",
         "Web Development"
       ],
       "soft": ["Problem Solving", "Teamwork", "Communication"]
@@ -125,10 +125,10 @@
     }
   },
   {
-    "name": "Bachelor of Design",
+    "name": "Bachelor of Arts",
     "shortName": "B.Des",
     "type": "Bachelor",
-    "category": "Design",
+    "category": "Arts",
     "duration": "4 years",
     "eligibility": {
       "academicRequirement": "12th in any stream",
@@ -136,8 +136,8 @@
       "entranceExams": ["NID DAT", "UCEED"]
     },
     "careerProspects": [
-      { "jobRole": "Graphic Designer", "averageSalary": 500000 },
-      { "jobRole": "UI/UX Designer", "averageSalary": 700000 }
+      { "jobRole": "Graphic Artser", "averageSalary": 500000 },
+      { "jobRole": "UI/UX Artser", "averageSalary": 700000 }
     ],
     "skills": {
       "technical": ["Adobe Suite", "Prototyping"],
@@ -180,7 +180,7 @@
       { "jobRole": "Project Manager", "averageSalary": 800000 }
     ],
     "skills": {
-      "technical": ["Structural Design", "Surveying"],
+      "technical": ["Structural Arts", "Surveying"],
       "soft": ["Project Planning", "Team Coordination"]
     }
   },
