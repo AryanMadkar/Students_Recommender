@@ -1,22 +1,39 @@
-// src/components/profile/ProfileHeader.js
-import React, { useEffect } from "react";
+import React from "react";
 import { FiEdit2 } from "react-icons/fi";
 
-const ProfileHeader = ({ user }) => (
-  <div className="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-sm">
-    <img
-      className="w-24 h-24 rounded-full object-cover"
-      src="https://i.imgur.com/example-avatar.png" // Replace with actual user avatar URL
-      alt="Rohan Sharma"
-    />
-    <h2 className="text-2xl font-bold text-gray-900 mt-4">{user?.name}</h2>
-    <p className="text-sm text-gray-600 mt-1">
-      Empowering your academic and career journey with PathPilot
-    </p>
-    <button className="mt-4 flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-      <FiEdit2 className="mr-2 text-blue-500" />
-      Edit Profile
-    </button>
+const ProfileHeader = ({ user, onEdit }) => (
+  <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl text-white p-8 mb-6">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-6">
+        <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+          <span className="text-2xl font-bold">
+            {(user?.personalInfo?.name || user?.name || "U")
+              .charAt(0)
+              .toUpperCase()}
+          </span>
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold mb-2">
+            {user?.personalInfo?.name || user?.name || "User"}
+          </h1>
+          <p className="text-blue-100 mb-1">
+            {user?.personalInfo?.email || user?.email}
+          </p>
+          <p className="text-blue-100">
+            Empowering your academic and career journey with PathPilot
+          </p>
+        </div>
+      </div>
+      {onEdit && (
+        <button
+          onClick={onEdit}
+          className="flex items-center space-x-2 px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition-colors"
+        >
+          <FiEdit2 className="w-4 h-4" />
+          <span>Edit</span>
+        </button>
+      )}
+    </div>
   </div>
 );
 

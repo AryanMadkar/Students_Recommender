@@ -8,11 +8,13 @@ import {
   FiCheck,
   FiX,
 } from "react-icons/fi";
-import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 
 const QuizQuestion = () => {
   const { assessmentId } = useParams();
   const navigate = useNavigate();
+  const { isAuthenticated, api } = useAuth();
+
   const [assessment, setAssessment] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -25,8 +27,12 @@ const QuizQuestion = () => {
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
     startAssessment();
-  }, [assessmentId]);
+  }, [assessmentId, isAuthenticated]);
 
   useEffect(() => {
     setQuestionStartTime(Date.now());
@@ -34,20 +40,7 @@ const QuizQuestion = () => {
 
   const startAssessment = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-
-      const response = await axios.get(
-        `${
-          process.env.REACT_APP_API_URL || "http://localhost:5000"
-        }/api/assessments/${assessmentId}/start`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await api.get(`/api/assessments/${assessmentId}/start`);
 
       if (response.data.success) {
         const data = response.data.data;
@@ -104,9 +97,7 @@ const QuizQuestion = () => {
 
     setSubmitting(true);
     try {
-      const token = localStorage.getItem("token");
       const totalTime = Math.floor((Date.now() - startTime) / 1000);
-
       const submitData = {
         responses,
         timeSpent: {
@@ -115,14 +106,9 @@ const QuizQuestion = () => {
         },
       };
 
-      const response = await axios.post(
-        `${
-          process.env.REACT_APP_API_URL || "http://localhost:5000"
-        }/api/assessments/${assessmentId}/submit`,
-        submitData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+      const response = await api.post(
+        `/api/assessments/${assessmentId}/submit`,
+        submitData
       );
 
       if (response.data.success) {
@@ -138,10 +124,113 @@ const QuizQuestion = () => {
     }
   };
 
+  const renderQuestionContent = (question) => {
+    const questionId = question._id;
+    const currentResponse = responses[questionId];
+
+    switch (question.type) {
+      case "multiple_choice":
+        return (
+          <div className="space-y-3">
+            {question.options?.map((option, index) => (
+              <button
+                key={index}
+                onClick={() => handleAnswerSelect(option.value)}
+                className={`w-full p-4 text-left border rounded-lg transition-colors ${
+                  currentResponse === option.value
+                    ? "border-blue-500 bg-blue-50 text-blue-700"
+                    : "border-gray-300 hover:border-gray-400"
+                }`}
+              >
+                <div className="flex items-center space-x-3">
+                  <div
+                    className={`w-4 h-4 rounded-full border-2 ${
+                      currentResponse === option.value
+                        ? "border-blue-500 bg-blue-500"
+                        : "border-gray-300"
+                    }`}
+                  >
+                    {currentResponse === option.value && (
+                      <div className="w-2 h-2 bg-white rounded-full mx-auto mt-0.5"></div>
+                    )}
+                  </div>
+                  <span>{option.text}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        );
+
+      case "rating":
+        return (
+          <div className="flex justify-center space-x-2">
+            {[1, 2, 3, 4, 5].map((rating) => (
+              <button
+                key={rating}
+                onClick={() => handleAnswerSelect(rating)}
+                className={`w-12 h-12 rounded-full border-2 font-medium transition-colors ${
+                  currentResponse === rating
+                    ? "border-blue-500 bg-blue-500 text-white"
+                    : "border-gray-300 hover:border-gray-400"
+                }`}
+              >
+                {rating}
+              </button>
+            ))}
+          </div>
+        );
+
+      case "boolean":
+        return (
+          <div className="flex justify-center space-x-4">
+            <button
+              onClick={() => handleAnswerSelect(true)}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-lg border-2 font-medium transition-colors ${
+                currentResponse === true
+                  ? "border-green-500 bg-green-50 text-green-700"
+                  : "border-gray-300 hover:border-gray-400"
+              }`}
+            >
+              <FiCheck className="w-5 h-5" />
+              <span>Yes</span>
+            </button>
+            <button
+              onClick={() => handleAnswerSelect(false)}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-lg border-2 font-medium transition-colors ${
+                currentResponse === false
+                  ? "border-red-500 bg-red-50 text-red-700"
+                  : "border-gray-300 hover:border-gray-400"
+              }`}
+            >
+              <FiX className="w-5 h-5" />
+              <span>No</span>
+            </button>
+          </div>
+        );
+
+      case "text":
+        return (
+          <textarea
+            value={currentResponse || ""}
+            onChange={(e) => handleAnswerSelect(e.target.value)}
+            className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            rows={4}
+            placeholder="Type your answer here..."
+          />
+        );
+
+      default:
+        return <p className="text-gray-500">Unsupported question type</p>;
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading assessment...</p>
+        </div>
       </div>
     );
   }
@@ -150,10 +239,13 @@ const QuizQuestion = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <FiX className="w-8 h-8 text-red-600" />
-          </div>
-          <p className="text-red-600 text-lg mb-4">{error}</p>
+          <p className="text-red-600 mb-4">{error}</p>
+          <button
+            onClick={() => navigate("/assessments")}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Back to Assessments
+          </button>
         </div>
       </div>
     );
@@ -163,164 +255,59 @@ const QuizQuestion = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600 text-lg">No questions available</p>
+          <p className="text-gray-600">No questions available</p>
         </div>
       </div>
     );
   }
 
   const currentQuestionData = questions[currentQuestion];
-  const progressPercentage = ((currentQuestion + 1) / questions.length) * 100;
-  const isLastQuestion = currentQuestion === questions.length - 1;
-  const hasAnswer = responses[currentQuestionData._id] !== undefined;
+  const progress = ((currentQuestion + 1) / questions.length) * 100;
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-4">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center space-x-4">
             <button
               onClick={() => navigate("/assessments")}
-              className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
+              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              <FiChevronLeft className="w-5 h-5" />
-              <span>Exit Assessment</span>
+              <FiChevronLeft className="w-6 h-6" />
             </button>
-
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 text-gray-600">
-                <FiClock className="w-4 h-4" />
-                <span className="text-sm">
-                  Question {currentQuestion + 1} of {questions.length}
-                </span>
-              </div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">
+                {assessment?.title}
+              </h1>
+              <p className="text-gray-600">
+                Question {currentQuestion + 1} of {questions.length}
+              </p>
             </div>
           </div>
+          <div className="flex items-center space-x-2 text-sm text-gray-600">
+            <FiClock className="w-4 h-4" />
+            <span>Take your time</span>
+          </div>
         </div>
-      </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Progress Bar */}
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-700">Progress</span>
-            <span className="text-sm text-gray-500">
-              {Math.round(progressPercentage)}%
-            </span>
-          </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${progressPercentage}%` }}
-              transition={{ duration: 0.3 }}
-              className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
-            />
+            <div
+              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            ></div>
           </div>
         </div>
 
-        {/* Question Card */}
-        <motion.div
-          key={currentQuestion}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          className="bg-white rounded-2xl p-8 shadow-sm mb-8"
-        >
-          <div className="mb-6">
-            <div className="flex items-center space-x-2 mb-4">
-              <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
-                {currentQuestionData.category?.charAt(0).toUpperCase() +
-                  currentQuestionData.category?.slice(1)}
-              </span>
-              <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
-                {currentQuestionData.difficulty?.charAt(0).toUpperCase() +
-                  currentQuestionData.difficulty?.slice(1)}
-              </span>
-            </div>
-
-            <h2 className="text-xl font-semibold text-gray-900 leading-relaxed">
-              {currentQuestionData.question}
-            </h2>
-          </div>
-
-          {/* Answer Options */}
-          <div className="space-y-4">
-            {currentQuestionData.type === "multiple_choice" &&
-              currentQuestionData.options?.map((option, index) => (
-                <motion.button
-                  key={option.value}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  onClick={() => handleAnswerSelect(option.value)}
-                  className={`w-full p-4 text-left rounded-xl border-2 transition-all ${
-                    responses[currentQuestionData._id] === option.value
-                      ? "border-blue-500 bg-blue-50 text-blue-900"
-                      : "border-gray-200 hover:border-gray-300 bg-white"
-                  }`}
-                >
-                  <div className="flex items-center space-x-3">
-                    <div
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                        responses[currentQuestionData._id] === option.value
-                          ? "border-blue-500 bg-blue-500"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      {responses[currentQuestionData._id] === option.value && (
-                        <FiCheck className="w-3 h-3 text-white" />
-                      )}
-                    </div>
-                    <span className="flex-1">{option.text}</span>
-                  </div>
-                </motion.button>
-              ))}
-
-            {currentQuestionData.type === "rating" && (
-              <div className="flex items-center justify-center space-x-4">
-                <span className="text-sm text-gray-500">Strongly Disagree</span>
-                <div className="flex space-x-2">
-                  {[1, 2, 3, 4, 5].map((rating) => (
-                    <button
-                      key={rating}
-                      onClick={() => handleAnswerSelect(rating)}
-                      className={`w-12 h-12 rounded-full border-2 font-medium transition-all ${
-                        responses[currentQuestionData._id] === rating
-                          ? "border-blue-500 bg-blue-500 text-white"
-                          : "border-gray-300 hover:border-gray-400"
-                      }`}
-                    >
-                      {rating}
-                    </button>
-                  ))}
-                </div>
-                <span className="text-sm text-gray-500">Strongly Agree</span>
-              </div>
-            )}
-
-            {currentQuestionData.type === "boolean" && (
-              <div className="flex space-x-4 justify-center">
-                {[
-                  { value: true, text: "Yes" },
-                  { value: false, text: "No" },
-                ].map((option) => (
-                  <button
-                    key={option.value.toString()}
-                    onClick={() => handleAnswerSelect(option.value)}
-                    className={`px-8 py-4 rounded-xl font-medium transition-all ${
-                      responses[currentQuestionData._id] === option.value
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {option.text}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </motion.div>
+        {/* Question */}
+        <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">
+            {currentQuestionData.text}
+          </h2>
+          {renderQuestionContent(currentQuestionData)}
+        </div>
 
         {/* Navigation */}
         <div className="flex items-center justify-between">
@@ -333,64 +320,28 @@ const QuizQuestion = () => {
                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
             }`}
           >
-            <FiChevronLeft className="w-4 h-4" />
+            <FiChevronLeft className="w-5 h-5" />
             <span>Previous</span>
           </button>
 
-          {isLastQuestion ? (
+          {currentQuestion === questions.length - 1 ? (
             <button
               onClick={handleSubmit}
-              disabled={submitting || !hasAnswer}
-              className={`flex items-center space-x-2 px-8 py-3 rounded-lg font-medium transition-colors ${
-                submitting || !hasAnswer
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-green-600 text-white hover:bg-green-700"
-              }`}
+              disabled={submitting || !responses[currentQuestionData._id]}
+              className="flex items-center space-x-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
             >
-              {submitting ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Submitting...</span>
-                </>
-              ) : (
-                <>
-                  <FiCheck className="w-4 h-4" />
-                  <span>Submit Assessment</span>
-                </>
-              )}
+              <span>{submitting ? "Submitting..." : "Submit Assessment"}</span>
             </button>
           ) : (
             <button
               onClick={handleNext}
-              disabled={!hasAnswer}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-colors ${
-                !hasAnswer
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-blue-600 text-white hover:bg-blue-700"
-              }`}
+              disabled={!responses[currentQuestionData._id]}
+              className="flex items-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
             >
               <span>Next</span>
-              <FiChevronRight className="w-4 h-4" />
+              <FiChevronRight className="w-5 h-5" />
             </button>
           )}
-        </div>
-
-        {/* Question Counter */}
-        <div className="mt-8 flex justify-center">
-          <div className="flex space-x-2">
-            {questions.map((_, index) => (
-              <div
-                key={index}
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  index === currentQuestion
-                    ? "bg-blue-500"
-                    : responses[questions[index]._id] !== undefined
-                    ? "bg-green-500"
-                    : "bg-gray-300"
-                }`}
-              />
-            ))}
-          </div>
         </div>
       </div>
     </div>

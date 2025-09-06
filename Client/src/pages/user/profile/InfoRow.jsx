@@ -1,15 +1,16 @@
-// src/components/profile/InfoRow.js
 import React from 'react';
 import { FiEdit2 } from 'react-icons/fi';
 
 const InfoRow = ({ label, value, isEditable = true }) => (
-  <div className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
-    <div>
-      <p className="text-xs text-gray-500">{label}</p>
-      <p className="text-sm font-medium text-gray-800">{value}</p>
+  <div className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0">
+    <div className="flex-1">
+      <dt className="text-sm font-medium text-gray-500 mb-1">{label}</dt>
+      <dd className="text-gray-900">{value}</dd>
     </div>
     {isEditable && (
-      <FiEdit2 className="text-blue-500 cursor-pointer hover:text-blue-600" />
+      <button className="text-gray-400 hover:text-gray-600 ml-4">
+        <FiEdit2 className="w-4 h-4" />
+      </button>
     )}
   </div>
 );

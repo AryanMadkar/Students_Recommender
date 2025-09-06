@@ -17,7 +17,6 @@ const LoginPage = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
   const from = location.state?.from?.pathname || "/dashboard";
 
   const handleChange = (e) => {
@@ -79,66 +78,67 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="auth-container registration-bg">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
       <motion.div
-        className="auth-form-wrapper"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
+        className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md"
       >
-        <div className="logo-container">
-          <h2 className="logo-text gradient-text">PathPilot</h2>
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome back
+          </h1>
+          <p className="text-gray-600">
+            Sign in to continue your career journey
+          </p>
         </div>
 
-        <h1 className="auth-title">Welcome Back</h1>
-        <p className="text-gray-600 mb-6">
-          Sign in to continue your career journey
-        </p>
-
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center text-red-700">
-            <FiAlertCircle className="mr-2" />
-            {error}
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-3">
+            <FiAlertCircle className="text-red-500 flex-shrink-0" />
+            <p className="text-red-700 text-sm">{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="input-group">
-            <label htmlFor="email">
-              <FiMail className="inline mr-2" />
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Email Address
             </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              disabled={isLoading}
-            />
+            <div className="relative">
+              <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Enter your email"
+                disabled={isLoading}
+              />
+            </div>
           </div>
 
-          <div className="input-group">
-            <label htmlFor="password">
-              <FiLock className="inline mr-2" />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Password
             </label>
             <div className="relative">
+              <FiLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
                 type={showPassword ? "text" : "password"}
-                id="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Enter your password"
                 disabled={isLoading}
-                className="pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 disabled={isLoading}
               >
                 {showPassword ? <FiEyeOff /> : <FiEye />}
@@ -146,22 +146,31 @@ const LoginPage = () => {
             </div>
           </div>
 
+          <div className="flex items-center justify-between">
+            <Link
+              to="/forgot-password"
+              className="text-sm text-blue-600 hover:text-blue-500"
+            >
+              Forgot your password?
+            </Link>
+          </div>
+
           <button
             type="submit"
-            className="btn btn-primary w-full"
             disabled={isLoading}
+            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? "Signing in..." : "Sign In"}
+            {isLoading ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
-        <div className="auth-links">
-          <Link to="/forgot-password" className="text-blue-600 hover:underline">
-            Forgot your password?
-          </Link>
-          <p>
+        <div className="mt-8 text-center">
+          <p className="text-gray-600">
             Don't have an account?{" "}
-            <Link to="/register" className="text-blue-600 hover:underline">
+            <Link
+              to="/register"
+              className="text-blue-600 hover:text-blue-500 font-medium"
+            >
               Create Account
             </Link>
           </p>

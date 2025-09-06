@@ -42,7 +42,7 @@ export const AppProvider = ({ children }) => {
     if (!isAuthenticated) return;
     try {
       setLoading(true);
-      const response = await appApi.get("/api/dashboard");
+      const response = await appApi.get("/api/users/dashboard");
       if (response.data.success) {
         setDashboardData(response.data.data);
         console.log("dashboard data", response.data.data);
@@ -92,9 +92,12 @@ export const AppProvider = ({ children }) => {
   const searchColleges = async (searchParams = {}) => {
     try {
       setLoading(true);
-      const response = await appApi.get("/api/colleges/search", {
-        params: searchParams,
-      });
+      const response = await appApi.get(
+        "/api/colleges/search?state=Delhi&course=Computer",
+        {
+          params: searchParams,
+        }
+      );
       if (response.data.success) {
         setColleges(response.data.data.colleges);
         console.log("colleges search", response.data.data);

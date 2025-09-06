@@ -7,7 +7,7 @@ import {
   FiCheckCircle,
   FiAlertCircle,
 } from "react-icons/fi";
-import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
@@ -15,6 +15,7 @@ const ForgotPasswordPage = () => {
   const [isSent, setIsSent] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { api } = useAuth();
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -40,17 +41,7 @@ const ForgotPasswordPage = () => {
     }
 
     try {
-      const response = await axios.post(
-        `${
-          process.env.REACT_APP_API_URL || "http://localhost:5000"
-        }/api/auth/forgot-password`,
-        { email },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await api.post("/api/auth/forgot-password", { email });
 
       if (response.data.success) {
         setIsSent(true);
@@ -88,7 +79,7 @@ const ForgotPasswordPage = () => {
 
   if (isSent) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -99,46 +90,32 @@ const ForgotPasswordPage = () => {
             variants={iconVariants}
             initial="hidden"
             animate="visible"
-            className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"
+            className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"
           >
-            <FiCheckCircle className="w-8 h-8 text-green-600" />
+            <FiCheckCircle className="w-10 h-10 text-green-600" />
           </motion.div>
-
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Check Your Email
-          </h2>
-
-          <p className="text-gray-600 mb-8">
-            We've sent a password reset link to <strong>{email}</strong>. Please
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            Check your email
+          </h1>
+          <p className="text-gray-600 mb-6">
+            We've sent a password reset link to{" "}
+            <span className="font-semibold text-gray-900">{email}</span>. Please
             check your inbox and spam folder.
           </p>
-
-          <div className="space-y-4">
-            <button
-              onClick={() => {
-                setIsSent(false);
-                setEmail("");
-                setError("");
-              }}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-            >
-              Send Another Email
-            </button>
-
-            <Link
-              to="/login"
-              className="block w-full text-blue-600 py-3 px-4 rounded-lg font-medium hover:bg-blue-50 transition-colors"
-            >
-              Back to Login
-            </Link>
-          </div>
+          <Link
+            to="/login"
+            className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-500"
+          >
+            <FiArrowLeft />
+            <span>Back to Login</span>
+          </Link>
         </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -146,45 +123,34 @@ const ForgotPasswordPage = () => {
         className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md"
       >
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <FiMail className="w-8 h-8 text-blue-600" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Forgot Password?
-          </h2>
+          </h1>
           <p className="text-gray-600">
             No worries, we'll send you reset instructions.
           </p>
         </div>
 
         {error && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-3"
-          >
-            <FiAlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
-            <span className="text-red-700 text-sm">{error}</span>
-          </motion.div>
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-3">
+            <FiAlertCircle className="text-red-500 flex-shrink-0" />
+            <p className="text-red-700 text-sm">{error}</p>
+          </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Email Address
             </label>
             <div className="relative">
-              <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
-                id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                placeholder="Enter your email"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Enter your email address"
                 disabled={isLoading}
               />
             </div>
@@ -193,25 +159,18 @@ const ForgotPasswordPage = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? (
-              <div className="flex items-center justify-center space-x-2">
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>Sending...</span>
-              </div>
-            ) : (
-              "Send Reset Instructions"
-            )}
+            {isLoading ? "Sending..." : "Send Reset Link"}
           </button>
         </form>
 
-        <div className="mt-6 text-center">
+        <div className="mt-8 text-center">
           <Link
             to="/login"
-            className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
+            className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-500"
           >
-            <FiArrowLeft className="w-4 h-4" />
+            <FiArrowLeft />
             <span>Back to Login</span>
           </Link>
         </div>

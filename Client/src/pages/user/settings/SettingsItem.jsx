@@ -1,17 +1,21 @@
-// src/components/settings/SettingsItem.js
-import React from 'react';
-import { FiChevronRight } from 'react-icons/fi';
+import React from "react";
+import { FiChevronRight } from "react-icons/fi";
 
-const SettingsItem = ({ icon, title, subtitle }) => (
-  <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:bg-gray-50 cursor-pointer">
-    <div className="flex items-center">
-      <div className="text-blue-500 mr-4 text-xl">{icon}</div>
+const SettingsItem = ({ icon: Icon, title, subtitle, onClick }) => (
+  <div
+    onClick={onClick}
+    className="flex items-center justify-between p-4 hover:bg-gray-50 cursor-pointer rounded-lg transition-colors"
+  >
+    <div className="flex items-center space-x-3">
+      <div className="p-2 text-gray-600">
+        <Icon className="w-5 h-5" />
+      </div>
       <div>
-        <h3 className="font-semibold text-gray-800">{title}</h3>
-        <p className="text-sm text-gray-500">{subtitle}</p>
+        <h3 className="font-medium text-gray-900">{title}</h3>
+        <p className="text-sm text-gray-600">{subtitle}</p>
       </div>
     </div>
-    <FiChevronRight className="text-gray-400" />
+    <FiChevronRight className="w-5 h-5 text-gray-400" />
   </div>
 );
 

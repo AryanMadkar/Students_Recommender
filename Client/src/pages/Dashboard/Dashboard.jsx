@@ -20,12 +20,49 @@ const Dashboard = () => {
     }
   }, [error, clearError]);
 
-  if ((loading && !dashboardData) || !user || error) {
+  if ((loading && !dashboardData ) || error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading your dashboard...</p>
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading your dashboard...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <p className="text-red-600 mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <p className="text-gray-600">
+              Please login to access your dashboard.
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -34,27 +71,26 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6 }}
           className="space-y-8"
         >
-          {/* Welcome Banner */}
           <WelcomeBanner dashboardData={dashboardData} />
 
-          {/* Progress Summary */}
-          <ProgressSummary dashboardData={dashboardData} />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
+              <ProgressSummary dashboardData={dashboardData} />
+              <QuickActions dashboardData={dashboardData} />
+            </div>
 
-          {/* Quick Actions and Recent Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <QuickActions dashboardData={dashboardData} />
-            <RecentActivity dashboardData={dashboardData} />
+            <div className="space-y-8">
+              <RecentActivity dashboardData={dashboardData} />
+            </div>
           </div>
 
-          {/* Recommendations */}
           <Recommendations dashboardData={dashboardData} />
         </motion.div>
       </main>
