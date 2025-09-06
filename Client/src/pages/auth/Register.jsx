@@ -13,6 +13,7 @@ import {
   FiAlertCircle,
   FiCheckCircle,
 } from "react-icons/fi";
+import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 
 const RegistrationPage = () => {
@@ -21,6 +22,7 @@ const RegistrationPage = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { register } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -107,6 +109,7 @@ const RegistrationPage = () => {
     setError("");
   };
 
+  // Use AuthContext register method here
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateStep(3)) return;
@@ -115,24 +118,16 @@ const RegistrationPage = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
-
-      if (response.ok) {
+      const result = await register(formData);
+      if (result.success) {
         setStep(4); // Success step
         toast.success("Registration successful!");
         setTimeout(() => {
           navigate("/dashboard");
-        }, 2000);
+        }, 1500);
       } else {
-        setError(data.message || "Registration failed");
-        toast.error(data.message || "Registration failed");
+        setError(result.message);
+        toast.error(result.message);
       }
     } catch (error) {
       console.error("Registration failed:", error);

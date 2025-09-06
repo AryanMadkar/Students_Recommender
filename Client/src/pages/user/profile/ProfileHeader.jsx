@@ -1,15 +1,15 @@
 // src/components/profile/ProfileHeader.js
-import React from 'react';
-import { FiEdit2 } from 'react-icons/fi';
+import React, { useEffect } from "react";
+import { FiEdit2 } from "react-icons/fi";
 
-const ProfileHeader = () => (
+const ProfileHeader = ({ user }) => (
   <div className="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-sm">
     <img
       className="w-24 h-24 rounded-full object-cover"
       src="https://i.imgur.com/example-avatar.png" // Replace with actual user avatar URL
       alt="Rohan Sharma"
     />
-    <h2 className="text-2xl font-bold text-gray-900 mt-4">Rohan Sharma</h2>
+    <h2 className="text-2xl font-bold text-gray-900 mt-4">{user?.name}</h2>
     <p className="text-sm text-gray-600 mt-1">
       Empowering your academic and career journey with PathPilot
     </p>

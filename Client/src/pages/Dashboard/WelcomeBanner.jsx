@@ -14,6 +14,8 @@ const WelcomeBanner = ({ dashboardData }) => {
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const userData = dashboardData?.overview || {};
+  // console.log(user);
+  
 
   return (
     <motion.div

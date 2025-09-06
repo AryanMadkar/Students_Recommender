@@ -20,10 +20,13 @@ const Dashboard = () => {
     }
   }, [error, clearError]);
 
-  if (loading && !dashboardData) {
+  if ((loading && !dashboardData) || !user || error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading your dashboard...</p>
+        </div>
       </div>
     );
   }
@@ -32,29 +35,29 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      {error && (
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mx-6 mb-4"
+          transition={{ duration: 0.5 }}
+          className="space-y-8"
         >
-          {error}
-        </motion.div>
-      )}
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="space-y-6">
+          {/* Welcome Banner */}
           <WelcomeBanner dashboardData={dashboardData} />
+
+          {/* Progress Summary */}
           <ProgressSummary dashboardData={dashboardData} />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Quick Actions and Recent Activity */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <QuickActions dashboardData={dashboardData} />
             <RecentActivity dashboardData={dashboardData} />
           </div>
 
+          {/* Recommendations */}
           <Recommendations dashboardData={dashboardData} />
-        </div>
-      </div>
+        </motion.div>
+      </main>
     </div>
   );
 };

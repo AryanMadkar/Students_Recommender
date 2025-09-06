@@ -1,12 +1,17 @@
 // src/pages/ProfilePage.js
-import React from "react";
+import React, { useEffect } from "react";
 import { FiChevronLeft } from "react-icons/fi";
 import ProfileHeader from "./ProfileHeader";
 import PersonalInfo from "./PersonalInfo";
 import AcademicInfo from "./AcademicInfo";
 import QuickLinks from "./QuickLinks";
+import { useAuth } from "../../../context/AuthContext";
 
 const ProfilePage = () => {
+  const { user } = useAuth();
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
   return (
     <div className="bg-gray-100 min-h-screen font-sans mb-[6rem]">
       <header className="bg-white shadow-sm sticky top-0 z-10">
@@ -20,10 +25,10 @@ const ProfilePage = () => {
 
       <main className="max-w-4xl mx-auto p-4 md:p-6">
         <div className="space-y-6">
-          <ProfileHeader />
-          <PersonalInfo />
-          <AcademicInfo />
-          <QuickLinks />
+          <ProfileHeader user={user} />
+          <PersonalInfo user={user} />
+          <AcademicInfo user={user} />
+          <QuickLinks user={user} />
         </div>
       </main>
     </div>

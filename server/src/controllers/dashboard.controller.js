@@ -292,9 +292,8 @@ class DashboardController {
       const analytics = {
         assessmentPerformance: await this.getAssessmentAnalytics(userId),
         skillTrends: await this.getSkillTrends(userId),
-        recommendationEffectiveness: await this.getRecommendationAnalytics(
-          userId
-        ),
+        recommendationEffectiveness:
+          await this.getRecommendationAnalytics(userId),
         timeSpentAnalysis: await this.getTimeAnalytics(userId),
       };
 
