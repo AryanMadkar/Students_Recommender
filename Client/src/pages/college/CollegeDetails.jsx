@@ -124,7 +124,7 @@ const CollegeDetails = () => {
             {college.courses?.map((course, index) => (
               <div key={index} className="p-4 bg-gray-100 rounded">
                 <h3 className="font-semibold">{course.name}</h3>
-                <p className="flex items-center"><FiClock className="mr-2" /> Duration: {course.duration}</p>
+                <p className="flex items-center"><FiGlobe className="mr-2" /> Duration: {course.duration}</p>
                 <p className="flex items-center"><FiDollarSign className="mr-2" /> Fees: ₹{course.fees?.annual?.toLocaleString()}</p>
               </div>
             )) || <p>No courses listed.</p>}
