@@ -15,7 +15,12 @@
       { "jobRole": "Data Scientist", "averageSalary": 1500000 }
     ],
     "skills": {
-      "technical": ["Data Structures", "Algorithms", "System Design", "Web Development"],
+      "technical": [
+        "Data Structures",
+        "Algorithms",
+        "System Design",
+        "Web Development"
+      ],
       "soft": ["Problem Solving", "Teamwork", "Communication"]
     }
   },
@@ -77,6 +82,126 @@
     "skills": {
       "technical": ["Research", "Writing", "Critical Analysis"],
       "soft": ["Communication", "General Awareness"]
+    }
+  },
+  {
+    "name": "Bachelor of Business Administration",
+    "shortName": "BBA",
+    "type": "Bachelor",
+    "category": "Management",
+    "duration": "3 years",
+    "eligibility": {
+      "academicRequirement": "12th in any stream",
+      "minimumMarks": 50,
+      "entranceExams": ["IPMAT", "CUET"]
+    },
+    "careerProspects": [
+      { "jobRole": "Marketing Manager", "averageSalary": 800000 },
+      { "jobRole": "HR Manager", "averageSalary": 700000 }
+    ],
+    "skills": {
+      "technical": ["Business Strategy", "Finance Basics"],
+      "soft": ["Leadership", "Team Management"]
+    }
+  },
+  {
+    "name": "Bachelor of Law",
+    "shortName": "LLB",
+    "type": "Bachelor",
+    "category": "Law",
+    "duration": "3 years",
+    "eligibility": {
+      "academicRequirement": "Graduation in any field",
+      "minimumMarks": 45,
+      "entranceExams": ["CLAT", "AILET"]
+    },
+    "careerProspects": [
+      { "jobRole": "Lawyer", "averageSalary": 600000 },
+      { "jobRole": "Legal Advisor", "averageSalary": 800000 }
+    ],
+    "skills": {
+      "technical": ["Legal Research", "Contract Drafting"],
+      "soft": ["Argumentation", "Ethics"]
+    }
+  },
+  {
+    "name": "Bachelor of Design",
+    "shortName": "B.Des",
+    "type": "Bachelor",
+    "category": "Design",
+    "duration": "4 years",
+    "eligibility": {
+      "academicRequirement": "12th in any stream",
+      "minimumMarks": 50,
+      "entranceExams": ["NID DAT", "UCEED"]
+    },
+    "careerProspects": [
+      { "jobRole": "Graphic Designer", "averageSalary": 500000 },
+      { "jobRole": "UI/UX Designer", "averageSalary": 700000 }
+    ],
+    "skills": {
+      "technical": ["Adobe Suite", "Prototyping"],
+      "soft": ["Creativity", "User Empathy"]
+    }
+  },
+  {
+    "name": "Bachelor of Science in Nursing",
+    "shortName": "B.Sc Nursing",
+    "type": "Bachelor",
+    "category": "Medical",
+    "duration": "4 years",
+    "eligibility": {
+      "academicRequirement": "12th with PCB",
+      "minimumMarks": 45,
+      "entranceExams": ["AIIMS Nursing", "State Exams"]
+    },
+    "careerProspects": [
+      { "jobRole": "Registered Nurse", "averageSalary": 400000 },
+      { "jobRole": "Nurse Practitioner", "averageSalary": 600000 }
+    ],
+    "skills": {
+      "technical": ["Patient Care", "Medical Procedures"],
+      "soft": ["Compassion", "Attention to Detail"]
+    }
+  },
+  {
+    "name": "Bachelor of Technology in Civil Engineering",
+    "shortName": "B.Tech Civil",
+    "type": "Bachelor",
+    "category": "Engineering",
+    "duration": "4 years",
+    "eligibility": {
+      "academicRequirement": "12th with PCM",
+      "minimumMarks": 60,
+      "entranceExams": ["JEE Main"]
+    },
+    "careerProspects": [
+      { "jobRole": "Civil Engineer", "averageSalary": 500000 },
+      { "jobRole": "Project Manager", "averageSalary": 800000 }
+    ],
+    "skills": {
+      "technical": ["Structural Design", "Surveying"],
+      "soft": ["Project Planning", "Team Coordination"]
+    }
+  },
+  {
+    "name": "Bachelor of Pharmacy",
+    "shortName": "B.Pharm",
+    "type": "Bachelor",
+    "category": "Science",
+    "duration": "4 years",
+    "eligibility": {
+      "academicRequirement": "12th with PCB/PCM",
+      "minimumMarks": 50,
+      "entranceExams": ["GPAT", "State Exams"]
+    },
+    "careerProspects": [
+      { "jobRole": "Pharmacist", "averageSalary": 400000 },
+      { "jobRole": "Research Scientist", "averageSalary": 600000 }
+    ],
+    "skills": {
+      "technical": ["Drug Formulation", "Pharmacology"],
+      "soft": ["Accuracy", "Patient Counseling"]
     }
   }
 ]

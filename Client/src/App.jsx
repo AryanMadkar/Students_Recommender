@@ -42,6 +42,7 @@ import SuggestedCourses from "./pages/Recommendation/Suggested_Cources";
 
 // Toast notifications
 import { Toaster } from "react-hot-toast";
+import UserProfile from "./pages/user/UserProfile";
 
 function App() {
   return (
@@ -50,7 +51,7 @@ function App() {
         <Router>
           <div className="min-h-screen bg-gray-50">
             <Toaster position="top-right" />
-            
+
             <Routes>
               {/* Public Routes */}
               <Route path="/login" element={<LoginPage />} />
@@ -58,53 +59,105 @@ function App() {
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
               {/* Protected Routes with Navbar */}
-              <Route path="/*" element={
-                <ProtectedRoute>
-                  <div className="flex flex-col min-h-screen">
-                    <Navbar />
-                    <main className="flex-1">
-                      <Routes>
-                        {/* Dashboard */}
-                        <Route path="/" element={<DashboardPage />} />
-                        <Route path="/dashboard" element={<DashboardPage />} />
+              <Route
+                path="/*"
+                element={
+                  <ProtectedRoute>
+                    <div className="flex flex-col min-h-screen">
+                      <Navbar />
+                      <main className="flex-1">
+                        <Routes>
+                          {/* Dashboard */}
+                          <Route path="/" element={<DashboardPage />} />
+                          <Route
+                            path="/dashboard"
+                            element={<DashboardPage />}
+                          />
 
-                        {/* Assessment Routes */}
-                        <Route path="/assessments" element={<AssessmentPage />} />
-                        <Route path="/assessments/:assessmentId/start" element={<QuizQuestion />} />
-                        <Route path="/assessments/:assessmentId/results" element={<ResultsPage />} />
-                        <Route path="/assessments/results/:resultId" element={<ResultsPage />} />
+                          {/* Assessment Routes */}
+                          <Route
+                            path="/assessments"
+                            element={<AssessmentPage />}
+                          />
+                          <Route
+                            path="/assessments/:assessmentId/start"
+                            element={<QuizQuestion />}
+                          />
+                          <Route
+                            path="/assessments/:assessmentId/results"
+                            element={<ResultsPage />}
+                          />
+                          <Route
+                            path="/assessments/results/:resultId"
+                            element={<ResultsPage />}
+                          />
 
-                        {/* Career Routes */}
-                        <Route path="/careers/:careerId" element={<CareerDetails />} />
-                        <Route path="/recommendations/careers" element={<TopPath />} />
-                        <Route path="/top-paths" element={<TopPath />} />
+                          {/* Career Routes */}
+                          <Route
+                            path="/careers/:careerId"
+                            element={<CareerDetails />}
+                          />
+                          <Route
+                            path="/recommendations/careers"
+                            element={<TopPath />}
+                          />
+                          <Route path="/top-paths" element={<TopPath />} />
 
-                        {/* College Routes */}
-                        <Route path="/colleges" element={<CollegeSearch />} />
-                        <Route path="/colleges/:collegeId" element={<CollegeDetails />} />
-                        <Route path="/recommendations/colleges" element={<RecommendedColleges />} />
+                          {/* College Routes */}
+                          <Route path="/colleges" element={<CollegeSearch />} />
+                          <Route
+                            path="/colleges/:collegeId"
+                            element={<CollegeDetails />}
+                          />
+                          <Route
+                            path="/recommendations/colleges"
+                            element={<RecommendedColleges />}
+                          />
 
-                        {/* Course Routes */}
-                        <Route path="/courses" element={<SuggestedCourses />} />
-                        <Route path="/recommendations/courses" element={<SuggestedCourses />} />
+                          {/* Course Routes */}
+                          <Route
+                            path="/courses"
+                            element={<SuggestedCourses />}
+                          />
+                          <Route
+                            path="/recommendations/courses"
+                            element={<SuggestedCourses />}
+                          />
 
-                        {/* User Profile Routes */}
-                        <Route path="/profile" element={<ProfilePage />} />
-                        <Route path="/settings" element={<Settings />} />
-                        <Route path="/achievements" element={<AchievementsPage />} />
+                          {/* User Profile Routes */}
+                          <Route path="/profile" element={<ProfilePage />} />
+                          <Route
+                            path="/profile/edit"
+                            element={<UserProfile />}
+                          />
+                          <Route path="/settings" element={<Settings />} />
+                          <Route
+                            path="/achievements"
+                            element={<AchievementsPage />}
+                          />
 
-                        {/* Recommendation Routes */}
-                        <Route path="/recommendations" element={<TopPath />} />
-                        <Route path="/recommended-colleges" element={<RecommendedColleges />} />
-                        <Route path="/suggested-courses" element={<SuggestedCourses />} />
+                          {/* Recommendation Routes */}
+                          <Route
+                            path="/recommendations"
+                            element={<TopPath />}
+                          />
+                          <Route
+                            path="/recommended-colleges"
+                            element={<RecommendedColleges />}
+                          />
+                          <Route
+                            path="/suggested-courses"
+                            element={<SuggestedCourses />}
+                          />
 
-                        {/* Fallback Route */}
-                        <Route path="*" element={<DashboardPage />} />
-                      </Routes>
-                    </main>
-                  </div>
-                </ProtectedRoute>
-              } />
+                          {/* Fallback Route */}
+                          <Route path="*" element={<DashboardPage />} />
+                        </Routes>
+                      </main>
+                    </div>
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </div>
         </Router>

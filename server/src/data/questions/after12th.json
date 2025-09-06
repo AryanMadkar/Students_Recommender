@@ -57,5 +57,63 @@
     "difficulty": "easy",
     "stage": ["after12th"],
     "tags": ["subjects", "interest", "academic"]
+  },
+  {
+    "question": "Rate your interest in pursuing higher education abroad.",
+    "type": "rating",
+    "category": "interest",
+    "subcategory": "global_opportunities",
+    "difficulty": "medium",
+    "stage": ["after12th"],
+    "tags": ["abroad", "education"]
+  },
+  {
+    "question": "Do you prefer theoretical or practical learning?",
+    "type": "multiple_choice",
+    "category": "learning",
+    "subcategory": "style",
+    "options": [
+      { "text": "Theoretical", "value": "theory", "weight": 80 },
+      { "text": "Practical", "value": "practical", "weight": 90 }
+    ],
+    "difficulty": "easy",
+    "stage": ["after12th"],
+    "tags": ["learning", "style"]
+  },
+  {
+    "question": "How confident are you in public speaking?",
+    "type": "rating",
+    "category": "communication",
+    "subcategory": "public_speaking",
+    "difficulty": "medium",
+    "stage": ["after12th"],
+    "tags": ["communication", "confidence"]
+  },
+  {
+    "question": "Have you participated in any extracurricular activities?",
+    "type": "boolean",
+    "category": "leadership",
+    "subcategory": "activities",
+    "difficulty": "easy",
+    "stage": ["after12th"],
+    "tags": ["extracurricular", "leadership"]
+  },
+  {
+    "question": "What is your dream job?",
+    "type": "text",
+    "category": "interest",
+    "subcategory": "aspiration",
+    "difficulty": "hard",
+    "stage": ["after12th"],
+    "tags": ["dream", "job"]
+  },
+  {
+    "question": "Rate your analytical thinking skills.",
+    "type": "rating",
+    "category": "analytical",
+    "subcategory": "thinking",
+    "difficulty": "medium",
+    "stage": ["after12th"],
+    "tags": ["analytical", "skills"]
   }
 ]

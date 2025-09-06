@@ -6,27 +6,11 @@
     "subcategory": "skill_preference",
     "options": [
       { "text": "AI and Machine Learning", "value": "ai_ml", "weight": 95 },
-      {
-        "text": "Full-Stack Web Development",
-        "value": "web_dev",
-        "weight": 90
-      },
-      {
-        "text": "Mobile App Development (Android/iOS)",
-        "value": "mobile_dev",
-        "weight": 88
-      },
-      {
-        "text": "Cloud Computing & DevOps",
-        "value": "cloud_devops",
-        "weight": 85
-      },
+      { "text": "Full-Stack Web Development", "value": "web_dev", "weight": 90 },
+      { "text": "Mobile App Development (Android/iOS)", "value": "mobile_dev", "weight": 88 },
+      { "text": "Cloud Computing & DevOps", "value": "cloud_devops", "weight": 85 },
       { "text": "Cybersecurity", "value": "cybersecurity", "weight": 82 },
-      {
-        "text": "Data Structures & Algorithms (Competitive Programming)",
-        "value": "dsa_cp",
-        "weight": 92
-      }
+      { "text": "Data Structures & Algorithms (Competitive Programming)", "value": "dsa_cp", "weight": 92 }
     ],
     "difficulty": "medium",
     "stage": ["ongoing"],
@@ -38,27 +22,11 @@
     "category": "interest",
     "subcategory": "career_aspiration",
     "options": [
-      {
-        "text": "Secure a high-paying job at a top product company (MAANG)",
-        "value": "top_company",
-        "weight": 95
-      },
-      {
-        "text": "Pursue higher studies (Masters/PhD) in India or abroad",
-        "value": "higher_studies",
-        "weight": 80
-      },
+      { "text": "Secure a high-paying job at a top product company (MAANG)", "value": "top_company", "weight": 95 },
+      { "text": "Pursue higher studies (Masters/PhD) in India or abroad", "value": "higher_studies", "weight": 80 },
       { "text": "Start my own tech startup", "value": "startup", "weight": 85 },
-      {
-        "text": "Get a stable government job",
-        "value": "govt_job",
-        "weight": 70
-      },
-      {
-        "text": "Join a research-oriented role",
-        "value": "research",
-        "weight": 78
-      }
+      { "text": "Get a stable government job", "value": "govt_job", "weight": 70 },
+      { "text": "Join a research-oriented role", "value": "research", "weight": 78 }
     ],
     "difficulty": "easy",
     "stage": ["ongoing"],
@@ -79,25 +47,72 @@
     "category": "technical",
     "subcategory": "experience",
     "options": [
-      {
-        "text": "Yes, one or more internships",
-        "value": "internship_yes",
-        "weight": 90
-      },
-      {
-        "text": "Yes, I have built several personal projects",
-        "value": "projects_yes",
-        "weight": 85
-      },
-      {
-        "text": "Both internships and projects",
-        "value": "both",
-        "weight": 95
-      },
+      { "text": "Yes, one or more internships", "value": "internship_yes", "weight": 90 },
+      { "text": "Yes, I have built several personal projects", "value": "projects_yes", "weight": 85 },
+      { "text": "Both internships and projects", "value": "both", "weight": 95 },
       { "text": "Not yet", "value": "none", "weight": 60 }
     ],
     "difficulty": "easy",
     "stage": ["ongoing"],
     "tags": ["experience", "internship", "projects"]
+  },
+  {
+    "question": "Rate your proficiency in programming languages.",
+    "type": "rating",
+    "category": "technical",
+    "subcategory": "programming",
+    "difficulty": "medium",
+    "stage": ["ongoing"],
+    "tags": ["programming", "skills"]
+  },
+  {
+    "question": "Do you participate in hackathons?",
+    "type": "boolean",
+    "category": "leadership",
+    "subcategory": "competitions",
+    "difficulty": "easy",
+    "stage": ["ongoing"],
+    "tags": ["hackathons", "leadership"]
+  },
+  {
+    "question": "What certification are you pursuing?",
+    "type": "text",
+    "category": "interest",
+    "subcategory": "certifications",
+    "difficulty": "hard",
+    "stage": ["ongoing"],
+    "tags": ["certifications", "interest"]
+  },
+  {
+    "question": "How important is work-life balance to you?",
+    "type": "rating",
+    "category": "personality",
+    "subcategory": "balance",
+    "difficulty": "medium",
+    "stage": ["ongoing"],
+    "tags": ["worklife", "personality"]
+  },
+  {
+    "question": "Which industry interests you most?",
+    "type": "multiple_choice",
+    "category": "interest",
+    "subcategory": "industry",
+    "options": [
+      { "text": "Tech", "value": "tech", "weight": 90 },
+      { "text": "Finance", "value": "finance", "weight": 85 },
+      { "text": "Healthcare", "value": "healthcare", "weight": 80 }
+    ],
+    "difficulty": "easy",
+    "stage": ["ongoing"],
+    "tags": ["industry", "interest"]
+  },
+  {
+    "question": "Rate your leadership experience in group projects.",
+    "type": "rating",
+    "category": "leadership",
+    "subcategory": "group_work",
+    "difficulty": "medium",
+    "stage": ["ongoing"],
+    "tags": ["leadership", "projects"]
   }
 ]

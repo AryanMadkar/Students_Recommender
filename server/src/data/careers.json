@@ -52,23 +52,171 @@
     "category": "Business",
     "description": "Manages finances, auditing, and taxation for businesses and individuals. A prestigious and stable career in India.",
     "requiredSkills": [
-        { "skill": "Accounting Standards", "proficiency": "Advanced", "importance": 5 },
-        { "skill": "Taxation Laws (Direct/Indirect)", "proficiency": "Advanced", "importance": 5 },
-        { "skill": "Auditing", "proficiency": "Advanced", "importance": 4 },
-        { "skill": "Financial Management", "proficiency": "Intermediate", "importance": 4 }
+      { "skill": "Accounting Standards", "proficiency": "Advanced", "importance": 5 },
+      { "skill": "Taxation Laws (Direct/Indirect)", "proficiency": "Advanced", "importance": 5 },
+      { "skill": "Auditing", "proficiency": "Advanced", "importance": 4 },
+      { "skill": "Financial Management", "proficiency": "Intermediate", "importance": 4 }
     ],
     "educationPath": [
-        { "level": "10+2", "fields": ["Commerce"], "duration": "2 years", "mandatory": true },
-        { "level": "Certificate", "fields": ["CA (Foundation, Inter, Final)"], "duration": "4-5 years", "mandatory": true }
+      { "level": "10+2", "fields": ["Commerce"], "duration": "2 years", "mandatory": true },
+      { "level": "Certificate", "fields": ["CA (Foundation, Inter, Final)"], "duration": "4-5 years", "mandatory": true }
     ],
     "salaryRange": {
-        "entry": { "min": 700000, "max": 1200000 },
-        "mid": { "min": 1200000, "max": 2500000 },
-        "senior": { "min": 2500000, "max": 6000000 }
+      "entry": { "min": 700000, "max": 1200000 },
+      "mid": { "min": 1200000, "max": 2500000 },
+      "senior": { "min": 2500000, "max": 6000000 }
     },
     "jobRoles": ["Auditor", "Finance Manager", "Tax Consultant", "CFO"],
     "industries": ["Consulting (Big 4)", "Banking", "Manufacturing", "Corporate Finance"],
     "growth": { "demand": "High", "futureScope": "Consistently high demand due to complex financial regulations.", "automationRisk": "Medium" },
     "aptitudeMapping": { "analytical": 90, "creative": 50, "technical": 80, "communication": 75, "leadership": 80 }
+  },
+  {
+    "title": "Doctor (MBBS)",
+    "category": "Medical",
+    "description": "Provide medical care, diagnose illnesses, and treat patients in hospitals or clinics.",
+    "requiredSkills": [
+      { "skill": "Medical Knowledge", "proficiency": "Advanced", "importance": 5 },
+      { "skill": "Patient Care", "proficiency": "Advanced", "importance": 5 },
+      { "skill": "Diagnostic Skills", "proficiency": "Intermediate", "importance": 4 }
+    ],
+    "educationPath": [
+      { "level": "Bachelor", "fields": ["Medicine"], "duration": "5.5 years", "mandatory": true }
+    ],
+    "salaryRange": {
+      "entry": { "min": 600000, "max": 1200000 },
+      "mid": { "min": 1500000, "max": 3000000 },
+      "senior": { "min": 3000000, "max": 7000000 }
+    },
+    "jobRoles": ["General Physician", "Specialist", "Surgeon"],
+    "industries": ["Healthcare", "Hospitals", "Clinics"],
+    "growth": { "demand": "High", "futureScope": "Growing with healthcare advancements.", "automationRisk": "Low" },
+    "aptitudeMapping": { "analytical": 85, "creative": 60, "technical": 80, "communication": 90, "leadership": 75 }
+  },
+  {
+    "title": "Civil Engineer",
+    "category": "Engineering",
+    "description": "Design and oversee construction of infrastructure like roads, bridges, and buildings.",
+    "requiredSkills": [
+      { "skill": "Structural Analysis", "proficiency": "Advanced", "importance": 5 },
+      { "skill": "Project Management", "proficiency": "Intermediate", "importance": 4 }
+    ],
+    "educationPath": [
+      { "level": "Bachelor", "fields": ["Civil Engineering"], "duration": "4 years", "mandatory": true }
+    ],
+    "salaryRange": {
+      "entry": { "min": 400000, "max": 800000 },
+      "mid": { "min": 800000, "max": 2000000 },
+      "senior": { "min": 2000000, "max": 5000000 }
+    },
+    "jobRoles": ["Site Engineer", "Project Manager", "Structural Engineer"],
+    "industries": ["Construction", "Infrastructure", "Government"],
+    "growth": { "demand": "Medium", "futureScope": "Steady with urban development.", "automationRisk": "Medium" },
+    "aptitudeMapping": { "analytical": 90, "creative": 70, "technical": 85, "communication": 65, "leadership": 70 }
+  },
+  {
+    "title": "Marketing Manager",
+    "category": "Business",
+    "description": "Develop strategies to promote products and services, analyzing market trends.",
+    "requiredSkills": [
+      { "skill": "Digital Marketing", "proficiency": "Advanced", "importance": 5 },
+      { "skill": "Market Research", "proficiency": "Intermediate", "importance": 4 }
+    ],
+    "educationPath": [
+      { "level": "Bachelor", "fields": ["Marketing", "Business Administration"], "duration": "3-4 years", "mandatory": true }
+    ],
+    "salaryRange": {
+      "entry": { "min": 500000, "max": 1000000 },
+      "mid": { "min": 1000000, "max": 2500000 },
+      "senior": { "min": 2500000, "max": 6000000 }
+    },
+    "jobRoles": ["Brand Manager", "Digital Marketer", "Market Analyst"],
+    "industries": ["FMCG", "E-commerce", "Advertising"],
+    "growth": { "demand": "High", "futureScope": "Rising with digital transformation.", "automationRisk": "Medium" },
+    "aptitudeMapping": { "analytical": 75, "creative": 90, "technical": 60, "communication": 95, "leadership": 80 }
+  },
+  {
+    "title": "Graphic Designer",
+    "category": "Design",
+    "description": "Create visual content for branding, advertising, and digital media.",
+    "requiredSkills": [
+      { "skill": "Adobe Creative Suite", "proficiency": "Advanced", "importance": 5 },
+      { "skill": "UI/UX Design", "proficiency": "Intermediate", "importance": 4 }
+    ],
+    "educationPath": [
+      { "level": "Bachelor", "fields": ["Graphic Design"], "duration": "4 years", "mandatory": true }
+    ],
+    "salaryRange": {
+      "entry": { "min": 300000, "max": 600000 },
+      "mid": { "min": 600000, "max": 1500000 },
+      "senior": { "min": 1500000, "max": 4000000 }
+    },
+    "jobRoles": ["Visual Designer", "UI Designer", "Art Director"],
+    "industries": ["Advertising", "Media", "Tech"],
+    "growth": { "demand": "Medium", "futureScope": "Growing with digital content needs.", "automationRisk": "Medium" },
+    "aptitudeMapping": { "analytical": 60, "creative": 95, "technical": 70, "communication": 80, "leadership": 65 }
+  },
+  {
+    "title": "Lawyer",
+    "category": "Law",
+    "description": "Provide legal advice, represent clients in court, and draft legal documents.",
+    "requiredSkills": [
+      { "skill": "Legal Research", "proficiency": "Advanced", "importance": 5 },
+      { "skill": "Argumentation", "proficiency": "Advanced", "importance": 5 }
+    ],
+    "educationPath": [
+      { "level": "Bachelor", "fields": ["LLB"], "duration": "3-5 years", "mandatory": true }
+    ],
+    "salaryRange": {
+      "entry": { "min": 400000, "max": 800000 },
+      "mid": { "min": 800000, "max": 2000000 },
+      "senior": { "min": 2000000, "max": 5000000 }
+    },
+    "jobRoles": ["Corporate Lawyer", "Litigator", "Legal Advisor"],
+    "industries": ["Law Firms", "Corporate", "Government"],
+    "growth": { "demand": "Medium", "futureScope": "Stable with increasing regulations.", "automationRisk": "Low" },
+    "aptitudeMapping": { "analytical": 90, "creative": 70, "technical": 60, "communication": 95, "leadership": 85 }
+  },
+  {
+    "title": "Cybersecurity Analyst",
+    "category": "Engineering",
+    "description": "Protect systems and networks from cyber threats and data breaches.",
+    "requiredSkills": [
+      { "skill": "Network Security", "proficiency": "Advanced", "importance": 5 },
+      { "skill": "Ethical Hacking", "proficiency": "Intermediate", "importance": 4 }
+    ],
+    "educationPath": [
+      { "level": "Bachelor", "fields": ["Computer Science", "Cybersecurity"], "duration": "4 years", "mandatory": true }
+    ],
+    "salaryRange": {
+      "entry": { "min": 700000, "max": 1500000 },
+      "mid": { "min": 1500000, "max": 3000000 },
+      "senior": { "min": 3000000, "max": 7000000 }
+    },
+    "jobRoles": ["Security Engineer", "Penetration Tester", "Security Consultant"],
+    "industries": ["IT", "Finance", "Government"],
+    "growth": { "demand": "High", "futureScope": "Booming with rising cyber threats.", "automationRisk": "Low" },
+    "aptitudeMapping": { "analytical": 95, "creative": 65, "technical": 95, "communication": 70, "leadership": 70 }
+  },
+  {
+    "title": "Human Resources Manager",
+    "category": "Business",
+    "description": "Manage recruitment, employee relations, and organizational development.",
+    "requiredSkills": [
+      { "skill": "Recruitment", "proficiency": "Advanced", "importance": 5 },
+      { "skill": "Conflict Resolution", "proficiency": "Intermediate", "importance": 4 }
+    ],
+    "educationPath": [
+      { "level": "Bachelor", "fields": ["HR Management"], "duration": "3 years", "mandatory": true }
+    ],
+    "salaryRange": {
+      "entry": { "min": 500000, "max": 1000000 },
+      "mid": { "min": 1000000, "max": 2500000 },
+      "senior": { "min": 2500000, "max": 5000000 }
+    },
+    "jobRoles": ["HR Generalist", "Talent Acquisition Specialist", "HR Director"],
+    "industries": ["Corporate", "IT", "Manufacturing"],
+    "growth": { "demand": "Medium", "futureScope": "Essential for talent management.", "automationRisk": "Medium" },
+    "aptitudeMapping": { "analytical": 70, "creative": 60, "technical": 50, "communication": 95, "leadership": 90 }
   }
 ]

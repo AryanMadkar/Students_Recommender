@@ -18,6 +18,11 @@ export const AppProvider = ({ children }) => {
   const [assessments, setAssessments] = useState([]);
   const [colleges, setColleges] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
+  const [userPreferences, setUserPreferences] = useState({
+    notifications: true,
+    emailUpdates: false,
+    theme: "light"
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -89,15 +94,44 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const fetchUserPreferences = async () => {
+    if (!isAuthenticated) return;
+    try {
+      const response = await appApi.get("/api/users/preferences");
+      if (response.data.success) {
+        setUserPreferences(response.data.data);
+        console.log("user preferences", response.data.data);
+      }
+    } catch (err) {
+      console.error("Preferences fetch error:", err);
+    }
+  };
+
+  const updateUserPreferences = async (preferences) => {
+    if (!isAuthenticated) return;
+    try {
+      setLoading(true);
+      const response = await appApi.put("/api/users/preferences", preferences);
+      if (response.data.success) {
+        setUserPreferences(response.data.data);
+        console.log("preferences updated", response.data.data);
+        return { success: true };
+      }
+    } catch (err) {
+      setError("Failed to update preferences");
+      console.error("Preferences update error:", err);
+      return { success: false, message: "Failed to update preferences" };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const searchColleges = async (searchParams = {}) => {
     try {
       setLoading(true);
-      const response = await appApi.get(
-        "/api/colleges/search?state=Delhi&course=Computer",
-        {
-          params: searchParams,
-        }
-      );
+      const response = await appApi.get("/api/colleges/search", {
+        params: { state: "Delhi", course: "Computer", ...searchParams },
+      });
       if (response.data.success) {
         setColleges(response.data.data.colleges);
         console.log("colleges search", response.data.data);
@@ -121,7 +155,6 @@ export const AppProvider = ({ children }) => {
       );
       if (response.data.success) {
         console.log("assessment submitted", response.data.data);
-        // Refresh assessments and recommendations
         await fetchAssessments();
         await fetchRecommendations();
         return response.data.data;
@@ -142,6 +175,7 @@ export const AppProvider = ({ children }) => {
       fetchDashboardData();
       fetchAssessments();
       fetchRecommendations();
+      fetchUserPreferences();
     }
   }, [isAuthenticated]);
 
@@ -150,12 +184,15 @@ export const AppProvider = ({ children }) => {
     assessments,
     colleges,
     recommendations,
+    userPreferences,
     loading,
     error,
     clearError,
     refreshDashboard: fetchDashboardData,
     refreshAssessments: fetchAssessments,
     fetchRecommendations,
+    fetchUserPreferences,
+    updateUserPreferences,
     searchColleges,
     submitAssessment,
     api: appApi,

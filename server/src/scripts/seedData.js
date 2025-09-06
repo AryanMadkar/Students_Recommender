@@ -8,6 +8,7 @@ const Question = require("../models/Question");
 const College = require("../models/College");
 const Career = require("../models/Career");
 const Course = require("../models/Course");
+
 const connectDB = require("../config/database");
 
 const seedAllData = async () => {
@@ -15,7 +16,7 @@ const seedAllData = async () => {
     console.log("🌱 Starting database seeding...");
     await connectDB();
 
-    // --- Clear existing data ---
+    // Clear existing data
     console.log("🧹 Clearing existing data...");
     await Assessment.deleteMany({});
     await Question.deleteMany({});
@@ -23,39 +24,23 @@ const seedAllData = async () => {
     await Career.deleteMany({});
     await Course.deleteMany({});
 
-    // --- Seed Questions ---
+    // Seed Questions
     console.log("❓ Seeding questions...");
-    
-    // FIXED: Proper file path resolution
     const dataPath = path.join(__dirname, "../data");
-    
     const after10thQuestionsData = JSON.parse(
-      fs.readFileSync(
-        path.join(dataPath, "questions/after10th.json"),
-        "utf8"
-      )
+      fs.readFileSync(path.join(dataPath, "questions/after10th.json"), "utf8")
     );
-    
     const after12thQuestionsData = JSON.parse(
-      fs.readFileSync(
-        path.join(dataPath, "questions/after12th.json"),
-        "utf8"
-      )
+      fs.readFileSync(path.join(dataPath, "questions/after12th.json"), "utf8")
     );
-    
     const ongoingQuestionsData = JSON.parse(
-      fs.readFileSync(
-        path.join(dataPath, "questions/ongoing.json"),
-        "utf8"
-      )
+      fs.readFileSync(path.join(dataPath, "questions/ongoing.json"), "utf8")
     );
-
     const allQuestionsData = [
       ...after10thQuestionsData,
       ...after12thQuestionsData,
       ...ongoingQuestionsData,
     ];
-
     const insertedQuestions = await Question.insertMany(allQuestionsData);
     console.log(`✅ Inserted ${insertedQuestions.length} questions.`);
 
@@ -66,13 +51,12 @@ const seedAllData = async () => {
         .map((q) => ({ questionId: q._id, weight: 1 }));
     };
 
-    // --- Create Assessments ---
+    // Create Assessments
     console.log("📝 Creating assessments...");
     const assessments = [
       {
         title: "Stream Selection Assessment (After 10th)",
-        description:
-          "Comprehensive assessment to help you choose the right stream after 10th grade.",
+        description: "Comprehensive assessment to help you choose the right stream after 10th grade.",
         stage: "after10th",
         type: "aptitude",
         questions: getQuestionIdsByStage("after10th"),
@@ -82,8 +66,7 @@ const seedAllData = async () => {
       },
       {
         title: "Career Guidance Assessment (After 12th)",
-        description:
-          "Detailed assessment for career planning and college selection after 12th.",
+        description: "Detailed assessment for career planning and college selection after 12th.",
         stage: "after12th",
         type: "aptitude",
         questions: getQuestionIdsByStage("after12th"),
@@ -93,8 +76,7 @@ const seedAllData = async () => {
       },
       {
         title: "Skill & Career Assessment (Current Students)",
-        description:
-          "Assessment for ongoing students to identify skills and optimize career paths.",
+        description: "Assessment for ongoing students to identify skills and optimize career paths.",
         stage: "ongoing",
         type: "aptitude",
         questions: getQuestionIdsByStage("ongoing"),
@@ -103,11 +85,10 @@ const seedAllData = async () => {
         isActive: true,
       },
     ];
-
     const insertedAssessments = await Assessment.insertMany(assessments);
     console.log(`✅ Created ${insertedAssessments.length} assessments.`);
 
-    // --- Seed Colleges ---
+    // Seed Colleges
     console.log("🏫 Seeding colleges...");
     const collegesData = JSON.parse(
       fs.readFileSync(path.join(dataPath, "colleges.json"), "utf8")
@@ -115,7 +96,7 @@ const seedAllData = async () => {
     await College.insertMany(collegesData);
     console.log(`✅ Inserted ${collegesData.length} colleges.`);
 
-    // --- Seed Careers ---
+    // Seed Careers
     console.log("🚀 Seeding careers...");
     const careersData = JSON.parse(
       fs.readFileSync(path.join(dataPath, "careers.json"), "utf8")
@@ -123,7 +104,7 @@ const seedAllData = async () => {
     await Career.insertMany(careersData);
     console.log(`✅ Inserted ${careersData.length} careers.`);
 
-    // --- Seed Courses ---
+    // Seed Courses
     console.log("📚 Seeding courses...");
     const coursesData = JSON.parse(
       fs.readFileSync(path.join(dataPath, "courses.json"), "utf8")
