@@ -115,5 +115,113 @@
     "difficulty": "medium",
     "stage": ["after12th"],
     "tags": ["analytical", "skills"]
+  },
+  {
+    "question": "Which postgraduate course interests you?",
+    "type": "multiple_choice",
+    "category": "interest",
+    "subcategory": "postgrad_interest",
+    "options": [
+      { "text": "M.Tech in AI", "value": "mtech_ai", "weight": 95 },
+      { "text": "MBA in Finance", "value": "mba_finance", "weight": 85 },
+      { "text": "LLM in Corporate Law", "value": "llm_law", "weight": 80 },
+      { "text": "M.Sc in Biotechnology", "value": "msc_bio", "weight": 90 }
+    ],
+    "difficulty": "medium",
+    "stage": ["after12th"],
+    "tags": ["postgrad", "courses"]
+  },
+  {
+    "question": "Do you want to pursue a diploma in vocational skills?",
+    "type": "boolean",
+    "category": "interest",
+    "subcategory": "diploma_vocational",
+    "difficulty": "easy",
+    "stage": ["after12th"],
+    "tags": ["diploma", "vocational"]
+  },
+  {
+    "question": "Rate your interest in entrepreneurship.",
+    "type": "rating",
+    "category": "personality",
+    "subcategory": "entrepreneurship",
+    "difficulty": "medium",
+    "stage": ["after12th"],
+    "tags": ["entrepreneurship", "business"]
+  },
+  {
+    "question": "Which industry sector appeals to you for jobs?",
+    "type": "multiple_choice",
+    "category": "interest",
+    "subcategory": "sector_preference",
+    "options": [
+      { "text": "Information Technology", "value": "it", "weight": 95 },
+      { "text": "Banking and Finance", "value": "finance", "weight": 85 },
+      { "text": "Healthcare and Pharma", "value": "healthcare", "weight": 90 },
+      { "text": "Manufacturing", "value": "manufacturing", "weight": 80 }
+    ],
+    "difficulty": "easy",
+    "stage": ["after12th"],
+    "tags": ["sector", "jobs"]
+  },
+  {
+    "question": "Have you considered integrated courses like B.Tech + M.Tech?",
+    "type": "boolean",
+    "category": "academic",
+    "subcategory": "integrated_courses",
+    "difficulty": "medium",
+    "stage": ["after12th"],
+    "tags": ["integrated", "courses"]
+  },
+  {
+    "question": "What is your preferred location for higher studies?",
+    "type": "text",
+    "category": "interest",
+    "subcategory": "study_location",
+    "difficulty": "easy",
+    "stage": ["after12th"],
+    "tags": ["location", "studies"]
+  },
+  {
+    "question": "Rate your skills in time management.",
+    "type": "rating",
+    "category": "personality",
+    "subcategory": "time_management",
+    "difficulty": "medium",
+    "stage": ["after12th"],
+    "tags": ["time", "management"]
+  },
+  {
+    "question": "Which competitive exam post-12th interests you?",
+    "type": "multiple_choice",
+    "category": "academic",
+    "subcategory": "competitive_exams",
+    "options": [
+      { "text": "GATE for M.Tech", "value": "gate", "weight": 90 },
+      { "text": "CAT for MBA", "value": "cat", "weight": 85 },
+      { "text": "UPSC for Civil Services", "value": "upsc", "weight": 80 },
+      { "text": "SSC for Government Jobs", "value": "ssc", "weight": 75 }
+    ],
+    "difficulty": "medium",
+    "stage": ["after12th"],
+    "tags": ["exams", "competitive"]
+  },
+  {
+    "question": "Do you like working with numbers and data?",
+    "type": "boolean",
+    "category": "interest",
+    "subcategory": "data_interest",
+    "difficulty": "easy",
+    "stage": ["after12th"],
+    "tags": ["data", "numbers"]
+  },
+  {
+    "question": "Rate your interest in creative fields like design or media.",
+    "type": "rating",
+    "category": "creative",
+    "subcategory": "creative_fields",
+    "difficulty": "easy",
+    "stage": ["after12th"],
+    "tags": ["creative", "design"]
   }
 ]

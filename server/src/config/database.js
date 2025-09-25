@@ -3,13 +3,10 @@ const logger = require("../utils/logger");
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(
-      "mongodb+srv://Aryan:Ashlesha%403462@cluster0.diygaiq.mongodb.net/pathpilot?retryWrites=true&w=majority&appName=Cluster0",
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
-    );
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
     logger.info(`MongoDB Connected: ${conn.connection.host}`);
 

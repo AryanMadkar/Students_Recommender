@@ -114,5 +114,113 @@
     "difficulty": "medium",
     "stage": ["ongoing"],
     "tags": ["leadership", "projects"]
+  },
+  {
+    "question": "Have you taken any online courses on platforms like Coursera?",
+    "type": "boolean",
+    "category": "technical",
+    "subcategory": "online_learning",
+    "difficulty": "easy",
+    "stage": ["ongoing"],
+    "tags": ["online", "courses"]
+  },
+  {
+    "question": "Which emerging technology excites you?",
+    "type": "multiple_choice",
+    "category": "interest",
+    "subcategory": "emerging_tech",
+    "options": [
+      { "text": "Blockchain", "value": "blockchain", "weight": 90 },
+      { "text": "Internet of Things (IoT)", "value": "iot", "weight": 85 },
+      { "text": "Augmented Reality (AR)", "value": "ar", "weight": 88 },
+      { "text": "Quantum Computing", "value": "quantum", "weight": 92 }
+    ],
+    "difficulty": "medium",
+    "stage": ["ongoing"],
+    "tags": ["tech", "emerging"]
+  },
+  {
+    "question": "Rate your knowledge of AI ethics.",
+    "type": "rating",
+    "category": "analytical",
+    "subcategory": "ai_ethics",
+    "difficulty": "hard",
+    "stage": ["ongoing"],
+    "tags": ["ai", "ethics"]
+  },
+  {
+    "question": "Do you volunteer for social causes?",
+    "type": "boolean",
+    "category": "leadership",
+    "subcategory": "social_volunteering",
+    "difficulty": "easy",
+    "stage": ["ongoing"],
+    "tags": ["volunteering", "social"]
+  },
+  {
+    "question": "What is your favorite subject in your current course?",
+    "type": "text",
+    "category": "interest",
+    "subcategory": "current_subject",
+    "difficulty": "easy",
+    "stage": ["ongoing"],
+    "tags": ["subject", "current"]
+  },
+  {
+    "question": "Rate your interest in sustainable development goals.",
+    "type": "rating",
+    "category": "interest",
+    "subcategory": "sustainable_goals",
+    "difficulty": "medium",
+    "stage": ["ongoing"],
+    "tags": ["sustainable", "goals"]
+  },
+  {
+    "question": "Which certification platform do you prefer?",
+    "type": "multiple_choice",
+    "category": "interest",
+    "subcategory": "cert_platform",
+    "options": [
+      { "text": "NPTEL", "value": "nptel", "weight": 85 },
+      { "text": "edX", "value": "edx", "weight": 80 },
+      { "text": "Udemy", "value": "udemy", "weight": 75 },
+      { "text": "Google Certifications", "value": "google", "weight": 90 }
+    ],
+    "difficulty": "easy",
+    "stage": ["ongoing"],
+    "tags": ["certifications", "platforms"]
+  },
+  {
+    "question": "How often do you code outside of classes?",
+    "type": "multiple_choice",
+    "category": "technical",
+    "subcategory": "coding_habit",
+    "options": [
+      { "text": "Daily", "value": "daily", "weight": 95 },
+      { "text": "Weekly", "value": "weekly", "weight": 85 },
+      { "text": "Monthly", "value": "monthly", "weight": 70 },
+      { "text": "Rarely", "value": "rarely", "weight": 50 }
+    ],
+    "difficulty": "easy",
+    "stage": ["ongoing"],
+    "tags": ["coding", "habit"]
+  },
+  {
+    "question": "Rate your teamwork skills in projects.",
+    "type": "rating",
+    "category": "personality",
+    "subcategory": "teamwork_skills",
+    "difficulty": "medium",
+    "stage": ["ongoing"],
+    "tags": ["teamwork", "projects"]
+  },
+  {
+    "question": "Do you plan to pursue an MBA after undergrad?",
+    "type": "boolean",
+    "category": "interest",
+    "subcategory": "mba_interest",
+    "difficulty": "medium",
+    "stage": ["ongoing"],
+    "tags": ["mba", "postgrad"]
   }
 ]

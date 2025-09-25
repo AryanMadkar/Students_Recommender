@@ -90,6 +90,7 @@ app.get("/api", (req, res) => {
 
 // Handle 404 errors
 app.use(notFound);
+app.set("trust proxy", 1); 
 
 // Global error handler
 app.use(errorHandler);

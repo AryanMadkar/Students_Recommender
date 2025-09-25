@@ -363,11 +363,9 @@ const RegistrationPage = () => {
                     className="w-full py-3 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="">Select your education stage</option>
-                    <option value="ongoing">Currently Studying</option>
                     <option value="after10th">After 10th</option>
                     <option value="after12th">After 12th</option>
-                    <option value="graduate">Graduate</option>
-                    <option value="postgraduate">Post Graduate</option>
+                    <option value="ongoing">Ongoing</option>
                   </select>
                 </div>
                 <div className="flex space-x-4">
